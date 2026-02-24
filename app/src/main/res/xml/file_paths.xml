@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- cache nội bộ: /data/data/<pkg>/cache -->
+    <cache-path name="cache" path="." />
+    <!-- nếu cần external cache: /Android/data/<pkg>/cache -->
+    <external-cache-path name="external_cache" path="." />
+    <!-- nếu bạn để ảnh vào subfolder "captured_images" trong cache -->
+    <cache-path name="captured" path="captured_images/" />
+    <!-- internal files: /data/data/<pkg>/files -->
+    <files-path name="files" path="." />
+</paths>

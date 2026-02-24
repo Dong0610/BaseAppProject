@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgOnbBackground"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_height="match_parent"
+        tools:src="@drawable/img_onboarding_1" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lavSwipe"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.897"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/swipe_right"
+        tools:visibility="visible" />
+
+    <com.dong.baselib.widget.view.StrokeTextView
+        android:id="@+id/tvSwipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/swipe_to_next"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:textStrokeColor="@color/black"
+        app:textStrokeWidth="@dimen/_2sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/lavSwipe"
+        app:layout_constraintEnd_toEndOf="@id/lavSwipe"
+        app:layout_constraintStart_toStartOf="@id/lavSwipe"
+        tools:visibility="visible" />
+</androidx.constraintlayout.widget.ConstraintLayout>

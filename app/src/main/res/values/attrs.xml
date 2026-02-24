@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IndicatorView">
+        <attr name="max_count" format="integer" />
+        <attr name="spacing" format="dimension" />
+        <attr name="radius" format="dimension" />
+        <attr name="active_color" format="color" />
+        <attr name="default_color" format="color" />
+        <attr name="active_count" format="integer" />
+        <attr name="scale_value" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="HomeItemView">
+        <attr name="itemTitle" format="string" />
+        <attr name="itemContent" format="string" />
+        <attr name="itemIcon" format="reference" />
+        <attr name="lineTitle" format="integer" />
+        <attr name="lineContent" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="NavigationItem">
+        <attr name="navEnbIcon" format="reference" />
+        <attr name="navDisIcon" format="reference" />
+        <attr name="navText" format="string" />
+        <attr name="isActive" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="TrialItemView">
+        <attr name="trialTitle" format="string" />
+        <attr name="trialDiscountPrice" format="string" />
+        <attr name="trialLastPrice" format="string" />
+        <attr name="trialBadgeText" format="string" />
+        <attr name="trialBadgeVisible" format="boolean" />
+        <attr name="trialSelected" format="boolean" />
+        <attr name="trialSelectedBg" format="color" />
+        <attr name="trialUnselectedBg" format="color" />
+        <attr name="trialBadgeBg" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="IapItemView">
+        <attr name="iapTitle" format="string" />
+        <attr name="iapPrice" format="string" />
+        <attr name="iapBadgeText" format="string" />
+        <attr name="iapBadgeVisible" format="boolean" />
+        <attr name="iapSelected" format="boolean" />
+        <attr name="iapSelectedBg" format="color" />
+        <attr name="iapUnselectedBg" format="color" />
+        <attr name="iapBadgeBg" format="color" />
+    </declare-styleable>
+</resources>

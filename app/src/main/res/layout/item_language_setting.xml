@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.dong.baselib.widget.layout.UiLinearLayout
+        android:id="@+id/llFocusItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:bgColorAll="#1AFFFFFF"
+        app:cornerRadius="@dimen/_10sdp"
+        app:stColorAll="@color/transparent"
+        app:strokeWidth="1.6dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgItemFlag"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
+            android:layout_marginVertical="@dimen/_11sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            tools:src="@tools:sample/avatars" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvItemName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:fontFamily="@font/rb_500"
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11sdp"
+            tools:text="English" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgItemSelect"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:padding="@dimen/_2sdp"
+            android:src="@drawable/ic_language_unselected" />
+    </com.dong.baselib.widget.layout.UiLinearLayout>
+</FrameLayout>

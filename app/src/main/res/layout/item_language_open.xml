@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_56sdp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.dong.baselib.widget.layout.UiLinearLayout
+        android:id="@+id/llFocusItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_12sdp"
+        app:cornerRadius="@dimen/_10sdp"
+        app:bgColorAll="#1AFFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:stColorDark="@color/transparent"
+        app:stColorLight="@color/transparent"
+        app:strokeWidth="1.3dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgItemFlag"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            tools:src="@tools:sample/avatars" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvItemName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/rb_400"
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            tools:text="English" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgItemSelect"
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/_4sdp"
+            android:src="@drawable/ic_language_selected" />
+
+    </com.dong.baselib.widget.layout.UiLinearLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lavClick"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_marginEnd="-8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center_vertical|end"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/llFocusItem"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/click_language" />
+</FrameLayout>

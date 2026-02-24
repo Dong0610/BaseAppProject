@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python --version 2>&1 && python -c \"from PIL import Image; print\\('Pillow available'\\)\" 2>&1)",
+      "Bash(python:*)"
+    ]
+  }
+}

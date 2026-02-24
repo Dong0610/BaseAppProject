@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.dong.baselib.widget.layout.UiLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_18sdp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:bgColorAll="#303136"
+        app:cornerRadius="@dimen/_16sdp"
+        app:strokeWidth="0.6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_12sdp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgRate"
+                android:layout_width="@dimen/_52sdp"
+                android:layout_height="@dimen/_52sdp"
+                android:src="@drawable/ic_rate_04" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/rb_700"
+                android:includeFontPadding="false"
+                android:text="@string/thank_you_for_using_the_app"
+                android:textAlignment="center"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/rb_400"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:minLines="2"
+                android:text="@string/rating_description_0"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+            <com.dong.baselib.widget.view.RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginHorizontal="@dimen/_26sdp"
+                android:layout_marginTop="@dimen/_9sdp"
+                app:defaultRate="0"
+                app:emptyLastStarDrawable="@drawable/img_star_outline_last"
+                app:emptyStarDrawable="@drawable/img_star_outline"
+                app:filledLastStarDrawable="@drawable/img_star_filled"
+                app:filledStarDrawable="@drawable/img_star_filled"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvRateSuggest"
+                app:maxRating="5" />
+
+            <LinearLayout
+                android:id="@+id/llFocusItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvRateSuggest"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/rb_400"
+                    android:includeFontPadding="false"
+                    android:lines="2"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_2sdp"
+                    android:text="@string/the_best_we_can_get"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/appColor"
+                    android:textSize="@dimen/_12sdp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_24sdp"
+                    android:layout_marginStart="-2dp"
+                    android:layout_marginEnd="@dimen/_28sdp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/arrow_upright"
+                    app:tint="@color/appColor" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_height="wrap_content">
+
+                <com.dong.baselib.widget.view.UiTextView
+                    android:id="@+id/tvRate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rb_500"
+                    android:paddingVertical="@dimen/_12sdp"
+                    android:text="@string/rate_us"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    app:bgGdOrientation="left_right"
+                    app:bgGradientEnd="@color/grdEnd"
+                    app:bgGradientStart="@color/grdStart"
+                    app:bgIsGradient="true"
+                    app:cornerRadius="@dimen/_20sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.75"
+                    app:tvColor="@color/white" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </com.dong.baselib.widget.layout.UiLinearLayout>
+    <com.dong.baselib.widget.view.UiImageView
+        android:layout_width="@dimen/_24sdp"
+        android:src="@drawable/ic_app_close"
+        android:id="@+id/icCloseApp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_height="@dimen/_24sdp"/>
+</RelativeLayout>

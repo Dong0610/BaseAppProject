@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Urdu (Pakistan) - Regional Variant -->
+<resources>
+    <string name="this_action_may_contain_advertising">اس عمل میں اشتہارات شامل ہو سکتے ہیں</string>
+    <string name="language">زبان</string>
+    <string name="changes_applied">تبدیلیاں لاگو ہو گئیں!</string>
+    <string name="applying_language">زبان لاگو ہو رہی ہے…</string>
+    <string name="settings">ترتیبات</string>
+    <string name="term_of_service">سروس کی شرائط</string>
+    <string name="privacy_policy">رازداری کی پالیسی</string>
+    <string name="rate_app">درجہ بندی</string>
+    <string name="check_out_this_amazing_app">یہ حیرت انگیز ایپ دیکھیں: </string>
+    <string name="share_via">کے ذریعے شیئر کریں</string>
+    <string name="the_best_we_can_get">بہترین جو ہم حاصل کر سکتے ہیں :)</string>
+    <string name="rate_us">ہمیں ریٹ کریں</string>
+    <string name="rate_on_google_play">Google Play پر ریٹ کریں</string>
+    <string name="rating_description_0">ہم آپ کے جائزے کی قدر کریں گے!</string>
+    <string name="rating_description_1_2">ہم جاننا چاہتے ہیں کہ آپ کو کیا پریشان کیا۔</string>
+    <string name="rating_description_3">بہتری کے لیے آپ کی رائے کا انتظار ہے۔</string>
+    <string name="rating_description_4">ہم بہتر تجربہ فراہم کرنے کی پوری کوشش کریں گے۔</string>
+    <string name="rating_description_5">آپ کی اطمینان ہماری سب سے بڑی حوصلہ افزائی ہے!</string>
+    <string name="thanks_for_your_rating">آپ کی درجہ بندی کا شکریہ!</string>
+    <string name="rating_title_0">ایپ استعمال کرنے کا شکریہ!</string>
+    <string name="rating_title_1_2">اوہ نہیں!</string>
+    <string name="rating_title_3">افسوس!</string>
+    <string name="rating_title_4">شکریہ!</string>
+    <string name="rating_title_5">واہ، بہترین!</string>
+    <string name="please_rate_us">براہ کرم ہمیں 5 ستارے دیں!</string>
+    <string name="exit">باہر نکلیں</string>
+    <string name="continues">جاری رکھیں</string>
+    <string name="title_onboarding_1">لائیو فٹ بال دیکھیں</string>
+    <string name="content_onboarding_1">اپنی پسندیدہ ٹیموں سے جڑے رہیں اور کہیں بھی میچ کا جوش محسوس کریں!</string>
+    <string name="title_onboarding_2">لامحدود چینلز</string>
+    <string name="content_onboarding_2">کوئی لمحہ مت چھوڑیں - لامحدود ایکشن، لامحدود جوش!</string>
+    <string name="title_onboarding_3">آسان درآمد!</string>
+    <string name="content_onboarding_3">کوئی پریشانی نہیں، کوئی تاخیر نہیں - اپنے موبائل پر فوری طور پر ٹاپ لیگز تک رسائی۔</string>
+    <string name="title_onboarding_4">ہموار اور مستحکم سٹریمنگ</string>
+    <string name="content_onboarding_4">سست نیٹ ورک پر بھی تیز لوڈنگ اور ہموار پلے بیک کا تجربہ کریں۔</string>
+    <string name="swipe_to_next">آگے بڑھنے کے لیے سوائپ کریں</string>
+    <string name="thank_you_for_using_the_app">ایپ استعمال کرنے کا شکریہ</string>
+    <string name="continue_">جاری رکھیں</string>
+    <string name="next">اگلا</string>
+    <string name="loading_language_data">زبان کا ڈیٹا لوڈ ہو رہا ہے…</string>
+    <string name="all">سب</string>
+    <string name="feature_content_item_1">خبریں اور حالات حاضرہ</string>
+    <string name="feature_content_item_2">فلمیں</string>
+    <string name="feature_content_item_3">ٹی وی سیریز</string>
+    <string name="feature_content_item_4">لائیو کھیل</string>
+    <string name="feature_content_item_5">بچے</string>
+    <string name="feature_content_item_6">عمومی تفریح</string>
+    <string name="share">شیئر کریں</string>
+    <string name="nav_home">ہوم</string>
+    <string name="feature_heater">آپ کون سا مواد سب سے زیادہ دیکھتے ہیں؟</string>
+    <string name="do_you_really_want_to_leave_the_app">کیا آپ ایپ سے باہر نکلنا چاہتے ہیں؟</string>
+
+    <string name="channel">چینل</string>
+    <string name="favorites">پسندیدہ</string>
+    <string name="history">تاریخ</string>
+    <string name="start">شروع کریں</string>
+    <string name="welcome_to_iptv_smart">IPTV Smart میں خوش آمدید</string>
+    <string name="you_don_t_have_any_channels_yet">آپ کے پاس ابھی کوئی چینل نہیں ہے۔</string>
+    <string name="add_playlist">پلے لسٹ شامل کریں</string>
+    <string name="view_the_user_guide">صارف گائیڈ دیکھیں</string>
+    <string name="how_to_use">استعمال کیسے کریں؟</string>
+    <string name="search_for">تلاش کریں</string>
+    <string name="rename">نام تبدیل کریں</string>
+    <string name="save">محفوظ کریں</string>
+    <string name="please_enter_name">براہ کرم نام درج کریں!</string>
+    <string name="add_channel">چینل شامل کریں</string>
+    <string name="enter_playlist_name">پلے لسٹ کا نام درج کریں</string>
+    <string name="no_videos_selected">کوئی ویڈیو منتخب نہیں</string>
+    <string name="playlist_name_required">پلے لسٹ کا نام درکار ہے</string>
+    <string name="failed_to_save_playlist">پلے لسٹ محفوظ کرنے میں ناکام</string>
+    <string name="no_file_selected">کوئی فائل منتخب نہیں</string>
+    <string name="no_channels_found">فائل میں کوئی چینل نہیں ملا</string>
+    <string name="failed_to_parse_file">فائل پارس کرنے میں ناکام</string>
+    <string name="url_required">یو آر ایل درکار ہے</string>
+    <string name="failed_to_parse_url">یو آر ایل پارس کرنے میں ناکام</string>
+    <string name="no_internet">انٹرنیٹ نہیں</string>
+    <string name="please_check_your_network_settings_and_try_again">براہ کرم اپنی نیٹ ورک ترتیبات چیک کریں اور دوبارہ کوشش کریں۔</string>
+    <string name="try_again">دوبارہ کوشش کریں</string>
+    <!-- IAP Screen -->
+    <string name="iap_feature_no_ads">مزید اشتہارات نہیں</string>
+    <string name="iap_feature_unlimited">لامحدود چینلز سے لطف اندوز ہوں</string>
+    <string name="iap_feature_organize">اپنے چینلز آسانی سے منظم کریں</string>
+    <string name="premium">پریمیم</string>
+
+    <!-- Paywall Bottom Sheet -->
+    <string name="please_select_at_least_category">براہ کرم کم از کم 3 زمرہ جات منتخب کریں</string>
+    <string name="tv_noti_header_home">لائیو ٹی وی تیار ہے 🔴</string>
+    <string name="tv_noti_content_home">آپ کے پسندیدہ چینل صرف ایک ٹیپ دور ہیں۔</string>
+    <string name="tv_noti_content_quit">آپ کسی لائیو چیز کو ضائع کر سکتے ہیں۔ دیکھتے رہنے کے لیے ٹیپ کریں۔</string>
+    <string name="tv_noti_header_quit">لائیو ٹی وی اب ہو رہا ہے 👀</string>
+    <string name="skip">چھوڑ دیں</string>
+    <string name="des_1">آپ کے پسندیدہ چینل اب سٹریم ہو رہے ہیں۔</string>
+    <string name="cta_1">اب دیکھیں</string>
+    <string name="des_2">خبریں، کھیل، فلمیں — ایک سیکنڈ بھی نہ چھوڑیں۔</string>
+    <string name="cta_2">اب دیکھیں</string>
+    <string name="des_3">سینکڑوں لائیو چینل اور آن ڈیمانڈ مواد آپ کے لیے تیار ہیں۔</string>
+    <string name="cta_3">📺 IPTV کھولیں</string>
+    <string name="des_4">تازہ ترین فلمیں اور ٹی وی شو دستیاب ہیں۔</string>
+    <string name="cta_4">دیکھنا شروع کریں</string>
+    <string name="des_5">شامل ہوں اور فوری تفریح سے لطف اندوز ہوں۔</string>
+    <string name="cta_5">ایپ کھولیں</string>
+    <string name="now">اب</string>
+    <string name="to_send_you_notifications">آپ کو اطلاعات بھیجنے کے لیے</string>
+    <string name="allow">اجازت دیں</string>
+    <string name="notification_permission">اطلاع کی اجازت</string>
+    <string name="cancel" translatable="true">منسوخ کریں</string>
+    <string name="pick_3_of_the_most_popular_categories" translatable="true">ذاتی سفارشات حاصل کرنے کے لیے 3 سب سے مشہور زمرہ اور پوسٹر منتخب کریں</string>
+    <string name="show_lock_screen" translatable="false">IPTV Show lock screen</string>
+</resources>

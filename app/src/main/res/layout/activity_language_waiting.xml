@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundApp"
+    tools:context=".ui.language.LanguageWaitingActivity">
+
+    <LinearLayout
+        android:id="@+id/llAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingTop="@dimen/_6sdp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rb_600"
+            android:includeFontPadding="false"
+            android:text="@string/language"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp" />
+    </LinearLayout>
+
+    <com.dong.baselib.widget.view.UiLinearProgressIndicator
+        android:id="@+id/progressIndicator"
+        android:layout_margin="@dimen/_12sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_20sdp"
+        app:gradientEndColor="@color/grdEnd"
+        app:gradientStartColor="@color/grdStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llAppBar"
+        app:layout_constraintWidth_percent="0.65"
+        app:layout_marginBaseline="@dimen/_2sdp"
+        app:progressIndeterminate="true"
+        app:progressTrackCornerRadius="3dp"
+        app:progressTrackThickness="6dp"
+        app:progressValue="50"
+        app:trackCornerRadius="@dimen/_12sdp"
+        app:trackThickness="@dimen/_4sdp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:text="@string/loading_language_data"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@id/progressIndicator" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvLanguage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingBottom="@dimen/_6sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/flNativeAd"
+        app:layout_constraintTop_toBottomOf="@id/tvDescription"
+        tools:listitem="@layout/item_language_open" />
+
+    <com.dong.baselib.widget.layout.UiFrameLayout
+        android:id="@+id/flNativeAd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" >
+        <include
+            android:id="@+id/shimmerMediaLeft"
+            layout="@layout/layout_native_shimmer_media_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/shimmerMediaBottom"
+            layout="@layout/layout_native_shimmer_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/shimmerNoMedia"
+            layout="@layout/layout_native_shimmer_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </com.dong.baselib.widget.layout.UiFrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

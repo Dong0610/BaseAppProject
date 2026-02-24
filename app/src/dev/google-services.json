@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "2103946834",
+    "project_id": "b096-drama-5-dev",
+    "storage_bucket": "b096-drama-5-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2103946834:android:f053a8ebdf5e81c0c2398b",
+        "android_client_info": {
+          "package_name": "com.b096.dramarush5"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaaZ_vz0wLqXJG7rcfEVbp9xJFyKwZPhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

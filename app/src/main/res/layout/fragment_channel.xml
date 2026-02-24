@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundApp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/_4sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.dong.baselib.widget.view.UiTextView
+            android:id="@+id/channelName"
+            style="@style/HeaderScreenTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_37sdp"
+            android:layout_weight="1"
+            android:paddingStart="@dimen/_12sdp"
+            android:text="@string/channel"
+            android:textAlignment="textStart"
+            app:tvColor="@color/white" />
+    </LinearLayout>
+
+    <com.dong.baselib.widget.view.UiEditText
+        android:id="@+id/edtSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:drawableEnd="@drawable/ic_app_search"
+        android:drawableTint="@color/color_cccccc"
+        android:fontFamily="@font/rb_400"
+        android:gravity="center_vertical"
+        android:hint="@string/search_for"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:padding="@dimen/_12sdp"
+        android:paddingTop="@dimen/_15sdp"
+        android:singleLine="true"
+        app:bgColorAll="#1AFFFFFF"
+        android:textColor="@color/white"
+        app:drawableEmpty="@drawable/ic_app_search"
+        app:drawableEmptyTint="@color/backgroundApp"
+        app:drawableNotEmpty="@drawable/ic_app_close"
+        app:drawableNotEmptyTint="@color/color_cccccc"
+        app:drawableEmptyVisible="true"
+        app:drawableNotEmptyVisible="true"
+        android:textColorHint="@color/color_cccccc"
+        android:textSize="@dimen/_12sdp"
+        app:cornerRadius="@dimen/_12sdp"
+        app:edtColor="@color/white"
+        app:focusStrokeGradient="#60EFFF #60EFFF"
+        app:strokeGradient="#1AFFFFFF #1AFFFFFF"
+        app:strokeWidth="@dimen/_1sdp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvListCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="10"
+        tools:listitem="@layout/item_channel_category" />
+
+    <FrameLayout
+        android:layout_marginTop="@dimen/_minus12sdp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvItemContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/item_channel_view" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lnNoContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:visibility="invisible">
+
+            <com.dong.baselib.widget.layout.UiConstraintLayout
+                android:id="@+id/uiConstraintLayout2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:bgGradientCenter="#4D60EFFF"
+                app:bgGradientEnd="#0060EFFF"
+                app:bgGradientStart="#B360EFFF"
+                app:bgGradientType="radial"
+                app:bgIsGradient="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintWidth_percent="0.55">
+
+                <com.dong.baselib.widget.view.UiImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ic_app_television"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.55" />
+            </com.dong.baselib.widget.layout.UiConstraintLayout>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_24sdp"
+                android:fontFamily="@font/rb_400"
+                android:text="@string/you_don_t_have_any_channels_yet"
+                android:textAlignment="center"
+                android:textColor="@color/color_cccccc"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/uiConstraintLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/uiConstraintLayout2"
+                app:layout_constraintVertical_bias="0.98" />
+
+            <com.dong.baselib.widget.view.UiTextView
+                android:id="@+id/btnAddPlay"
+                style="@style/ButtonAppStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/rb_600"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:paddingVertical="@dimen/_14sdp"
+                android:text="@string/add_channel"
+                android:textSize="@dimen/_13sdp"
+                app:layout_constraintEnd_toEndOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/uiConstraintLayout2"
+                app:layout_constraintWidth_percent="0.5" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</LinearLayout>

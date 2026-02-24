@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="color_E5E6EB">#E5E6EB</color>
+    <color name="color_86909C">#86909C</color>
+    <color name="color_indicator_default">#BDA2EE</color>
+    <color name="switch_track_off">#B5CAD6</color>
+    <color name="switch_thumb_off">#A9BFD4</color>
+    <color name="grdStart">#0061FF</color>
+    <color name="grdEnd">#60EFFF</color>
+    <color name="primary">#FFFFFF</color>
+    <color name="backgroundApp">#111113</color>
+    <color name="color_cccccc">#CCCCCC</color>
+    <color name="color_303136">#303136</color>
+    <color name="appColor">#60EFFF</color>
+    <color name="color_002F6D">#002F6D</color>
+</resources>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dong.baselib.widget.layout.UiConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundApp"
+    tools:context="com.b096.dramarush5.ui.splash.SplashActivity">
+
+    <com.dong.baselib.widget.view.UiImageView
+        android:id="@+id/rlLogo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/img_logo_splash"
+        app:bgColorAll="@color/white"
+        app:cornerRadius="@dimen/_16sdp"
+        app:layout_constraintBottom_toTopOf="@id/uiConstraintLayout"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintWidth_percent="0.28"
+        app:shadowColor="@color/color_86909C"
+        app:shadowDx="@dimen/_12sdp"
+        app:shadowDy="@dimen/_12sdp"
+        app:shadowElevation="@dimen/_12sdp"
+        app:shadowRadius="@dimen/_20sdp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:adjustViewBounds="true"
+        android:fontFamily="@font/rb_700"
+        android:includeFontPadding="false"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_18sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rlLogo"
+        app:layout_constraintWidth_percent="0.65" />
+
+    <com.dong.baselib.widget.layout.UiConstraintLayout
+        android:id="@+id/uiConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/flNativeAd">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/this_action_may_contain_advertising"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11sdp"
+            app:layout_constraintBottom_toTopOf="@id/progressIndicator" />
+        <com.dong.baselib.widget.view.UiLinearProgressIndicator
+            android:id="@+id/progressIndicator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:gradientStartColor="@color/grdStart"
+            app:gradientEndColor="@color/grdEnd"
+            app:progressTrackThickness="6dp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.65"
+            app:layout_marginBaseline="@dimen/_2sdp"
+            app:trackCornerRadius="@dimen/_12sdp"
+            app:progressIndeterminate="true"
+            app:trackThickness="@dimen/_4sdp"
+            app:progressTrackCornerRadius="3dp"
+            app:progressValue="50" />
+    </com.dong.baselib.widget.layout.UiConstraintLayout>
+
+    <com.dong.baselib.widget.layout.UiFrameLayout
+        android:id="@+id/flNativeAd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <include
+            android:id="@+id/shimmerMediaLeft"
+            layout="@layout/layout_native_shimmer_media_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/shimmerMediaBottom"
+            layout="@layout/layout_native_shimmer_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/shimmerNoMedia"
+            layout="@layout/layout_native_shimmer_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </com.dong.baselib.widget.layout.UiFrameLayout>
+</com.dong.baselib.widget.layout.UiConstraintLayout>

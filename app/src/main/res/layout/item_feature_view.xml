@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.dong.baselib.widget.layout.UiLinearLayout
+        android:id="@+id/llFocusItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        android:gravity="center"
+        app:bgIsGradient="true"
+        app:bgGradientStart="@color/grdStart"
+        app:bgGdOrientation="left_right"
+        app:bgGradientEnd="@color/grdEnd"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/_8sdp"
+        app:cornerRadius="@dimen/_16sdp"
+        app:stColorAll="#1AFFFFFF"
+        app:strokeWidth="1.6dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:fontFamily="@font/rb_400"
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            tools:text="English" />
+    </com.dong.baselib.widget.layout.UiLinearLayout>
+</FrameLayout>
