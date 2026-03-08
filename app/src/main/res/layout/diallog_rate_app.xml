@@ -11,7 +11,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
-        app:bgColorAll="#303136"
+        app:bgColor="#303136"
         app:cornerRadius="@dimen/_16sdp"
         app:strokeWidth="0.6dp">
 
@@ -125,17 +125,17 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
-                    app:bgGdOrientation="left_right"
+                    app:bgGradientOrientation="left_right"
                     app:bgGradientEnd="@color/grdEnd"
                     app:bgGradientStart="@color/grdStart"
-                    app:bgIsGradient="true"
+                    app:bgGradient="true"
                     app:cornerRadius="@dimen/_20sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintWidth_percent="0.75"
-                    app:tvColor="@color/white" />
+                    app:tvTextColor="@color/white" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </com.dong.baselib.widget.layout.UiLinearLayout>

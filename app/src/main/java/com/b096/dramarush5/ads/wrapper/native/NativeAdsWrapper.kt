@@ -218,10 +218,6 @@ class NativeAdsWrapper(
             override fun onAdFailedToLoad(adError: ApAdError?) {
                 super.onAdFailedToLoad(adError)
                 onFailed?.invoke(adError)
-                Log.e(
-                    "NativeAdsWrapper",
-                    "onAdFailedToLoad: ${adError?.message} ${config.toString()}"
-                )
                 lifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
                     onFailedCallback(adError)
                 }
@@ -259,7 +255,7 @@ class NativeAdsWrapper(
     /**
      * Request ads using the configured parameters
      */
-    fun requestAds() = lifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+    fun requestAds() = lifecycleOwner.lifecycleScope.launch {
         shimmerView(config.nativeConfig()).run {
             visibility = View.VISIBLE
             startShimmer()
@@ -268,7 +264,7 @@ class NativeAdsWrapper(
     }
 
     fun requestAdsFragment() {
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+        lifecycleOwner.lifecycleScope.launch {
             shimmerView(config.nativeConfig()).run {
                 visibility = View.VISIBLE
                 startShimmer()
@@ -283,7 +279,7 @@ class NativeAdsWrapper(
 
     fun requestAdsPreview() {
         Log.d("NativeRequest", "Data: ${config.toString()}")
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+        lifecycleOwner.lifecycleScope.launch {
             shimmerView(config.nativeConfig()).run {
                 visibility = View.VISIBLE
                 startShimmer()

@@ -21,9 +21,6 @@ import kotlinx.coroutines.launch
 class LangApplyActivity :
     BaseActivity<ActivityLangApplyBinding>(ActivityLangApplyBinding::inflate) {
     override fun backPressed() {
-        LocateManager.setLocale(
-            this@LangApplyActivity, "en"
-        )
         finish()
     }
 
@@ -41,10 +38,6 @@ class LangApplyActivity :
             if (jobLauncher.isActive) {
                 jobLauncher.cancel()
             }
-            LocateManager.setLocale(
-                this@LangApplyActivity,
-                LanguageOpenActivity.currentLang.value?.code ?: "en"
-            )
             launchActivity<OnboardingActivity>()
             finish()
         }
@@ -66,10 +59,6 @@ class LangApplyActivity :
             llApplySuccess.visible()
             delay(1000)
             runCatching {
-                LocateManager.setLocale(
-                    this@LangApplyActivity,
-                    LanguageOpenActivity.currentLang.value?.code ?: "en"
-                )
                 launchActivity<OnboardingActivity>()
 
                 finish()

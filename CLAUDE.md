@@ -5,9 +5,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build Commands
 
 ```bash
-# Clean build artifacts
-./gradlew clean
-
 # Build debug APK (dev flavor with test ad IDs)
 ./gradlew assembleDevDebug
 
@@ -25,97 +22,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # Run instrumented tests on connected device
 ./gradlew connectedAndroidTest
+
+# Clean build artifacts
+./gradlew clean
 ```
 
 **Windows Note:** AAPT2 workers limited to 1 in gradle.properties (`org.gradle.workers.max=1`) to prevent InvalidPathException with resource compilation.
 
 ## Architecture Overview
 
-Android IPTV streaming application using **MVVM** with Kotlin. Two modules: `app` (main application) and `base` (reusable library, namespace `com.dong.baselib`).
+Android base project template using **MVVM** with Kotlin. Two modules: `app` (main application) and `lib` (reusable library, namespace `com.dong.baselib`).
 
 ### Tech Stack
 - **Namespace:** `com.b096.dramarush5`
 - **Min SDK:** 26 (Android 8.0) / **Target SDK:** 36
 - **Language:** Kotlin 2.1.0 with JVM target 17, KSP for annotation processing
-- **DI:** Koin 4.1.1 (declarative modules in `app/app/IModule.kt`)
-- **Database:** Room 2.6.1 with destructive fallback migration, DB name `iptv_database`
+- **DI:** Koin 4.1.1 (modules in `app/app/IModule.kt`)
 - **Async:** Kotlin Coroutines + Flow with lifecycle-aware collection
-- **Media:** Media3 ExoPlayer 1.9.0 with HLS support, PiP, resume playback
 - **View Binding:** Enabled throughout (View-based, not Compose)
 - **Ads:** Azura Global ads module (`azmoduleads`) with AdMob + Facebook/Pangle/Mintegral mediation
 - **Analytics:** Firebase BOM 33.13.0 (Analytics, Crashlytics, Remote Config, Messaging, Firestore)
-- **Build:** AGP 8.8.2, Triple Play 3.13.0 (Play Console publishing)
-
-### Module Structure
-
-**`app` module** — Main application (IPTV player)
-- Activities, Fragments, ViewModels under `com.b096.dramarush5`
-- Two flavors: `dev` (test ad IDs, `build_debug=true`) and `product` (production)
-- Ads wrappers in `ads/` (banner, interstitial, native, reward, splash)
-
-**`base` module** — Reusable base classes and utilities (namespace `com.dong.baselib`)
-```
-base/src/main/java/com/dong/baselib/
-├── base/        # BaseActivity, BaseFragment, BaseAdapter, BaseDialog, BaseBottomSheet
-├── extensions/  # Kotlin extensions (View, String, etc.)
-├── api/         # HTTP client utilities
-├── lifecycle/   # Coroutine lifecycle helpers (launchIO, etc.)
-├── network/     # Network utilities
-├── canvas/      # Custom drawing views (CanvasDrawingView, AnimatedCanvasView)
-├── file/        # File I/O utilities
-├── utils/       # Generic utilities
-└── widget/      # Custom views (flexbox, layout, navigation, popup)
-```
-
-### Data Layer
-
-```
-app/src/main/java/com/b096/dramarush5/data/
-├── local/
-│   ├── AppDatabase.kt       # Room DB v2, singleton, destructive fallback
-│   ├── entity/
-│   │   ├── PlaylistEntity   # source type: URL(0), FILE(1), GALLERY(2)
-│   │   ├── ChannelEntity    # FK to Playlist (CASCADE), indexed on playlist_id/is_favorite/group_name
-│   │   └── SourceType       # Enum: URL, FILE, GALLERY
-│   └── dao/
-│       ├── ChannelDao       # Insert REPLACE, Flow + suspend queries
-│       └── PlaylistDao      # Flow + suspend queries
-└── repository/
-    └── AppRepository        # Single source of truth, exposes Flow-based reactive queries
-```
-
-**SharedPreference** (`app/app/SharePreference.kt`) — Property delegates (`boolean()`, `string()`, `int()`, `long()`, `float()`, `enum()`, `json()`) with LiveData and Flow observable support.
-
-### Dependency Injection (Koin)
-
-Modules defined in `app/app/IModule.kt`:
-
-```kotlin
-viewModelModule: OnboardingViewModel, GuideViewModel, HomeViewModel,
-                 PlayViewModel, AddItemViewModel, ChannelViewModel
-
-dataModule:      SharedPreference (singleOf)
-
-databaseModule:  AppDatabase (singleton), ChannelDao, PlaylistDao, AppRepository
-```
-
-ViewModels injected in Activities/Fragments via `by viewModel()` delegation.
-
-### Navigation Structure
-
-**Entry:** `SplashActivity` → `NativeSplashActivity` → `MainActivity`
-
-**MainActivity** — NavHostFragment with 4 bottom tabs (defined in `main_nav_graph.xml`):
-- HomeFragment, ChannelFragment, FavoriteFragment, HistoryFragment
-- All under `ui/main/home/`
-
-**Standalone Activities:**
-- `PlayChannelActivity` / `ChannelHorActivity` — Portrait/landscape video players with PiP
-- `ChannelActivity` — Channel browser/selector
-- `AddItemActivity` — Playlist import (3 fragments via `add_nav_graph.xml`: URL, File, Gallery)
-- `SettingActivity`, `HowToActivity`, `IAPActivity`
-
-**PlayerManager** (`ui/main/play/PlayerManager.kt`) — Centralized ExoPlayer instance, HLS streaming, resume playback, shared between portrait/landscape players.
+- **Build:** AGP 8.8.2
 
 ### Build Flavors
 
@@ -124,72 +51,133 @@ ViewModels injected in Activities/Fragments via `by viewModel()` delegation.
 | `dev` | `com.b096.dramarush5` | Google test IDs | `true` |
 | `product` | `com.iptv.livetv.smartersplayerlite` | Production | `false` |
 
-Build variant: `[flavor][BuildType]` → `assembleDevDebug`, `assembleProductRelease`
+### Navigation Flow
 
-### Application Initialization
+**First launch:** `SplashActivity` → `NativeSplashActivity` → `Language1Activity` → `Language2Activity` → `LanguageOpenActivity` → `LanguageWaitingActivity` → `LangApplyActivity` → `OnboardingActivity` → `FeatureActivity` → `MainActivity`
 
-**ProjectApplication** (`app/app/ProjectApplication.kt`, extends `AdsMultiDexApplication`):
+**Return launch:** `SplashActivity` → `MainActivity` (gated by `PreferenceData.isFinishFirstFlow`)
 
-1. `LocateManager.initDeviceLocate()` — Device location setup
-2. `FirebaseApp.initializeApp()` — Firebase services
-3. Koin startup — `modules(dataModule, databaseModule, viewModelModule)`
-4. `registerLifecycleCallback()` — Activity + ProcessLifecycleOwner tracking
-5. `HeadUpNotification.createHeadUpNotificationChannel()` — Notification channels
-6. `initAds()` — AzAds with Adjust, AppsFlyer, Taichi configs
+`SplashActivity` runs in parallel: UMP consent + Firebase Remote Config fetch (30s timeout), then initializes ads before navigating.
 
-**Global state** (Companion object): `isAppForeground`, `isMainActivityActive`, `isFirstOpenMainActivity`
+`MainActivity` uses NavHostFragment; bottom nav visibility is gated per destination (currently only `homeFragment` shows it).
+
+### Dependency Injection (Koin)
+
+Modules in `app/app/IModule.kt`:
+- `viewModelModule`: `OnboardingViewModel`
+- `dataModule`: `SharedPreference` (singleton)
+- `databaseModule`: empty (add Room here when needed)
+
+### State & Preferences
+
+**`SharedPreference`** (`app/app/SharePreference.kt`) — Property delegates (`boolean()`, `string()`, `int()`, `long()`, `float()`, `enum()`, `json()`) with LiveData and Flow observable support via `observable()`.
+
+**`PreferenceData`** (`app/app/PreferenceData.kt`) — KoinComponent singleton exposing app-wide state: `isFinishFirstFlow`, `languageCode`, session counters. Use this for cross-screen state.
+
+**`RemoteConfig`** (`app/app/RemoteConfig.kt`) — Wraps Firebase Remote Config; all values are persisted to `SharedPreference` for offline access. Access via the top-level `remoteConfig` property.
+
+### Ads Architecture
+
+All ad configs are fetched from Firebase Remote Config and cached in SharedPreference. Remote Config keys follow a naming convention:
+
+| Prefix | Type |
+|--------|------|
+| `A101` | App Open |
+| `N101`–`N112` | Native ads (splash, language, onboarding, feature, home, popup) |
+| `I101`–`I103` | Interstitial (splash, in-app, paywall) |
+| `B101` | Banner |
+| `R101` | Rewarded |
+
+Key ad managers in `ads/wrapper/`:
+- `AdSplashManager` / `NativeSplashManager` — Splash screen ads
+- `InterstitialAdManager` — Interstitial ads between screens; `loadInterAll()` called in `MainActivity.initialize()`
+- `NativeAdPreloadManager` — Preloads native ads during splash for smooth transitions
+- `BannerAdWrapper` / `BannerAdView` — Banner ads with auto-reload
+- `RewardAdManager` — Rewarded ads
+
+Ads are disabled when `!remoteConfig.adEnable || !isInternetAvailable() || !isAcceptUmp`.
+
+### Base Classes
+
+**`BaseActivity<VB>`** (lib) — Foundation with View Binding, back press handling, activity launch helpers (`launchActivity<T>()`, `launcherForResult<T>()`).
+
+**`BaseAppActivity<VB>`** (app, extends BaseActivity) — Adds network connectivity monitoring with `DialogNoInternet`. Use `internetClick {}` / `internetSingleClick {}` / `runWithInternet {}` for network-gated actions.
+
+**`BaseFragment<VB>`** (lib) — Fragment with View Binding.
+
+**`BaseAppFragment<VB>`** (app, extends BaseFragment) — App-level fragment base.
+
+### App Utilities (`app/app/Aso.kt`)
+
+Holds app-level constants (`POLICY_LINK`, `TEAM_SERVICE`, `MAIL_SUPPORT`) and Context/Activity/View extension functions: `openUrl()`, `toastShort/Long/Top()`, `showTopSnackbar()`, `isInternetAvailable()`, `rateApp()`, `sendFeedBack()`, `shareApp()`, `shareValue()`.
+
+### Analytics (`firebase/Analytics.kt`)
+
+Thin wrapper around Firebase Analytics: `Analytics.track(event)` / `Analytics.track(event, bundle)`. Use this for all event logging rather than calling Firebase directly.
 
 ### Notification System
 
 Two-tier strategy (release builds only, when `!BuildConfig.build_debug`):
-1. **Foreground** — Triggers on first MainActivity open via `HeadUpNotification.onShowHomeOpen()`
-2. **Background** — Triggers on `ProcessLifecycleOwner.onStop`, cleared on `onStart`
+1. **Foreground** — Triggered on first `MainActivity` resume via `HeadUpNotification`
+2. **Background** — Triggered via `ProcessLifecycleOwner.onStop` when `isMainActivityActive`; cleared on `onStart`
+
+Lock screen reminders scheduled via `ReminderUtils` after notification permission granted.
+
+### Application Initialization
+
+**`ProjectApplication`** (extends `AdsMultiDexApplication`):
+1. `LocateManager.initDeviceLocate()`
+2. `FirebaseApp.initializeApp()`
+3. Koin startup with `dataModule`, `databaseModule`, `viewModelModule`
+4. `registerLifecycleCallback()` — tracks foreground state + notification triggers
+5. `HeadUpNotification.createHeadUpNotificationChannel()`
+6. `initAds()` — AzAds with Adjust + Taichi configs
+
+**Global state** (companion): `isAppForeground`, `isMainActivityActive`, `isFirstOpenMainActivity`
+
+### lib Module Structure
+
+```
+lib/src/main/java/com/dong/baselib/
+├── base/        # BaseActivity, BaseFragment, BaseAdapter, BaseDialog, BaseBottomSheet
+├── extensions/  # Kotlin extensions (View, Animation, Click, Glide, Text, etc.)
+├── api/         # HTTP client utilities
+├── lifecycle/   # Coroutine lifecycle helpers (launchIO, etc.)
+├── network/     # Network connectivity observer
+├── canvas/      # Custom drawing views
+├── file/        # File I/O, Bitmap, URI, clipboard utilities
+├── utils/       # Color, Dimen, Size, TextStyle, ViewUtils, PermissionUtils
+└── widget/      # Custom views (layouts, UiTextView, UiImageView, RatingBar, etc.)
+```
 
 ### Common Development Workflows
 
 **Adding a new screen:**
-1. Create `FooViewModel` with StateFlow state
-2. Register in `IModule.kt` under `viewModelModule`
-3. Create Activity or Fragment to observe StateFlow
-4. Add to AndroidManifest (Activity) or nav graph (Fragment)
+1. Create `FooViewModel` with StateFlow state, register in `IModule.kt` under `viewModelModule`
+2. Create Activity extending `BaseAppActivity<VB>` or Fragment extending `BaseAppFragment<VB>`
+3. Add Activity to AndroidManifest or Fragment to nav graph
 
-**Modifying database schema:**
-1. Edit entity in `data/local/entity/`
-2. Update corresponding DAO methods
-3. Increment database version in `AppDatabase` — uses destructive fallback
+**Adding Room database:**
+1. Create entity in `data/local/entity/`
+2. Create DAO and `AppDatabase` (singleton with KSP)
+3. Register in `databaseModule` in `IModule.kt`
+4. Use `Dispatchers.IO` for all DB operations
 
 **Adding a new dependency:**
 1. Add to `gradle/libs.versions.toml` under `[versions]` and `[libraries]`
-2. Reference in `app/build.gradle.kts` or `base/build.gradle.kts`
+2. Reference in `app/build.gradle.kts` or `lib/build.gradle.kts`
 
 ### Key Configuration Files
 
 - `gradle/libs.versions.toml` — Centralized dependency versions
-- `gradle.properties` — JVM args (`-Xmx4096m`), Windows AAPT2 workaround, AndroidX config
+- `gradle.properties` — JVM args (`-Xmx4096m`), Windows AAPT2 workaround
 - `app/proguard-rules.pro` — R8 rules for release (Gson, Firebase, GMS, Retrofit, Guava)
-- `base/proguard-rules.pro` — Library R8 rules (Gson, Kotlin Metadata, Guava)
+- `lib/proguard-rules.pro` — Library R8 rules
 
-**ProGuard note:** Release builds enable `isMinifyEnabled` + `isShrinkResources`. Model classes used by Firestore, Gson, or Remote Config need keep rules. Current rules reference stale package `com.as069.iptv.model` — should be updated to `com.b096.dramarush5.model` if Firestore models exist.
+**ProGuard note:** Release builds enable `isMinifyEnabled` + `isShrinkResources`. Model classes used by Firestore, Gson, or Remote Config need keep rules.
 
 ### CI/CD (Jenkinsfile)
 
 - Agent: `store-vohathi` (Windows)
 - Branch `staging` → builds APK; branch `master` → builds AAB for Play Console
 - Stages: Checkout → Credentials → Build → Publish (Triple Play) → Download APK → Upload to Nexus → Discord notification
-- Artifacts stored at Nexus (`nexus.azuraglobal.vn`)
-
-### Code Style
-
-- Kotlin official style (`kotlin.code.style=official`)
-- View Binding throughout (no `findViewById`)
-- `lifecycleScope.launch()` in Activities, `viewModelScope.launch()` in ViewModels
-- `Dispatchers.IO` for Room/file operations
-
-### Common Issues & Solutions
-
-| Issue | Solution |
-|-------|----------|
-| AAPT2 InvalidPathException on Windows | Already set: `org.gradle.workers.max=1` |
-| Room migration errors | Check entity annotations, increment DB version (destructive fallback) |
-| Koin injection fails | Verify in `IModule.kt`, ensure Koin started in `ProjectApplication.onCreate()` |
-| ProGuard strips model fields | Add `-keep` rule for model classes used with Gson/Firestore/Remote Config |

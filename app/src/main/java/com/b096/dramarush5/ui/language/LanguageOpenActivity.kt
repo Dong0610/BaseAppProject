@@ -129,7 +129,6 @@ abstract class LanguageOpenActivity :
    }
 
    fun navigateToNextScreen(language: LanguageItem) {
-      LocateManager.setLocale(this@LanguageOpenActivity, language.code)
       val intent = Intent(this, LangApplyActivity::class.java)
       intent.putExtra(ARG_LANGUAGE, language)
       startActivity(intent)

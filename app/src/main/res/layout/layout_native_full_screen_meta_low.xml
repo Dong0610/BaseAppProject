@@ -119,9 +119,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_6sdp"
                 android:layout_weight="1"
-                app:bgColorAll="#33FF24D7"
+                app:bgColor="#33FF24D7"
                 app:cornerRadius="@dimen/_100sdp"
-                app:stColorAll="@color/primary"
+                app:strokeColor="@color/primary"
                 app:strokeWidth="@dimen/_1sdp">
 
                 <androidx.appcompat.widget.AppCompatButton

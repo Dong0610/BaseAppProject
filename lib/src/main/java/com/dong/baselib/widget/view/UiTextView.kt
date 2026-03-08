@@ -99,8 +99,7 @@ class UiTextView @JvmOverloads constructor(
 
     // Text-specific properties
     private var lineOption: LineOption = LineOption.NONE
-    private var tColorLight = currentTextColor
-    private var tColorDark = currentTextColor
+    private var tvColor = currentTextColor
     private var tColorHint = currentHintTextColor
 
     // Text gradient
@@ -127,14 +126,12 @@ class UiTextView @JvmOverloads constructor(
                 )
                 helper.readBackgroundAttrs(
                     this,
-                    R.styleable.UiTextView_bgIsGradient,
+                    R.styleable.UiTextView_bgGradient,
                     R.styleable.UiTextView_bgGradientStart,
                     R.styleable.UiTextView_bgGradientCenter,
                     R.styleable.UiTextView_bgGradientEnd,
-                    R.styleable.UiTextView_bgColorLight,
-                    R.styleable.UiTextView_bgColorDark,
-                    R.styleable.UiTextView_bgColorAll,
-                    R.styleable.UiTextView_bgGdOrientation,
+                    R.styleable.UiTextView_bgColor,
+                    R.styleable.UiTextView_bgGradientOrientation,
                     R.styleable.UiTextView_bgGradientType,
                     R.styleable.UiTextView_bgGradientCenterX,
                     R.styleable.UiTextView_bgGradientCenterY,
@@ -145,16 +142,14 @@ class UiTextView @JvmOverloads constructor(
                 helper.readStrokeAttrs(
                     this,
                     R.styleable.UiTextView_strokeWidth,
-                    R.styleable.UiTextView_stColorLight,
-                    R.styleable.UiTextView_stColorDark,
-                    R.styleable.UiTextView_stColorAll,
+                    R.styleable.UiTextView_strokeColor,
                     R.styleable.UiTextView_strokeDashed,
-                    R.styleable.UiTextView_distanceSpace,
-                    R.styleable.UiTextView_strokeGradient,
-                    R.styleable.UiTextView_strokeGdOrientation,
+                    R.styleable.UiTextView_dashGap,
+                    R.styleable.UiTextView_strokeGradientColors,
+                    R.styleable.UiTextView_strokeGradientOrientation,
                     R.styleable.UiTextView_strokeOption,
                     -1,
-                    R.styleable.UiTextView_stColors
+                    R.styleable.UiTextView_strokeColors
                 )
                 helper.readShadowAttrs(
                     this,
@@ -164,16 +159,29 @@ class UiTextView @JvmOverloads constructor(
                     R.styleable.UiTextView_shadowDy,
                     R.styleable.UiTextView_shadowElevation
                 )
+                helper.readShapeAttrs(this,
+                    R.styleable.UiTextView_shapeType,
+                    R.styleable.UiTextView_isCircle
+                )
+                helper.readDimensionAttrs(
+                    this,
+                    R.styleable.UiTextView_uiDimenRatio,
+                    R.styleable.UiTextView_uiWidthParentPercent,
+                    R.styleable.UiTextView_uiHeightParentPercent,
+                    R.styleable.UiTextView_uiMaxWidthParentPercent,
+                    R.styleable.UiTextView_uiMaxHeightParentPercent,
+                    R.styleable.UiTextView_uiMinWidthParentPercent,
+                    R.styleable.UiTextView_uiMinHeightParentPercent,
+                    R.styleable.UiTextView_uiWidthScreenPercent,
+                    R.styleable.UiTextView_uiHeightScreenPercent,
+                    R.styleable.UiTextView_uiMaxWidthScreenPercent,
+                    R.styleable.UiTextView_uiMaxHeightScreenPercent,
+                    R.styleable.UiTextView_uiMinWidthScreenPercent,
+                    R.styleable.UiTextView_uiMinHeightScreenPercent
+                )
 
                 // Text-specific attrs
-                tColorLight = getColor(R.styleable.UiTextView_tvColorLight, currentTextColor)
-                tColorDark = getColor(R.styleable.UiTextView_tvColorDark, currentTextColor)
-                tColorHint = getColor(R.styleable.UiTextView_tvColorHint, currentHintTextColor)
-                val tvColorAll = getColor(R.styleable.UiTextView_tvColor, Color.TRANSPARENT)
-                if (tvColorAll != Color.TRANSPARENT) {
-                    tColorLight = tvColorAll
-                    tColorDark = tvColorAll
-                }
+                tvColor = getColor(R.styleable.UiTextView_tvTextColor, currentTextColor)
 
                 lineOption = LineOption.fromValue(getInt(R.styleable.UiTextView_lineOption, 0))
 
@@ -182,7 +190,7 @@ class UiTextView @JvmOverloads constructor(
                 textGradientStart = getColor(R.styleable.UiTextView_textGradientStart, Color.TRANSPARENT)
                 textGradientCenter = getColor(R.styleable.UiTextView_textGradientCenter, Color.TRANSPARENT)
                 textGradientEnd = getColor(R.styleable.UiTextView_textGradientEnd, Color.TRANSPARENT)
-                textGradientOrientation = getInt(R.styleable.UiTextView_textGdOrientation, 6).toGradientOrientation()
+                textGradientOrientation = getInt(R.styleable.UiTextView_textGradientOrientation, 6).toGradientOrientation()
 
                 val wantSingleLine = getBoolean(R.styleable.UiTextView_tvSingleLine, false)
                 if (wantSingleLine) {
@@ -220,7 +228,7 @@ class UiTextView @JvmOverloads constructor(
             applyTextGradient()
         } else {
             paint.shader = null
-            setTextColor(if (helper.isDarkMode()) tColorDark else tColorLight)
+            setTextColor(tvColor)
         }
     }
 
@@ -246,6 +254,30 @@ class UiTextView @JvmOverloads constructor(
         )
         invalidate()
         needReapplyTextGradient = false
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        if (helper.shouldApplyCustomMeasure()) {
+            val dm = context.resources.displayMetrics
+            val specW = MeasureSpec.getSize(widthMeasureSpec)
+            val specH = MeasureSpec.getSize(heightMeasureSpec)
+            val parentWidth = if (specW > 0) specW else
+                (parent as? android.view.View)?.width?.takeIf { it > 0 } ?: dm.widthPixels
+            val parentHeight = if (specH > 0) specH else
+                (parent as? android.view.View)?.height?.takeIf { it > 0 } ?: dm.heightPixels
+            val result = helper.measureWithConstraints(
+                widthMeasureSpec, heightMeasureSpec, parentWidth, parentHeight
+            )
+            val wSpec = if (result.widthCustomized)
+                MeasureSpec.makeMeasureSpec(result.width, MeasureSpec.EXACTLY)
+                else widthMeasureSpec
+            val hSpec = if (result.heightCustomized)
+                MeasureSpec.makeMeasureSpec(result.height, MeasureSpec.EXACTLY)
+                else heightMeasureSpec
+            super.onMeasure(wSpec, hSpec)
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        }
     }
 
     override fun onTextChanged(text: CharSequence?, start: Int, lengthBefore: Int, lengthAfter: Int) {
@@ -374,23 +406,17 @@ class UiTextView @JvmOverloads constructor(
     fun clearTextGradient() = apply {
         textGradient = false
         paint.shader = null
-        setTextColor(if (helper.isDarkMode()) tColorDark else tColorLight)
+        setTextColor(tvColor)
         invalidate()
     }
 
     fun textColorLight(color: Int) = apply {
-        tColorLight = color
-        if (!helper.isDarkMode() && !textGradient) setTextColor(color)
-    }
-
-    fun textColorDark(color: Int) = apply {
-        tColorDark = color
-        if (helper.isDarkMode() && !textGradient) setTextColor(color)
+        tvColor = color
+        if (!textGradient) setTextColor(color)
     }
 
     fun textColorAll(color: Int) = apply {
-        tColorLight = color
-        tColorDark = color
+        tvColor = color
         if (!textGradient) setTextColor(color)
     }
 

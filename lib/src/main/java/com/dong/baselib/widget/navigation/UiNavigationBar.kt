@@ -75,8 +75,8 @@ class UiNavigationBar @JvmOverloads constructor(
     // Text colors
     private var textColorSelected = "#CE41FF".toColorInt()
     private var textColorUnselected = "#86909C".toColorInt()
-    private var labelFontFamily: android.graphics.Typeface? = null
-
+    private var labelFontFamily: Typeface? = null
+    private var isTextSingleLine : Boolean = false
     // Text gradient
     private var textGradientEnabled = false
     private var textGradientStart = "#CE41FF".toColorInt()
@@ -89,9 +89,9 @@ class UiNavigationBar @JvmOverloads constructor(
     private var iconTintUnselected: Int? = null
 
     // Sizes
-    private var textSize = sp(12f)
+    private var textSize = sp(6f)
     private var iconSize = dp(24f)
-    private var itemPadding = dp(8f)
+    private var itemPadding = dp(2f)
     private var iconTextSpacing = dp(4f)
 
     // Layout
@@ -204,6 +204,7 @@ class UiNavigationBar @JvmOverloads constructor(
                     R.styleable.UiNavigationBar_nav_textColorUnselected,
                     textColorUnselected
                 )
+                isTextSingleLine = getBoolean(R.styleable.UiNavigationBar_nav_textSingleLine,true)
                 // Label font family
                 if (hasValue(R.styleable.UiNavigationBar_nav_labelFontFamily)) {
                     val fontResId =
@@ -401,12 +402,17 @@ class UiNavigationBar @JvmOverloads constructor(
                     } else {
                         lp.leftMargin = iconTextSpacing.toInt()
                     }
+
                     layoutParams = lp
                     text = item.title
-                    setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, textSize)
+                    setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, this@UiNavigationBar.textSize)
                     gravity = Gravity.CENTER
                     maxLines = 1
                     tag = "label$index"
+                    if(isTextSingleLine){
+                        isSingleLine = true
+                        ellipsize = android.text.TextUtils.TruncateAt.END
+                    }
                     // Apply font family
                     labelFontFamily?.let { typeface = it }
                 }
@@ -448,7 +454,7 @@ class UiNavigationBar @JvmOverloads constructor(
             val item = navItems.getOrNull(index) ?: return@forEachIndexed
             val container = view as? LinearLayout ?: return@forEachIndexed
             val iconView = container.findViewWithTag<ImageView>("icon")
-            val labelView = container.findViewWithTag<TextView>("label")
+            val labelView = container.findViewWithTag<TextView>("label$index")
             // Animate selection change
             if (animate && (isSelected || wasSelected)) {
                 playSelectionAnimation(container, isSelected)
@@ -735,7 +741,6 @@ class UiNavigationBar @JvmOverloads constructor(
         if (navGraphResId != 0 && navItems.isEmpty()) {
             loadFromNavGraph(navController)
         }
-
         setOnItemSelectedListener { item, _ ->
             if (item.id != 0) {
                 val options = if (navAnimateEnabled) {
@@ -863,9 +868,9 @@ class UiNavigationBar @JvmOverloads constructor(
     fun setLabelFontFamily(typeface: android.graphics.Typeface?) {
         labelFontFamily = typeface
         // Update existing labels
-        itemViews.forEach { view ->
+        itemViews.forEachIndexed { index, view ->
             val container = view as? LinearLayout
-            container?.findViewWithTag<TextView>("label")?.typeface = typeface
+            container?.findViewWithTag<TextView>("label$index")?.typeface = typeface
         }
     }
 
@@ -873,9 +878,9 @@ class UiNavigationBar @JvmOverloads constructor(
         try {
             labelFontFamily = androidx.core.content.res.ResourcesCompat.getFont(context, fontResId)
             // Update existing labels
-            itemViews.forEach { view ->
+            itemViews.forEachIndexed { index, view ->
                 val container = view as? LinearLayout
-                container?.findViewWithTag<TextView>("label")?.typeface = labelFontFamily
+                container?.findViewWithTag<TextView>("label$index")?.typeface = labelFontFamily
             }
         }
         catch (e: Exception) {

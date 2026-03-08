@@ -39,6 +39,6 @@ dependencyResolutionManagement {
 }
 
 
-rootProject.name = "B096-Drama5"
+rootProject.name = "Base Project"
 include(":app")
 include(":lib")

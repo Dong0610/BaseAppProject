@@ -15,11 +15,10 @@
         android:paddingVertical="@dimen/_10sdp"
         android:paddingHorizontal="@dimen/_12sdp"
         app:cornerRadius="@dimen/_10sdp"
-        app:bgColorAll="#1AFFFFFF"
+        app:bgColor="#1AFFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:stColorDark="@color/transparent"
-        app:stColorLight="@color/transparent"
+        app:strokeColor="@color/transparent"
         app:strokeWidth="1.3dp">
 
         <androidx.appcompat.widget.AppCompatImageView

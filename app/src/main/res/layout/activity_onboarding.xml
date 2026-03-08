@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="@dimen/_8sdp"
-        app:bgColorAll="@color/backgroundApp"
-        app:bgGdOrientation="bottom_top"
+        app:bgColor="@color/backgroundApp"
+        app:bgGradientOrientation="bottom_top"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.dong.baselib.widget.layout.UiLinearLayout
@@ -104,7 +104,7 @@
                     app:textGradient="true"
                     app:textGradientEnd="@color/grdEnd"
                     app:textGradientStart="@color/grdStart"
-                    app:tvColor="@color/white" />
+                    app:tvTextColor="@color/white" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.dong.baselib.widget.layout.UiLinearLayout>
 

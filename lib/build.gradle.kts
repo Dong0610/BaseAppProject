@@ -53,6 +53,7 @@ dependencies {
     implementation("com.intuit.sdp:sdp-android:1.1.1")
     implementation("com.intuit.ssp:ssp-android:1.1.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect:2.1.20")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx-android:2.10.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
     implementation("com.github.bumptech.glide:glide:5.0.5")
 }

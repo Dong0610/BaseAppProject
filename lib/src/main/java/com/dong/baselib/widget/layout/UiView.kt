@@ -27,35 +27,31 @@ class UiView @JvmOverloads constructor(
                     R.styleable.UiView_cornerBottomRight
                 )
                 helper.readBackgroundAttrs(this,
-                    R.styleable.UiView_bgIsGradient,
+                    R.styleable.UiView_bgGradient,
                     R.styleable.UiView_bgGradientStart,
                     R.styleable.UiView_bgGradientCenter,
                     R.styleable.UiView_bgGradientEnd,
-                    R.styleable.UiView_bgColorLight,
-                    R.styleable.UiView_bgColorDark,
-                    R.styleable.UiView_bgColorAll,
-                    R.styleable.UiView_bgGdOrientation,
+                    R.styleable.UiView_bgColor,
+                    R.styleable.UiView_bgGradientOrientation,
                     R.styleable.UiView_bgGradientType,
                     R.styleable.UiView_bgGradientCenterX,
                     R.styleable.UiView_bgGradientCenterY,
                     R.styleable.UiView_bgGradientRadius,
                     R.styleable.UiView_bgGradientColors,
                     R.styleable.UiView_bgColors,
-                    R.styleable.UiView_bgGdPositions
+                    R.styleable.UiView_bgGradientPositions
                 )
                 helper.readStrokeAttrs(this,
                     R.styleable.UiView_strokeWidth,
-                    R.styleable.UiView_stColorLight,
-                    R.styleable.UiView_stColorDark,
-                    R.styleable.UiView_stColorAll,
-                    R.styleable.UiView_strokeDistance,
-                    R.styleable.UiView_distanceSpace,
-                    R.styleable.UiView_strokeGradient,
-                    R.styleable.UiView_strokeGdOrientation,
+                    R.styleable.UiView_strokeColor,
+                    R.styleable.UiView_strokeDashed,
+                    R.styleable.UiView_dashGap,
+                    R.styleable.UiView_strokeGradientColors,
+                    R.styleable.UiView_strokeGradientOrientation,
                     R.styleable.UiView_strokeOption,
                     R.styleable.UiView_strokeCap,
-                    R.styleable.UiView_stColors,
-                    R.styleable.UiView_stGdPositions
+                    R.styleable.UiView_strokeColors,
+                    R.styleable.UiView_strokeGradientPositions
                 )
                 helper.readShadowAttrs(this,
                     R.styleable.UiView_shadowColor,
@@ -66,17 +62,27 @@ class UiView @JvmOverloads constructor(
                 )
                 helper.readDimensionAttrs(this,
                     R.styleable.UiView_uiDimenRatio,
-                    R.styleable.UiView_uiWidthPercent,
-                    R.styleable.UiView_uiHeightPercent,
-                    R.styleable.UiView_uiMaxWidthPercent,
-                    R.styleable.UiView_uiMaxHeightPercent,
-                    R.styleable.UiView_uiMinWidthPercent,
-                    R.styleable.UiView_uiMinHeightPercent
+                    R.styleable.UiView_uiWidthParentPercent,
+                    R.styleable.UiView_uiHeightParentPercent,
+                    R.styleable.UiView_uiMaxWidthParentPercent,
+                    R.styleable.UiView_uiMaxHeightParentPercent,
+                    R.styleable.UiView_uiMinWidthParentPercent,
+                    R.styleable.UiView_uiMinHeightParentPercent,
+                    R.styleable.UiView_uiWidthScreenPercent,
+                    R.styleable.UiView_uiHeightScreenPercent,
+                    R.styleable.UiView_uiMaxWidthScreenPercent,
+                    R.styleable.UiView_uiMaxHeightScreenPercent,
+                    R.styleable.UiView_uiMinWidthScreenPercent,
+                    R.styleable.UiView_uiMinHeightScreenPercent
                 )
                 helper.readRippleAttrs(this,
                     R.styleable.UiView_rippleEnabled,
                     R.styleable.UiView_rippleColor,
                     R.styleable.UiView_rippleBorderless
+                )
+                helper.readShapeAttrs(this,
+                    R.styleable.UiView_shapeType,
+                    R.styleable.UiView_isCircle
                 )
             } finally {
                 recycle()
@@ -88,12 +94,23 @@ class UiView @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         if (helper.shouldApplyCustomMeasure()) {
-            val parentWidth = MeasureSpec.getSize(widthMeasureSpec)
-            val parentHeight = MeasureSpec.getSize(heightMeasureSpec)
-            val (newWidth, newHeight) = helper.measureWithConstraints(
+            val dm = context.resources.displayMetrics
+            val specW = MeasureSpec.getSize(widthMeasureSpec)
+            val specH = MeasureSpec.getSize(heightMeasureSpec)
+            val parentWidth = if (specW > 0) specW else
+                (parent as? android.view.View)?.width?.takeIf { it > 0 } ?: dm.widthPixels
+            val parentHeight = if (specH > 0) specH else
+                (parent as? android.view.View)?.height?.takeIf { it > 0 } ?: dm.heightPixels
+            val result = helper.measureWithConstraints(
                 widthMeasureSpec, heightMeasureSpec, parentWidth, parentHeight
             )
-            setMeasuredDimension(newWidth, newHeight)
+            val wSpec = if (result.widthCustomized)
+                MeasureSpec.makeMeasureSpec(result.width, MeasureSpec.EXACTLY)
+                else widthMeasureSpec
+            val hSpec = if (result.heightCustomized)
+                MeasureSpec.makeMeasureSpec(result.height, MeasureSpec.EXACTLY)
+                else heightMeasureSpec
+            super.onMeasure(wSpec, hSpec)
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         }

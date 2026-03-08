@@ -174,7 +174,24 @@ class IndicatorView(context: Context, attrs: AttributeSet) : View(context, attrs
 
     fun setIndicatorMaxCount(count: Int) {
         this.indicatorCount = count
+        recalculatePoints()
         invalidate()
+    }
+
+    private fun recalculatePoints() {
+        indicatorPoint.clear()
+        if (indicatorWidth <= 0f) {
+            indicatorWidth = height.toFloat()
+        }
+        if (indicatorWidth > 0f && indicatorCount > 1) {
+            indicatorPoint.add(0f)
+            for (i in 1 until indicatorCount) {
+                indicatorPoint.add((indicatorSpacing + indicatorWidth) * i)
+            }
+            if (resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL) {
+                indicatorPoint.reverse()
+            }
+        }
     }
 
     fun setIndicatorActive(number: Int) {

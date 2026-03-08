@@ -1,7 +1,5 @@
 package com.dong.baselib.widget.layout
 
-import android.content.Context
-import android.content.res.Configuration
 import android.content.res.TypedArray
 import android.graphics.*
 import android.os.Build
@@ -47,20 +45,18 @@ class UiLayoutHelper(private val view: View) {
     var bgGradientCenterX = 0.5f  // 0.0 to 1.0, relative to view width
     var bgGradientCenterY = 0.5f  // 0.0 to 1.0, relative to view height
     var bgGradientRadius = 0f    // 0 means auto-calculate based on view size
-    var bgColorLight = Color.TRANSPARENT
-    var bgColorDark = Color.TRANSPARENT
+    var bgColor = Color.TRANSPARENT
     var bgColors: IntArray? = null
     var bgGradientPositions: FloatArray? = null
 
     // Stroke
     var stWidth = 0f
-    var stColorLight = Color.TRANSPARENT
-    var stColorDark = Color.TRANSPARENT
-    var stColors: IntArray? = null
-    var stGradientPositions: FloatArray? = null
+    var strokeColor = Color.TRANSPARENT
+    var strokeColors: IntArray? = null
+    var strokeGradientPositions: FloatArray? = null
     var strokeGradientOrientation = GradientOrientation.LEFT_TO_RIGHT
     var isDashed = false
-    var dashSpace = 10f
+    var dashGap = 10f
     var strokeOption = STROKE_ALL
     var strokeCap = Paint.Cap.ROUND
 
@@ -75,12 +71,18 @@ class UiLayoutHelper(private val view: View) {
     var dimenRatio: String? = null  // Format: "W,16:9" or "H,16:9" or "16:9" (default H)
     var dimenRatioSide = DimenRatioSide.HEIGHT  // Which side is calculated from ratio
     var dimenRatioValue = 0f  // The actual ratio value (width/height)
-    var widthPercent = -1f  // 0-100, -1 means not set
-    var heightPercent = -1f  // 0-100, -1 means not set
-    var maxWidthPercent = -1f
-    var maxHeightPercent = -1f
-    var minWidthPercent = -1f
-    var minHeightPercent = -1f
+    var widthParentPercent = -1f  // 0-100, -1 means not set; relative to parent size
+    var heightParentPercent = -1f
+    var maxWidthParentPercent = -1f
+    var maxHeightParentPercent = -1f
+    var minWidthParentPercent = -1f
+    var minHeightParentPercent = -1f
+    var widthScreenPercent = -1f  // 0-100, -1 means not set; relative to screen size
+    var heightScreenPercent = -1f
+    var maxWidthScreenPercent = -1f
+    var maxHeightScreenPercent = -1f
+    var minWidthScreenPercent = -1f
+    var minHeightScreenPercent = -1f
 
     // Shape type
     var shapeType = ShapeType.RECTANGLE
@@ -143,18 +145,6 @@ class UiLayoutHelper(private val view: View) {
         BEVEL   // Beveled corners
     }
 
-    enum class AspectRatio(val value: Float) {
-        NONE(0f),
-        SQUARE(1f),
-        VIDEO_16_9(16f / 9f),
-        VIDEO_4_3(4f / 3f),
-        PHOTO_3_2(3f / 2f),
-        PORTRAIT_9_16(9f / 16f),
-        PORTRAIT_3_4(3f / 4f),
-        GOLDEN(1.618f),
-        WIDE_21_9(21f / 9f)
-    }
-
     // Internal
     private val strokeRectF = RectF()
     private val clipPath = Path()
@@ -169,54 +159,41 @@ class UiLayoutHelper(private val view: View) {
 
     fun dp(value: Float): Float = value * view.resources.displayMetrics.density
 
-    fun isDarkMode(): Boolean {
-        return (view.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
-              Configuration.UI_MODE_NIGHT_YES
-    }
-
     // Read common attributes from TypedArray
     fun readCornerAttrs(
-          ta: TypedArray,
-          cornerRadiusAttr: Int,
-          topLeftAttr: Int,
-          topRightAttr: Int,
-          bottomLeftAttr: Int,
-          bottomRightAttr: Int
+        ta: TypedArray,
+        cornerRadiusAttr: Int,
+        topLeftAttr: Int = -1,
+        topRightAttr: Int = -1,
+        bottomLeftAttr: Int = -1,
+        bottomRightAttr: Int = -1
     ) {
         cornerRadius = ta.getDimension(cornerRadiusAttr, 0f)
-        cornerTopLeft = ta.getDimension(topLeftAttr, 0f)
-        cornerTopRight = ta.getDimension(topRightAttr, 0f)
-        cornerBottomLeft = ta.getDimension(bottomLeftAttr, 0f)
-        cornerBottomRight = ta.getDimension(bottomRightAttr, 0f)
+        if (topLeftAttr != -1) cornerTopLeft = ta.getDimension(topLeftAttr, 0f)
+        if (topRightAttr != -1) cornerTopRight = ta.getDimension(topRightAttr, 0f)
+        if (bottomLeftAttr != -1) cornerBottomLeft = ta.getDimension(bottomLeftAttr, 0f)
+        if (bottomRightAttr != -1) cornerBottomRight = ta.getDimension(bottomRightAttr, 0f)
     }
 
     fun readBackgroundAttrs(
-          ta: TypedArray,
-          isGradientAttr: Int,
-          gradientStartAttr: Int,
-          gradientCenterAttr: Int,
-          gradientEndAttr: Int,
-          colorLightAttr: Int,
-          colorDarkAttr: Int,
-          colorAllAttr: Int,
-          orientationAttr: Int,
-          gradientTypeAttr: Int = -1,
-          gradientCenterXAttr: Int = -1,
-          gradientCenterYAttr: Int = -1,
-          gradientRadiusAttr: Int = -1,
-          gradientColorsAttr: Int = -1,
-          bgColorsAttr: Int = -1,
-          bgPositionsAttr: Int = -1
+        ta: TypedArray,
+        isGradientAttr: Int,
+        gradientStartAttr: Int,
+        gradientCenterAttr: Int,
+        gradientEndAttr: Int,
+        colorAllAttr: Int,
+        orientationAttr: Int,
+        gradientTypeAttr: Int = -1,
+        gradientCenterXAttr: Int = -1,
+        gradientCenterYAttr: Int = -1,
+        gradientRadiusAttr: Int = -1,
+        gradientColorsAttr: Int = -1,
+        bgColorsAttr: Int = -1,
+        bgPositionsAttr: Int = -1
     ) {
         isGradient = ta.getBoolean(isGradientAttr, false)
-        bgColorLight = ta.getColor(colorLightAttr, Color.TRANSPARENT)
-        bgColorDark = ta.getColor(colorDarkAttr, Color.TRANSPARENT)
         bgGradientOrientation = ta.getInt(orientationAttr, 0).toGradientOrientation()
-        val bgColorAll = ta.getColor(colorAllAttr, Color.TRANSPARENT)
-        if (bgColorAll != Color.TRANSPARENT) {
-            bgColorLight = bgColorAll
-            bgColorDark = bgColorAll
-        }
+        bgColor = ta.getColor(colorAllAttr, Color.TRANSPARENT)
 
         if (gradientTypeAttr != -1) {
             bgGradientType = ta.getInt(gradientTypeAttr, 0).toGradientType()
@@ -266,32 +243,24 @@ class UiLayoutHelper(private val view: View) {
     }
 
     fun readStrokeAttrs(
-          ta: TypedArray,
-          widthAttr: Int,
-          colorLightAttr: Int,
-          colorDarkAttr: Int,
-          colorAllAttr: Int,
-          dashedAttr: Int,
-          dashSpaceAttr: Int,
-          gradientAttr: Int,
-          orientationAttr: Int,
-          optionAttr: Int,
-          capAttr: Int = -1,
-          stColorsAttr: Int = -1,
-          stPositionsAttr: Int = -1
+        ta: TypedArray,
+        widthAttr: Int,
+        colorAllAttr: Int,
+        dashedAttr: Int,
+        dashSpaceAttr: Int,
+        gradientAttr: Int,
+        orientationAttr: Int,
+        optionAttr: Int,
+        capAttr: Int = -1,
+        stColorsAttr: Int = -1,
+        stPositionsAttr: Int = -1
     ) {
         stWidth = ta.getDimension(widthAttr, 0f)
-        stColorLight = ta.getColor(colorLightAttr, Color.TRANSPARENT)
-        stColorDark = ta.getColor(colorDarkAttr, Color.TRANSPARENT)
-        val stColorAll = ta.getColor(colorAllAttr, Color.TRANSPARENT)
-        if (stColorAll != Color.TRANSPARENT) {
-            stColorLight = stColorAll
-            stColorDark = stColorAll
-        }
+        strokeColor = ta.getColor(colorAllAttr, Color.TRANSPARENT)
         isDashed = ta.getBoolean(dashedAttr, false)
-        dashSpace = ta.getDimension(dashSpaceAttr, 10f)
-        strokeGradientOrientation = ta.getInt(orientationAttr, 6).toStrokeOrientation()
-        strokeOption = ta.getInt(optionAttr, STROKE_ALL)
+        dashGap = ta.getDimension(dashSpaceAttr, 10f)
+        if (orientationAttr != -1) strokeGradientOrientation = ta.getInt(orientationAttr, 6).toStrokeOrientation()
+        if (optionAttr != -1) strokeOption = ta.getInt(optionAttr, STROKE_ALL)
         if (capAttr != -1) {
             strokeCap = ta.getInt(capAttr, 1).toStrokeCap()
         }
@@ -300,11 +269,11 @@ class UiLayoutHelper(private val view: View) {
             ?.mapNotNull { if (it.isValidHexColor()) it.toColorInt() else null }
             ?.toIntArray()
             ?.takeIf { it.size >= 2 }
-            ?.let { stColors = it }
+            ?.let { strokeColors = it }
         if (stColorsAttr != -1) {
             val resId = ta.getResourceId(stColorsAttr, 0)
             if (resId != 0) {
-                stColors = view.resources.getIntArray(resId)
+                strokeColors = view.resources.getIntArray(resId)
             }
         }
         // Read stroke gradient positions (e.g., "0.0 0.7 1.0")
@@ -313,7 +282,7 @@ class UiLayoutHelper(private val view: View) {
                 ?.mapNotNull { it.toFloatOrNull() }
                 ?.toFloatArray()
                 ?.takeIf { it.size >= 2 }
-                ?.let { stGradientPositions = it }
+                ?.let { strokeGradientPositions = it }
         }
     }
 
@@ -325,12 +294,12 @@ class UiLayoutHelper(private val view: View) {
     }
 
     fun readShadowAttrs(
-          ta: TypedArray,
-          colorAttr: Int,
-          radiusAttr: Int,
-          dxAttr: Int,
-          dyAttr: Int,
-          elevationAttr: Int
+        ta: TypedArray,
+        colorAttr: Int,
+        radiusAttr: Int,
+        dxAttr: Int,
+        dyAttr: Int,
+        elevationAttr: Int
     ) {
         compatShadowColor = ta.getColor(colorAttr, compatShadowColor)
         shadowRadiusPx = ta.getDimension(radiusAttr, shadowRadiusPx)
@@ -341,49 +310,78 @@ class UiLayoutHelper(private val view: View) {
     }
 
     fun readDimensionAttrs(
-          ta: TypedArray,
-          dimenRatioAttr: Int = -1,
-          widthPercentAttr: Int = -1,
-          heightPercentAttr: Int = -1,
-          maxWidthPercentAttr: Int = -1,
-          maxHeightPercentAttr: Int = -1,
-          minWidthPercentAttr: Int = -1,
-          minHeightPercentAttr: Int = -1
+        ta: TypedArray,
+        dimenRatioAttr: Int = -1,
+        widthParentPercentAttr: Int = -1,
+        heightParentPercentAttr: Int = -1,
+        maxWidthParentPercentAttr: Int = -1,
+        maxHeightParentPercentAttr: Int = -1,
+        minWidthParentPercentAttr: Int = -1,
+        minHeightParentPercentAttr: Int = -1,
+        widthScreenPercentAttr: Int = -1,
+        heightScreenPercentAttr: Int = -1,
+        maxWidthScreenPercentAttr: Int = -1,
+        maxHeightScreenPercentAttr: Int = -1,
+        minWidthScreenPercentAttr: Int = -1,
+        minHeightScreenPercentAttr: Int = -1
     ) {
         if (dimenRatioAttr != -1) {
             ta.getString(dimenRatioAttr)?.let { parseDimenRatio(it) }
         }
-        if (widthPercentAttr != -1) {
-            val fraction = ta.getFraction(widthPercentAttr, 1, 1, -1f)
-            if (fraction >= 0f) widthPercent = fraction * 100f
+        if (widthParentPercentAttr != -1) {
+            val fraction = ta.getFraction(widthParentPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) widthParentPercent = fraction * 100f
         }
-        if (heightPercentAttr != -1) {
-            val fraction = ta.getFraction(heightPercentAttr, 1, 1, -1f)
-            if (fraction >= 0f) heightPercent = fraction * 100f
+        if (heightParentPercentAttr != -1) {
+            val fraction = ta.getFraction(heightParentPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) heightParentPercent = fraction * 100f
         }
-        if (maxWidthPercentAttr != -1) {
-            val fraction = ta.getFraction(maxWidthPercentAttr, 1, 1, -1f)
-            if (fraction >= 0f) maxWidthPercent = fraction * 100f
+        if (maxWidthParentPercentAttr != -1) {
+            val fraction = ta.getFraction(maxWidthParentPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) maxWidthParentPercent = fraction * 100f
         }
-        if (maxHeightPercentAttr != -1) {
-            val fraction = ta.getFraction(maxHeightPercentAttr, 1, 1, -1f)
-            if (fraction >= 0f) maxHeightPercent = fraction * 100f
+        if (maxHeightParentPercentAttr != -1) {
+            val fraction = ta.getFraction(maxHeightParentPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) maxHeightParentPercent = fraction * 100f
         }
-        if (minWidthPercentAttr != -1) {
-            val fraction = ta.getFraction(minWidthPercentAttr, 1, 1, -1f)
-            if (fraction >= 0f) minWidthPercent = fraction * 100f
+        if (minWidthParentPercentAttr != -1) {
+            val fraction = ta.getFraction(minWidthParentPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) minWidthParentPercent = fraction * 100f
         }
-        if (minHeightPercentAttr != -1) {
-            val fraction = ta.getFraction(minHeightPercentAttr, 1, 1, -1f)
-            if (fraction >= 0f) minHeightPercent = fraction * 100f
+        if (minHeightParentPercentAttr != -1) {
+            val fraction = ta.getFraction(minHeightParentPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) minHeightParentPercent = fraction * 100f
+        }
+        if (widthScreenPercentAttr != -1) {
+            val fraction = ta.getFraction(widthScreenPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) widthScreenPercent = fraction * 100f
+        }
+        if (heightScreenPercentAttr != -1) {
+            val fraction = ta.getFraction(heightScreenPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) heightScreenPercent = fraction * 100f
+        }
+        if (maxWidthScreenPercentAttr != -1) {
+            val fraction = ta.getFraction(maxWidthScreenPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) maxWidthScreenPercent = fraction * 100f
+        }
+        if (maxHeightScreenPercentAttr != -1) {
+            val fraction = ta.getFraction(maxHeightScreenPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) maxHeightScreenPercent = fraction * 100f
+        }
+        if (minWidthScreenPercentAttr != -1) {
+            val fraction = ta.getFraction(minWidthScreenPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) minWidthScreenPercent = fraction * 100f
+        }
+        if (minHeightScreenPercentAttr != -1) {
+            val fraction = ta.getFraction(minHeightScreenPercentAttr, 1, 1, -1f)
+            if (fraction >= 0f) minHeightScreenPercent = fraction * 100f
         }
     }
 
     fun readShapeAttrs(
-          ta: TypedArray,
-          shapeTypeAttr: Int = -1,
-          isCircleAttr: Int = -1,
-          aspectRatioAttr: Int = -1
+        ta: TypedArray,
+        shapeTypeAttr: Int = -1,
+        isCircleAttr: Int = -1
     ) {
         if (shapeTypeAttr != -1) {
             shapeType = ta.getInt(shapeTypeAttr, 0).toShapeType()
@@ -392,20 +390,13 @@ class UiLayoutHelper(private val view: View) {
             isCircle = ta.getBoolean(isCircleAttr, false)
             if (isCircle) shapeType = ShapeType.CIRCLE
         }
-        if (aspectRatioAttr != -1) {
-            val ratio = ta.getInt(aspectRatioAttr, 0).toAspectRatio()
-            if (ratio.value > 0f) {
-                dimenRatioValue = ratio.value
-                dimenRatioSide = DimenRatioSide.HEIGHT
-            }
-        }
     }
 
     fun readRippleAttrs(
-          ta: TypedArray,
-          rippleEnabledAttr: Int = -1,
-          rippleColorAttr: Int = -1,
-          rippleBorderlessAttr: Int = -1
+        ta: TypedArray,
+        rippleEnabledAttr: Int = -1,
+        rippleColorAttr: Int = -1,
+        rippleBorderlessAttr: Int = -1
     ) {
         if (rippleEnabledAttr != -1) {
             rippleEnabled = ta.getBoolean(rippleEnabledAttr, false)
@@ -431,6 +422,7 @@ class UiLayoutHelper(private val view: View) {
                 isCircle || shapeType == ShapeType.CIRCLE || shapeType == ShapeType.OVAL -> {
                     maskPath.addOval(RectF(0f, 0f, w, h), Path.Direction.CW)
                 }
+
                 cornerStyle == CornerStyle.CUT -> createCutCornerPath(maskPath, w, h)
                 cornerStyle == CornerStyle.BEVEL -> createBevelCornerPath(maskPath, w, h)
                 else -> {
@@ -452,9 +444,9 @@ class UiLayoutHelper(private val view: View) {
     }
 
     fun readPressedAttrs(
-          ta: TypedArray,
-          pressedBgColorAttr: Int = -1,
-          pressedScaleAttr: Int = -1
+        ta: TypedArray,
+        pressedBgColorAttr: Int = -1,
+        pressedScaleAttr: Int = -1
     ) {
         if (pressedBgColorAttr != -1) {
             pressedBgColor = ta.getColor(pressedBgColorAttr, Color.TRANSPARENT)
@@ -465,10 +457,10 @@ class UiLayoutHelper(private val view: View) {
     }
 
     fun readPaddingAttrs(
-          ta: TypedArray,
-          paddingAllAttr: Int = -1,
-          paddingHorizontalAttr: Int = -1,
-          paddingVerticalAttr: Int = -1
+        ta: TypedArray,
+        paddingAllAttr: Int = -1,
+        paddingHorizontalAttr: Int = -1,
+        paddingVerticalAttr: Int = -1
     ) {
         if (paddingAllAttr != -1) {
             paddingAll = ta.getDimensionPixelSize(paddingAllAttr, -1)
@@ -482,8 +474,8 @@ class UiLayoutHelper(private val view: View) {
     }
 
     fun readOverlayAttrs(
-          ta: TypedArray,
-          overlayColorAttr: Int = -1
+        ta: TypedArray,
+        overlayColorAttr: Int = -1
     ) {
         if (overlayColorAttr != -1) {
             overlayColor = ta.getColor(overlayColorAttr, Color.TRANSPARENT)
@@ -491,10 +483,10 @@ class UiLayoutHelper(private val view: View) {
     }
 
     fun readInnerShadowAttrs(
-          ta: TypedArray,
-          enabledAttr: Int = -1,
-          colorAttr: Int = -1,
-          radiusAttr: Int = -1
+        ta: TypedArray,
+        enabledAttr: Int = -1,
+        colorAttr: Int = -1,
+        radiusAttr: Int = -1
     ) {
         if (enabledAttr != -1) {
             innerShadowEnabled = ta.getBoolean(enabledAttr, false)
@@ -514,11 +506,13 @@ class UiLayoutHelper(private val view: View) {
                 BorderStyle.DASHED -> isDashed = true
                 BorderStyle.DOTTED -> {
                     isDashed = true
-                    dashSpace = dp(2f)
+                    dashGap = dp(2f)
                 }
+
                 BorderStyle.DOUBLES -> {
                     // Double border will be handled in drawStroke
                 }
+
                 else -> {}
             }
         }
@@ -540,7 +534,6 @@ class UiLayoutHelper(private val view: View) {
 
     private fun Int.toShapeType() = ShapeType.entries.getOrElse(this) { ShapeType.RECTANGLE }
     private fun Int.toBorderStyle() = BorderStyle.entries.getOrElse(this) { BorderStyle.SOLID }
-    private fun Int.toAspectRatio() = AspectRatio.entries.getOrElse(this) { AspectRatio.NONE }
 
     /** Apply padding helper values to the view */
     fun applyPadding() {
@@ -579,10 +572,12 @@ class UiLayoutHelper(private val view: View) {
                 dimenRatioSide = DimenRatioSide.WIDTH
                 ratioStr = trimmed.substring(2)
             }
+
             trimmed.startsWith("H,", ignoreCase = true) || trimmed.startsWith("h,") -> {
                 dimenRatioSide = DimenRatioSide.HEIGHT
                 ratioStr = trimmed.substring(2)
             }
+
             else -> {
                 dimenRatioSide = DimenRatioSide.HEIGHT  // Default
             }
@@ -601,73 +596,142 @@ class UiLayoutHelper(private val view: View) {
         }
     }
 
+    data class MeasureResult(
+        val width: Int,
+        val height: Int,
+        val widthCustomized: Boolean,
+        val heightCustomized: Boolean,
+    )
+
     fun measureWithConstraints(
-          widthMeasureSpec: Int,
-          heightMeasureSpec: Int,
-          parentWidth: Int,
-          parentHeight: Int
-    ): Pair<Int, Int> {
-        var measuredWidth = View.MeasureSpec.getSize(widthMeasureSpec)
-        var measuredHeight = View.MeasureSpec.getSize(heightMeasureSpec)
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
+        parentWidth: Int,
+        parentHeight: Int
+    ): MeasureResult {
+        val specW = View.MeasureSpec.getSize(widthMeasureSpec)
+        val specH = View.MeasureSpec.getSize(heightMeasureSpec)
         val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
         val heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
 
-        // Apply percentage width
-        if (widthPercent >= 0f && parentWidth > 0) {
-            measuredWidth = (parentWidth * widthPercent / 100f).toInt()
-        }
-        // Apply percentage height
-        if (heightPercent >= 0f && parentHeight > 0) {
-            measuredHeight = (parentHeight * heightPercent / 100f).toInt()
+        val dm = view.resources.displayMetrics
+        val screenWidth = dm.widthPixels
+        val screenHeight = dm.heightPixels
+
+        var measuredWidth = specW
+        var measuredHeight = specH
+        var widthCustomized = false
+        var heightCustomized = false
+
+        // Apply parent-percent width — skip if parent forced EXACTLY (layout_width="Xdp")
+        if (widthParentPercent >= 0f && parentWidth > 0 && widthMode != View.MeasureSpec.EXACTLY) {
+            val computed = (parentWidth * widthParentPercent / 100f).toInt().coerceAtLeast(0)
+            measuredWidth = if (widthMode == View.MeasureSpec.AT_MOST && specW > 0)
+                minOf(computed, specW) else computed
+            widthCustomized = true
         }
 
-        // Apply min/max percentage constraints
-        if (minWidthPercent >= 0f && parentWidth > 0) {
-            val minW = (parentWidth * minWidthPercent / 100f).toInt()
-            if (measuredWidth < minW) measuredWidth = minW
-        }
-        if (maxWidthPercent >= 0f && parentWidth > 0) {
-            val maxW = (parentWidth * maxWidthPercent / 100f).toInt()
-            if (measuredWidth > maxW) measuredWidth = maxW
-        }
-        if (minHeightPercent >= 0f && parentHeight > 0) {
-            val minH = (parentHeight * minHeightPercent / 100f).toInt()
-            if (measuredHeight < minH) measuredHeight = minH
-        }
-        if (maxHeightPercent >= 0f && parentHeight > 0) {
-            val maxH = (parentHeight * maxHeightPercent / 100f).toInt()
-            if (measuredHeight > maxH) measuredHeight = maxH
+        // Apply screen-percent width — skip if parent forced EXACTLY
+        if (widthScreenPercent >= 0f && widthMode != View.MeasureSpec.EXACTLY) {
+            val computed = (screenWidth * widthScreenPercent / 100f).toInt().coerceAtLeast(0)
+            measuredWidth = if (widthMode == View.MeasureSpec.AT_MOST && specW > 0)
+                minOf(computed, specW) else computed
+            widthCustomized = true
         }
 
-        // Apply dimension ratio
+        // Apply parent-percent height — skip if parent forced EXACTLY
+        if (heightParentPercent >= 0f && parentHeight > 0 && heightMode != View.MeasureSpec.EXACTLY) {
+            val computed = (parentHeight * heightParentPercent / 100f).toInt().coerceAtLeast(0)
+            measuredHeight = if (heightMode == View.MeasureSpec.AT_MOST && specH > 0)
+                minOf(computed, specH) else computed
+            heightCustomized = true
+        }
+
+        // Apply screen-percent height — skip if parent forced EXACTLY
+        if (heightScreenPercent >= 0f && heightMode != View.MeasureSpec.EXACTLY) {
+            val computed = (screenHeight * heightScreenPercent / 100f).toInt().coerceAtLeast(0)
+            measuredHeight = if (heightMode == View.MeasureSpec.AT_MOST && specH > 0)
+                minOf(computed, specH) else computed
+            heightCustomized = true
+        }
+
+        // Apply min/max parent-percent constraints
+        if (minWidthParentPercent >= 0f && parentWidth > 0) {
+            val minW = (parentWidth * minWidthParentPercent / 100f).toInt().coerceAtLeast(0)
+            if (measuredWidth < minW) { measuredWidth = minW; widthCustomized = true }
+        }
+        if (maxWidthParentPercent >= 0f && parentWidth > 0) {
+            val maxW = (parentWidth * maxWidthParentPercent / 100f).toInt().coerceAtLeast(0)
+            if (measuredWidth > maxW) { measuredWidth = maxW; widthCustomized = true }
+        }
+        if (minHeightParentPercent >= 0f && parentHeight > 0) {
+            val minH = (parentHeight * minHeightParentPercent / 100f).toInt().coerceAtLeast(0)
+            if (measuredHeight < minH) { measuredHeight = minH; heightCustomized = true }
+        }
+        if (maxHeightParentPercent >= 0f && parentHeight > 0) {
+            val maxH = (parentHeight * maxHeightParentPercent / 100f).toInt().coerceAtLeast(0)
+            if (measuredHeight > maxH) { measuredHeight = maxH; heightCustomized = true }
+        }
+
+        // Apply min/max screen-percent constraints
+        if (minWidthScreenPercent >= 0f) {
+            val minW = (screenWidth * minWidthScreenPercent / 100f).toInt().coerceAtLeast(0)
+            if (measuredWidth < minW) { measuredWidth = minW; widthCustomized = true }
+        }
+        if (maxWidthScreenPercent >= 0f) {
+            val maxW = (screenWidth * maxWidthScreenPercent / 100f).toInt().coerceAtLeast(0)
+            if (measuredWidth > maxW) { measuredWidth = maxW; widthCustomized = true }
+        }
+        if (minHeightScreenPercent >= 0f) {
+            val minH = (screenHeight * minHeightScreenPercent / 100f).toInt().coerceAtLeast(0)
+            if (measuredHeight < minH) { measuredHeight = minH; heightCustomized = true }
+        }
+        if (maxHeightScreenPercent >= 0f) {
+            val maxH = (screenHeight * maxHeightScreenPercent / 100f).toInt().coerceAtLeast(0)
+            if (measuredHeight > maxH) { measuredHeight = maxH; heightCustomized = true }
+        }
+
+        // Apply dimension ratio — use parentWidth/Height as base when spec is 0
         if (dimenRatioValue > 0f) {
             when (dimenRatioSide) {
                 DimenRatioSide.HEIGHT -> {
-                    // Height is calculated from width
-                    if (measuredWidth > 0) {
-                        measuredHeight = (measuredWidth / dimenRatioValue).toInt()
+                    val baseW = if (measuredWidth > 0) measuredWidth else parentWidth
+                    if (baseW > 0) {
+                        val computed = (baseW / dimenRatioValue).toInt().coerceAtLeast(0)
+                        measuredHeight = if (heightMode == View.MeasureSpec.AT_MOST && specH > 0)
+                            minOf(computed, specH) else computed
+                        heightCustomized = true
                     }
                 }
+
                 DimenRatioSide.WIDTH -> {
-                    // Width is calculated from height
-                    if (measuredHeight > 0) {
-                        measuredWidth = (measuredHeight * dimenRatioValue).toInt()
+                    val baseH = if (measuredHeight > 0) measuredHeight else parentHeight
+                    if (baseH > 0) {
+                        val computed = (baseH * dimenRatioValue).toInt().coerceAtLeast(0)
+                        measuredWidth = if (widthMode == View.MeasureSpec.AT_MOST && specW > 0)
+                            minOf(computed, specW) else computed
+                        widthCustomized = true
                     }
                 }
             }
         }
 
-        return Pair(measuredWidth, measuredHeight)
+        return MeasureResult(
+            width = measuredWidth.coerceAtLeast(0),
+            height = measuredHeight.coerceAtLeast(0),
+            widthCustomized = widthCustomized,
+            heightCustomized = heightCustomized,
+        )
     }
 
     fun shouldApplyCustomMeasure(): Boolean {
         return dimenRatioValue > 0f ||
-              widthPercent >= 0f ||
-              heightPercent >= 0f ||
-              maxWidthPercent >= 0f ||
-              maxHeightPercent >= 0f ||
-              minWidthPercent >= 0f ||
-              minHeightPercent >= 0f
+                widthParentPercent >= 0f || heightParentPercent >= 0f ||
+                maxWidthParentPercent >= 0f || maxHeightParentPercent >= 0f ||
+                minWidthParentPercent >= 0f || minHeightParentPercent >= 0f ||
+                widthScreenPercent >= 0f || heightScreenPercent >= 0f ||
+                maxWidthScreenPercent >= 0f || maxHeightScreenPercent >= 0f ||
+                minWidthScreenPercent >= 0f || minHeightScreenPercent >= 0f
     }
 
     fun setupShadow() {
@@ -716,9 +780,11 @@ class UiLayoutHelper(private val view: View) {
                 val radii = getCornerRadii(w.toFloat(), h.toFloat())
                 clipPath.addRoundRect(tmpRectF, radii, Path.Direction.CW)
             }
+
             CornerStyle.CUT -> {
                 createCutCornerPath(clipPath, w.toFloat(), h.toFloat())
             }
+
             CornerStyle.BEVEL -> {
                 createBevelCornerPath(clipPath, w.toFloat(), h.toFloat())
             }
@@ -728,10 +794,20 @@ class UiLayoutHelper(private val view: View) {
 
     private fun createCutCornerPath(path: Path, w: Float, h: Float) {
         val maxRadius = min(w / 2f, h / 2f)
-        val tl = if (cornerTopLeft > 0f) min(cornerTopLeft, maxRadius) else min(cornerRadius, maxRadius)
-        val tr = if (cornerTopRight > 0f) min(cornerTopRight, maxRadius) else min(cornerRadius, maxRadius)
-        val br = if (cornerBottomRight > 0f) min(cornerBottomRight, maxRadius) else min(cornerRadius, maxRadius)
-        val bl = if (cornerBottomLeft > 0f) min(cornerBottomLeft, maxRadius) else min(cornerRadius, maxRadius)
+        val tl =
+            if (cornerTopLeft > 0f) min(cornerTopLeft, maxRadius) else min(cornerRadius, maxRadius)
+        val tr = if (cornerTopRight > 0f) min(cornerTopRight, maxRadius) else min(
+            cornerRadius,
+            maxRadius
+        )
+        val br = if (cornerBottomRight > 0f) min(cornerBottomRight, maxRadius) else min(
+            cornerRadius,
+            maxRadius
+        )
+        val bl = if (cornerBottomLeft > 0f) min(cornerBottomLeft, maxRadius) else min(
+            cornerRadius,
+            maxRadius
+        )
 
         // Top-left corner
         if (tl > 0f) {
@@ -775,10 +851,20 @@ class UiLayoutHelper(private val view: View) {
 
     private fun createBevelCornerPath(path: Path, w: Float, h: Float) {
         val maxRadius = min(w / 2f, h / 2f)
-        val tl = if (cornerTopLeft > 0f) min(cornerTopLeft, maxRadius) else min(cornerRadius, maxRadius)
-        val tr = if (cornerTopRight > 0f) min(cornerTopRight, maxRadius) else min(cornerRadius, maxRadius)
-        val br = if (cornerBottomRight > 0f) min(cornerBottomRight, maxRadius) else min(cornerRadius, maxRadius)
-        val bl = if (cornerBottomLeft > 0f) min(cornerBottomLeft, maxRadius) else min(cornerRadius, maxRadius)
+        val tl =
+            if (cornerTopLeft > 0f) min(cornerTopLeft, maxRadius) else min(cornerRadius, maxRadius)
+        val tr = if (cornerTopRight > 0f) min(cornerTopRight, maxRadius) else min(
+            cornerRadius,
+            maxRadius
+        )
+        val br = if (cornerBottomRight > 0f) min(cornerBottomRight, maxRadius) else min(
+            cornerRadius,
+            maxRadius
+        )
+        val bl = if (cornerBottomLeft > 0f) min(cornerBottomLeft, maxRadius) else min(
+            cornerRadius,
+            maxRadius
+        )
 
         // Bevel is similar to cut but with smaller chamfer
         val bevelFactor = 0.5f
@@ -833,7 +919,16 @@ class UiLayoutHelper(private val view: View) {
 
         // Circle or oval shapes use maximum radius
         if (isCircle || shapeType == ShapeType.CIRCLE || shapeType == ShapeType.OVAL) {
-            return floatArrayOf(maxRadius, maxRadius, maxRadius, maxRadius, maxRadius, maxRadius, maxRadius, maxRadius)
+            return floatArrayOf(
+                maxRadius,
+                maxRadius,
+                maxRadius,
+                maxRadius,
+                maxRadius,
+                maxRadius,
+                maxRadius,
+                maxRadius
+            )
         }
 
         return if (hasIndividualCorners()) {
@@ -888,6 +983,7 @@ class UiLayoutHelper(private val view: View) {
                                 Shader.TileMode.CLAMP
                             )
                         }
+
                         GradientType.RADIAL -> {
                             val centerX = w * bgGradientCenterX
                             val centerY = h * bgGradientCenterY
@@ -903,6 +999,7 @@ class UiLayoutHelper(private val view: View) {
                                 Shader.TileMode.CLAMP
                             )
                         }
+
                         GradientType.SWEEP -> {
                             val centerX = w * bgGradientCenterX
                             val centerY = h * bgGradientCenterY
@@ -910,10 +1007,10 @@ class UiLayoutHelper(private val view: View) {
                         }
                     }
                 } else {
-                    color = if (isDarkMode()) bgColorDark else bgColorLight
+                    color = bgColor
                 }
             } else {
-                color = if (isDarkMode()) bgColorDark else bgColorLight
+                color = bgColor
             }
         }
 
@@ -924,6 +1021,7 @@ class UiLayoutHelper(private val view: View) {
                 val radii = getCornerRadii(w, h)
                 bgPath.addRoundRect(RectF(0f, 0f, w, h), radii, Path.Direction.CW)
             }
+
             CornerStyle.CUT -> createCutCornerPath(bgPath, w, h)
             CornerStyle.BEVEL -> createBevelCornerPath(bgPath, w, h)
         }
@@ -954,7 +1052,10 @@ class UiLayoutHelper(private val view: View) {
             style = Paint.Style.STROKE
             strokeWidth = innerShadowRadius * 2
             color = innerShadowColor
-            maskFilter = android.graphics.BlurMaskFilter(innerShadowRadius, android.graphics.BlurMaskFilter.Blur.NORMAL)
+            maskFilter = android.graphics.BlurMaskFilter(
+                innerShadowRadius,
+                android.graphics.BlurMaskFilter.Blur.NORMAL
+            )
         }
         val inset = innerShadowRadius
         val innerPath = Path().apply {
@@ -986,15 +1087,16 @@ class UiLayoutHelper(private val view: View) {
             strokeJoin = Paint.Join.ROUND
             strokeCap = this@UiLayoutHelper.strokeCap
             if (isDashed) {
-                pathEffect = DashPathEffect(floatArrayOf(dashSpace, dashSpace), 0f)
+                pathEffect = DashPathEffect(floatArrayOf(dashGap, dashGap), 0f)
             }
-            val gradientColors = stColors
+            val gradientColors = strokeColors
             if (gradientColors != null && gradientColors.size >= 2) {
                 val (x0, y0, x1, y1) = strokeGradientOrientation.toCoordinates(w, h)
-                val positions = stGradientPositions?.takeIf { it.size == gradientColors.size }
-                shader = LinearGradient(x0, y0, x1, y1, gradientColors, positions, Shader.TileMode.CLAMP)
+                val positions = strokeGradientPositions?.takeIf { it.size == gradientColors.size }
+                shader =
+                    LinearGradient(x0, y0, x1, y1, gradientColors, positions, Shader.TileMode.CLAMP)
             } else {
-                color = if (isDarkMode()) stColorDark else stColorLight
+                color = strokeColor
             }
         }
         val inset = stWidth / 2
@@ -1023,13 +1125,14 @@ class UiLayoutHelper(private val view: View) {
             strokeWidth = singleWidth
             strokeJoin = Paint.Join.ROUND
             strokeCap = this@UiLayoutHelper.strokeCap
-            val gradientColors = stColors
+            val gradientColors = strokeColors
             if (gradientColors != null && gradientColors.size >= 2) {
                 val (x0, y0, x1, y1) = strokeGradientOrientation.toCoordinates(w, h)
-                val positions = stGradientPositions?.takeIf { it.size == gradientColors.size }
-                shader = LinearGradient(x0, y0, x1, y1, gradientColors, positions, Shader.TileMode.CLAMP)
+                val positions = strokeGradientPositions?.takeIf { it.size == gradientColors.size }
+                shader =
+                    LinearGradient(x0, y0, x1, y1, gradientColors, positions, Shader.TileMode.CLAMP)
             } else {
-                color = if (isDarkMode()) stColorDark else stColorLight
+                color = strokeColor
             }
         }
 
@@ -1176,33 +1279,31 @@ class UiLayoutHelper(private val view: View) {
 
     /** Set stroke gradient colors */
     fun setStColors(vararg colors: Int): UiLayoutHelper {
-        stColors = colors
+        strokeColors = colors
         view.invalidate()
         return this
     }
 
     /** Set stroke gradient colors with orientation */
     fun setStColors(orientation: GradientOrientation, vararg colors: Int): UiLayoutHelper {
-        stColors = colors
+        strokeColors = colors
         strokeGradientOrientation = orientation
         view.invalidate()
         return this
     }
 
-    /** Set solid background color (light & dark) */
+    /** Set solid background color */
     fun setBgColor(color: Int): UiLayoutHelper {
-        bgColorLight = color
-        bgColorDark = color
+        bgColor = color
         bgColors = null
         view.invalidate()
         return this
     }
 
-    /** Set solid stroke color (light & dark) */
+    /** Set solid stroke color */
     fun setStColor(color: Int): UiLayoutHelper {
-        stColorLight = color
-        stColorDark = color
-        stColors = null
+        strokeColor = color
+        strokeColors = null
         view.invalidate()
         return this
     }
@@ -1260,51 +1361,101 @@ class UiLayoutHelper(private val view: View) {
     }
 
     /** Set width as percentage of parent (0-100) */
-    fun setWidthPercent(percent: Float): UiLayoutHelper {
-        widthPercent = percent
+    fun setWidthParentPercent(percent: Float): UiLayoutHelper {
+        widthParentPercent = percent
         view.requestLayout()
         return this
     }
 
     /** Set height as percentage of parent (0-100) */
-    fun setHeightPercent(percent: Float): UiLayoutHelper {
-        heightPercent = percent
+    fun setHeightParentPercent(percent: Float): UiLayoutHelper {
+        heightParentPercent = percent
         view.requestLayout()
         return this
     }
 
     /** Set both width and height as percentage of parent */
-    fun setSizePercent(wPercent: Float, hPercent: Float): UiLayoutHelper {
-        widthPercent = wPercent
-        heightPercent = hPercent
+    fun setSizeParentPercent(wPercent: Float, hPercent: Float): UiLayoutHelper {
+        widthParentPercent = wPercent
+        heightParentPercent = hPercent
         view.requestLayout()
         return this
     }
 
     /** Set max width as percentage of parent (0-100) */
-    fun setMaxWidthPercent(percent: Float): UiLayoutHelper {
-        maxWidthPercent = percent
+    fun setMaxWidthParentPercent(percent: Float): UiLayoutHelper {
+        maxWidthParentPercent = percent
         view.requestLayout()
         return this
     }
 
     /** Set max height as percentage of parent (0-100) */
-    fun setMaxHeightPercent(percent: Float): UiLayoutHelper {
-        maxHeightPercent = percent
+    fun setMaxHeightParentPercent(percent: Float): UiLayoutHelper {
+        maxHeightParentPercent = percent
         view.requestLayout()
         return this
     }
 
     /** Set min width as percentage of parent (0-100) */
-    fun setMinWidthPercent(percent: Float): UiLayoutHelper {
-        minWidthPercent = percent
+    fun setMinWidthParentPercent(percent: Float): UiLayoutHelper {
+        minWidthParentPercent = percent
         view.requestLayout()
         return this
     }
 
     /** Set min height as percentage of parent (0-100) */
-    fun setMinHeightPercent(percent: Float): UiLayoutHelper {
-        minHeightPercent = percent
+    fun setMinHeightParentPercent(percent: Float): UiLayoutHelper {
+        minHeightParentPercent = percent
+        view.requestLayout()
+        return this
+    }
+
+    /** Set width as percentage of screen (0-100) */
+    fun setWidthScreenPercent(percent: Float): UiLayoutHelper {
+        widthScreenPercent = percent
+        view.requestLayout()
+        return this
+    }
+
+    /** Set height as percentage of screen (0-100) */
+    fun setHeightScreenPercent(percent: Float): UiLayoutHelper {
+        heightScreenPercent = percent
+        view.requestLayout()
+        return this
+    }
+
+    /** Set both width and height as percentage of screen */
+    fun setSizeScreenPercent(wPercent: Float, hPercent: Float): UiLayoutHelper {
+        widthScreenPercent = wPercent
+        heightScreenPercent = hPercent
+        view.requestLayout()
+        return this
+    }
+
+    /** Set max width as percentage of screen (0-100) */
+    fun setMaxWidthScreenPercent(percent: Float): UiLayoutHelper {
+        maxWidthScreenPercent = percent
+        view.requestLayout()
+        return this
+    }
+
+    /** Set max height as percentage of screen (0-100) */
+    fun setMaxHeightScreenPercent(percent: Float): UiLayoutHelper {
+        maxHeightScreenPercent = percent
+        view.requestLayout()
+        return this
+    }
+
+    /** Set min width as percentage of screen (0-100) */
+    fun setMinWidthScreenPercent(percent: Float): UiLayoutHelper {
+        minWidthScreenPercent = percent
+        view.requestLayout()
+        return this
+    }
+
+    /** Set min height as percentage of screen (0-100) */
+    fun setMinHeightScreenPercent(percent: Float): UiLayoutHelper {
+        minHeightScreenPercent = percent
         view.requestLayout()
         return this
     }

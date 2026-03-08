@@ -6,7 +6,7 @@
     android:layout_margin="@dimen/_12sdp"
     android:orientation="vertical"
     android:padding="@dimen/_12sdp"
-    app:bgColorAll="#303136"
+    app:bgColor="#303136"
     app:cornerRadius="@dimen/_20sdp">
 
     <ImageView
@@ -47,9 +47,9 @@
         android:textSize="@dimen/_12sdp"
         app:cornerRadius="@dimen/_12sdp"
         app:drawableSize="@dimen/_16sdp"
-        app:edtColor="@color/white"
+        app:edtTextColor="@color/white"
         app:focusStrokeGradient="#0061FF #60EFFF"
-        app:strokeGradient="#1AFFFFFF #1AFFFFFF"
+        app:strokeGradientColors="#1AFFFFFF #1AFFFFFF"
         app:strokeWidth="@dimen/_1sdp" />
 
     <com.dong.baselib.widget.view.UiTextView

@@ -26,7 +26,7 @@
             android:paddingStart="@dimen/_12sdp"
             android:text="@string/channel"
             android:textAlignment="textStart"
-            app:tvColor="@color/white" />
+            app:tvTextColor="@color/white" />
     </LinearLayout>
 
     <com.dong.baselib.widget.view.UiEditText
@@ -44,7 +44,7 @@
         android:padding="@dimen/_12sdp"
         android:paddingTop="@dimen/_15sdp"
         android:singleLine="true"
-        app:bgColorAll="#1AFFFFFF"
+        app:bgColor="#1AFFFFFF"
         android:textColor="@color/white"
         app:drawableEmpty="@drawable/ic_app_search"
         app:drawableEmptyTint="@color/backgroundApp"
@@ -55,9 +55,9 @@
         android:textColorHint="@color/color_cccccc"
         android:textSize="@dimen/_12sdp"
         app:cornerRadius="@dimen/_12sdp"
-        app:edtColor="@color/white"
+        app:edtTextColor="@color/white"
         app:focusStrokeGradient="#60EFFF #60EFFF"
-        app:strokeGradient="#1AFFFFFF #1AFFFFFF"
+        app:strokeGradientColors="#1AFFFFFF #1AFFFFFF"
         app:strokeWidth="@dimen/_1sdp" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -102,7 +102,7 @@
                 app:bgGradientEnd="#0060EFFF"
                 app:bgGradientStart="#B360EFFF"
                 app:bgGradientType="radial"
-                app:bgIsGradient="true"
+                app:bgGradient="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"

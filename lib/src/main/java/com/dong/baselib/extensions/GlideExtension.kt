@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import java.io.File
+import androidx.core.net.toUri
 
 // ============================================================================
 // region Basic Image Loading
@@ -30,6 +31,18 @@ fun ImageView.load(url: String?) {
     if (url.isNullOrEmpty()) return
     Glide.with(context)
         .load(url)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .into(this)
+}
+
+/**
+ * Load image from assets folder. Path should be relative to assets/, e.g. "style/img_style_modern.webp".
+ */
+fun ImageView.loadAsset(assetPath: String?) {
+    if (assetPath.isNullOrEmpty()) return
+    val uri = Uri.parse("file:///android_asset/$assetPath")
+    Glide.with(context)
+        .load(uri)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .into(this)
 }
@@ -625,6 +638,71 @@ fun ImageView.loadNoCache(url: String?) {
 fun ImageView.clearGlide() {
     Glide.with(context).clear(this)
 }
+
+// endregion
+
+// ============================================================================
+// region Any-Type Loading
+// ============================================================================
+
+/**
+ * Load image from any supported source with optional resize and transform.
+ *
+ * @param source  String (URL / relative asset path / content:// / file://), Uri, File, Bitmap, Drawable, Int (@DrawableRes), ByteArray
+ * @param width   Override width in px (0 = no override)
+ * @param height  Override height in px (0 = no override)
+ * @param scaleType  How to scale the image: CENTER_CROP, FIT_CENTER, FIT_XY, CENTER_INSIDE, CIRCLE_CROP, or NONE
+ * @param roundedCornersPx  Radius in px for rounded corners (ignored when scaleType is CIRCLE_CROP)
+ * @param placeholder  Drawable res shown while loading (0 = none)
+ * @param error  Drawable res shown on failure (0 = none)
+ *
+ * String detection:
+ *   "http(s)://"                  → remote URL
+ *   "content://" / "file://"      → parsed as Uri
+ *   anything else                 → relative asset path (file:///android_asset/…)
+ */
+fun ImageView.loadAny(
+    source: Any?,
+    width: Int = 0,
+    height: Int = 0,
+    scaleType: GlideScaleType = GlideScaleType.NONE,
+    roundedCornersPx: Int = 0,
+    @DrawableRes placeholder: Int = 0,
+    @DrawableRes error: Int = 0,
+) {
+    if (source == null) return
+
+    val model: Any = when (source) {
+        is String -> when {
+            source.isEmpty() -> return
+            source.startsWith("http://") || source.startsWith("https://") -> source
+            source.startsWith("content://") || source.startsWith("file://") -> source.toUri()
+            else -> "file:///android_asset/$source".toUri()
+        }
+        is File -> if (source.exists()) source else return
+        else -> source
+    }
+
+    var request = Glide.with(context)
+        .load(model)
+        .diskCacheStrategy(if (model is Bitmap) DiskCacheStrategy.NONE else DiskCacheStrategy.ALL)
+
+    if (width > 0 && height > 0) request = request.override(width, height)
+    if (placeholder != 0) request = request.placeholder(placeholder)
+    if (error != 0) request = request.error(error)
+    request = when {
+        scaleType == GlideScaleType.CIRCLE_CROP -> request.circleCrop()
+        roundedCornersPx > 0 -> request.transform(CenterCrop(), RoundedCorners(roundedCornersPx))
+        scaleType == GlideScaleType.CENTER_CROP -> request.centerCrop()
+        scaleType == GlideScaleType.FIT_CENTER -> request.fitCenter()
+        scaleType == GlideScaleType.CENTER_INSIDE -> request.centerInside()
+        scaleType == GlideScaleType.FIT_XY -> request.fitCenter()
+        else -> request
+    }
+    request.into(this)
+}
+
+enum class GlideScaleType { NONE, CENTER_CROP, FIT_CENTER, FIT_XY, CENTER_INSIDE, CIRCLE_CROP }
 
 // endregion
 

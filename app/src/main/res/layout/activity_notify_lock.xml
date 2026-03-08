@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:bgColorAll="@color/backgroundApp">
+    app:bgColor="@color/backgroundApp">
 
     <TextClock
         android:id="@+id/tv_time"
@@ -40,7 +40,7 @@
         android:layout_margin="@dimen/_12sdp"
         android:orientation="vertical"
         android:paddingTop="@dimen/_8sdp"
-        app:bgColorAll="#272E3B"
+        app:bgColor="#272E3B"
         app:cornerRadius="@dimen/_12sdp">
 
         <LinearLayout

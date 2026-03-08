@@ -31,7 +31,6 @@ class StrokeTextView @JvmOverloads constructor(
     // Text stroke (outline)
     private var textStrokeWidth = 0f
     private var textStrokeColor = Color.WHITE
-    private var textStrokeColorDark = Color.WHITE
     private var textStrokeGradient: IntArray? = null
     private var textStrokeGradientOrientation = GradientOrientation.LEFT_TO_RIGHT
 
@@ -61,25 +60,13 @@ class StrokeTextView @JvmOverloads constructor(
             try {
                 // Text stroke attrs
                 textStrokeWidth = getDimension(R.styleable.StrokeTextView_textStrokeWidth, 0f)
-                textStrokeColor = getColor(R.styleable.StrokeTextView_textStrokeColor, Color.WHITE)
-                textStrokeColorDark = getColor(R.styleable.StrokeTextView_textStrokeColorDark, textStrokeColor)
-                val strokeColorAll = getColor(R.styleable.StrokeTextView_textStrokeColorAll, Color.TRANSPARENT)
-                if (strokeColorAll != Color.TRANSPARENT) {
-                    textStrokeColor = strokeColorAll
-                    textStrokeColorDark = strokeColorAll
-                }
+                textStrokeColor = getColor(R.styleable.StrokeTextView_textStrokeColor, Color.TRANSPARENT)
                 val strokeGradientStr = getString(R.styleable.StrokeTextView_textStrokeGradient)
                 textStrokeGradient = strokeGradientStr?.parseHexColors()
                 textStrokeGradientOrientation = getInt(R.styleable.StrokeTextView_textStrokeGdOrientation, 6).toGradientOrientation()
 
                 // Text fill attrs
                 textFillColor = getColor(R.styleable.StrokeTextView_textFillColor, currentTextColor)
-                textFillColorDark = getColor(R.styleable.StrokeTextView_textFillColorDark, textFillColor)
-                val fillColorAll = getColor(R.styleable.StrokeTextView_textFillColorAll, Color.TRANSPARENT)
-                if (fillColorAll != Color.TRANSPARENT) {
-                    textFillColor = fillColorAll
-                    textFillColorDark = fillColorAll
-                }
                 val fillGradientStr = getString(R.styleable.StrokeTextView_textFillGradient)
                 textFillGradient = fillGradientStr?.parseHexColors()
                 textFillGradientOrientation = getInt(R.styleable.StrokeTextView_textFillGdOrientation, 6).toGradientOrientation()
@@ -234,7 +221,7 @@ class StrokeTextView @JvmOverloads constructor(
                     textPaint.shader = strokeShader
                 } else {
                     textPaint.shader = null
-                    setTextColor(if (isDarkMode()) textStrokeColorDark else textStrokeColor)
+                    setTextColor( textStrokeColor)
                 }
                 super.onDraw(this)
             }
@@ -303,14 +290,13 @@ class StrokeTextView @JvmOverloads constructor(
     fun textStrokeColor(color: Int) = apply {
         textStrokeGradient = null
         textStrokeColor = color
-        textStrokeColorDark = color
+
         invalidate()
     }
 
     fun textStrokeColors(light: Int, dark: Int) = apply {
         textStrokeGradient = null
         textStrokeColor = light
-        textStrokeColorDark = dark
         invalidate()
     }
 

@@ -11,14 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_3sdp"
         android:gravity="center"
-        app:bgIsGradient="true"
+        app:bgGradient="true"
         app:bgGradientStart="@color/grdStart"
-        app:bgGdOrientation="left_right"
+        app:bgGradientOrientation="left_right"
         app:bgGradientEnd="@color/grdEnd"
         android:orientation="horizontal"
         android:paddingVertical="@dimen/_8sdp"
         app:cornerRadius="@dimen/_16sdp"
-        app:stColorAll="#1AFFFFFF"
+        app:strokeColor="#1AFFFFFF"
         app:strokeWidth="1.6dp">
 
         <androidx.appcompat.widget.AppCompatTextView

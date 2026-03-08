@@ -50,36 +50,32 @@ class UiImageView @JvmOverloads constructor(
                 )
                 helper.readBackgroundAttrs(
                     this,
-                    R.styleable.UiImageView_bgIsGradient,
+                    R.styleable.UiImageView_bgGradient,
                     R.styleable.UiImageView_bgGradientStart,
                     R.styleable.UiImageView_bgGradientCenter,
                     R.styleable.UiImageView_bgGradientEnd,
-                    R.styleable.UiImageView_bgColorLight,
-                    R.styleable.UiImageView_bgColorDark,
-                    R.styleable.UiImageView_bgColorAll,
-                    R.styleable.UiImageView_bgGdOrientation,
+                    R.styleable.UiImageView_bgColor,
+                    R.styleable.UiImageView_bgGradientOrientation,
                     R.styleable.UiImageView_bgGradientType,
                     R.styleable.UiImageView_bgGradientCenterX,
                     R.styleable.UiImageView_bgGradientCenterY,
                     R.styleable.UiImageView_bgGradientRadius,
                     R.styleable.UiImageView_bgGradientColors,
                     R.styleable.UiImageView_bgColors,
-                    R.styleable.UiImageView_bgGdPositions
+                    R.styleable.UiImageView_bgGradientPositions
                 )
                 helper.readStrokeAttrs(
                     this,
                     R.styleable.UiImageView_strokeWidth,
-                    R.styleable.UiImageView_stColorLight,
-                    R.styleable.UiImageView_stColorDark,
-                    R.styleable.UiImageView_stColorAll,
-                    R.styleable.UiImageView_strokeDistance,
-                    R.styleable.UiImageView_distanceSpace,
-                    R.styleable.UiImageView_strokeGradient,
-                    R.styleable.UiImageView_strokeGdOrientation,
+                    R.styleable.UiImageView_strokeColor,
+                    R.styleable.UiImageView_strokeDashed,
+                    R.styleable.UiImageView_dashGap,
+                    R.styleable.UiImageView_strokeGradientColors,
+                    R.styleable.UiImageView_strokeGradientOrientation,
                     R.styleable.UiImageView_strokeOption,
                     -1,
-                    R.styleable.UiImageView_stColors,
-                    R.styleable.UiImageView_stGdPositions
+                    R.styleable.UiImageView_strokeColors,
+                    R.styleable.UiImageView_strokeGradientPositions
                 )
                 helper.readShadowAttrs(
                     this,
@@ -93,23 +89,33 @@ class UiImageView @JvmOverloads constructor(
                 // Image-specific attrs
                 val gradientIconsStr = getString(R.styleable.UiImageView_gradientIcons)
                 gradientIconColors = gradientIconsStr?.parseHexColors()
-                gradientIconOrientation = getInt(R.styleable.UiImageView_imageGdOrientation, 6)
+                gradientIconOrientation = getInt(R.styleable.UiImageView_imageGradientOrientation, 6)
                     .toGradientOrientation()
 
                 helper.readDimensionAttrs(
                     this,
                     R.styleable.UiImageView_uiDimenRatio,
-                    R.styleable.UiImageView_uiWidthPercent,
-                    R.styleable.UiImageView_uiHeightPercent,
-                    R.styleable.UiImageView_uiMaxWidthPercent,
-                    R.styleable.UiImageView_uiMaxHeightPercent,
-                    R.styleable.UiImageView_uiMinWidthPercent,
-                    R.styleable.UiImageView_uiMinHeightPercent
+                    R.styleable.UiImageView_uiWidthParentPercent,
+                    R.styleable.UiImageView_uiHeightParentPercent,
+                    R.styleable.UiImageView_uiMaxWidthParentPercent,
+                    R.styleable.UiImageView_uiMaxHeightParentPercent,
+                    R.styleable.UiImageView_uiMinWidthParentPercent,
+                    R.styleable.UiImageView_uiMinHeightParentPercent,
+                    R.styleable.UiImageView_uiWidthScreenPercent,
+                    R.styleable.UiImageView_uiHeightScreenPercent,
+                    R.styleable.UiImageView_uiMaxWidthScreenPercent,
+                    R.styleable.UiImageView_uiMaxHeightScreenPercent,
+                    R.styleable.UiImageView_uiMinWidthScreenPercent,
+                    R.styleable.UiImageView_uiMinHeightScreenPercent
                 )
                 helper.readRippleAttrs(
                     this,
                     R.styleable.UiImageView_rippleEnabled,
                     R.styleable.UiImageView_rippleColor
+                )
+                helper.readShapeAttrs(this,
+                    R.styleable.UiImageView_shapeType,
+                    R.styleable.UiImageView_isCircle
                 )
             } finally {
                 recycle()
@@ -122,15 +128,23 @@ class UiImageView @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         if (helper.shouldApplyCustomMeasure()) {
-            val parentWidth = MeasureSpec.getSize(widthMeasureSpec)
-            val parentHeight = MeasureSpec.getSize(heightMeasureSpec)
-            val (newWidth, newHeight) = helper.measureWithConstraints(
+            val dm = context.resources.displayMetrics
+            val specW = MeasureSpec.getSize(widthMeasureSpec)
+            val specH = MeasureSpec.getSize(heightMeasureSpec)
+            val parentWidth = if (specW > 0) specW else
+                (parent as? android.view.View)?.width?.takeIf { it > 0 } ?: dm.widthPixels
+            val parentHeight = if (specH > 0) specH else
+                (parent as? android.view.View)?.height?.takeIf { it > 0 } ?: dm.heightPixels
+            val result = helper.measureWithConstraints(
                 widthMeasureSpec, heightMeasureSpec, parentWidth, parentHeight
             )
-            super.onMeasure(
-                MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY)
-            )
+            val wSpec = if (result.widthCustomized)
+                MeasureSpec.makeMeasureSpec(result.width, MeasureSpec.EXACTLY)
+                else widthMeasureSpec
+            val hSpec = if (result.heightCustomized)
+                MeasureSpec.makeMeasureSpec(result.height, MeasureSpec.EXACTLY)
+                else heightMeasureSpec
+            super.onMeasure(wSpec, hSpec)
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         }

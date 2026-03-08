@@ -59,7 +59,7 @@
         app:cornerRadius="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:stColorAll="@color/white"
-        app:tvColor="@color/white"
+        app:strokeColor="@color/white"
+        app:tvTextColor="@color/white"
         app:strokeWidth="@dimen/_1sdp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

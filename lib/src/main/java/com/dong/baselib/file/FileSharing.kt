@@ -165,16 +165,13 @@ fun Context.shareFiles(
  * @param fileName File name for the cached image
  * @param title Chooser dialog title
  * @param deleteDelay Delay in ms before deleting cached file (default: 5000ms)
- */
-fun Context.shareBitmap(
+ */fun Context.shareBitmap(
     bitmap: Bitmap,
-    fileName: String = "shared_image.png",
-    title: String = "Share Photo",
-    deleteDelay: Long = 5000
+    fileName: String = "shared_${System.currentTimeMillis()}.png",
+    title: String = "Share Photo"
 ) {
     try {
-        val cachePath = File(cacheDir, "images")
-        cachePath.mkdirs()
+        val cachePath = File(cacheDir, "images").apply { mkdirs() }
         val file = File(cachePath, fileName)
 
         FileOutputStream(file).use { fos ->
@@ -182,23 +179,23 @@ fun Context.shareBitmap(
             fos.flush()
         }
 
-        val fileUri = FileProvider.getUriForFile(this, "$packageName.provider", file)
-        val shareIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_STREAM, fileUri)
+        val fileUri = FileProvider.getUriForFile(
+            this, "$packageName.provider", file
+        )
+
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "image/png"
-            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            putExtra(Intent.EXTRA_STREAM, fileUri)
+            clipData = android.content.ClipData.newRawUri("", fileUri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // needed if non-Activity context
         }
-        startActivity(Intent.createChooser(shareIntent, title))
 
-        // Clean up after delay
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (file.exists()) {
-                file.delete()
-            }
-        }, deleteDelay)
+        startActivity(Intent.createChooser(shareIntent, title).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        })
 
-    } catch (e: IOException) {
+    } catch (e: Exception) {
         e.printStackTrace()
         Toast.makeText(this, "Failed to share image", Toast.LENGTH_SHORT).show()
     }

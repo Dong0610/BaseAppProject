@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/_12sdp"
-    app:bgColorAll="@color/backgroundApp"
+    app:bgColor="@color/backgroundApp"
     app:cornerRadius="@dimen/_12sdp">
 
     <LinearLayout
@@ -59,9 +59,9 @@
             android:textSize="@dimen/_12sdp"
             app:bgGradientEnd="@color/grdEnd"
             app:bgGradientStart="@color/grdStart"
-            app:bgIsGradient="true"
+            app:bgGradient="true"
             app:cornerRadius="@dimen/_20sdp"
-            app:tvColor="@color/white" />
+            app:tvTextColor="@color/white" />
     </LinearLayout>
 
     <ImageView

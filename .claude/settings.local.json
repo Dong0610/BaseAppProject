@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(python --version 2>&1 && python -c \"from PIL import Image; print\\('Pillow available'\\)\" 2>&1)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(find . -name \"*.xml\" -exec grep -l \"app:bgColorAll\\\\|app:stColorAll\\\\|app:bgGdOrientation\\\\|app:bgIsGradient\\\\|app:tvColor\\\\|app:edtColor\\\\|app:strokeGradient\\\\|app:distanceSpace\\\\|app:strokeDistance\\\\|app:bgGdPositions\\\\|app:stColors\\\\|app:stGdPositions\\\\|app:textGdOrientation\\\\|app:imageGdOrientation\" {} \\\\;)",
+      "Bash(sed -i '' 's/app:bgColorAll=/app:bgColor=/g' *.xml)",
+      "Bash(sed -i '' 's/app:stColorAll=/app:strokeColor=/g' *.xml)",
+      "Bash(sed -i '' 's/app:bgIsGradient=/app:bgGradient=/g' *.xml)",
+      "Bash(sed -i '' 's/app:bgGdOrientation=/app:bgGradientOrientation=/g' *.xml)",
+      "Bash(sed -i '' 's/app:tvColor=/app:tvTextColor=/g' *.xml)"
     ]
   }
 }

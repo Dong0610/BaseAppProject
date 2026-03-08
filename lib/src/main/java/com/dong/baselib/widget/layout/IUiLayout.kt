@@ -82,30 +82,21 @@ fun <T> T.rounded(radius: Float): T where T : IUiLayout, T : View = cornerRadius
 @Suppress("UNCHECKED_CAST")
 fun <T> T.backgroundLight(color: Int): T where T : IUiLayout, T : View = apply {
     helper.bgColors = null
-    helper.bgColorLight = color
-    invalidateView()
-}
-
-@Suppress("UNCHECKED_CAST")
-fun <T> T.backgroundDark(color: Int): T where T : IUiLayout, T : View = apply {
-    helper.bgColors = null
-    helper.bgColorDark = color
+    helper.bgColor = color
     invalidateView()
 }
 
 @Suppress("UNCHECKED_CAST")
 fun <T> T.backgroundAll(color: Int): T where T : IUiLayout, T : View = apply {
     helper.bgColors = null
-    helper.bgColorLight = color
-    helper.bgColorDark = color
+    helper.bgColor = color
     invalidateView()
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T> T.solidBackground(light: Int, dark: Int = light): T where T : IUiLayout, T : View = apply {
+fun <T> T.solidBackground(color: Int): T where T : IUiLayout, T : View = apply {
     helper.bgColors = null
-    helper.bgColorLight = light
-    helper.bgColorDark = dark
+    helper.bgColor = color
     invalidateView()
 }
 
@@ -198,7 +189,7 @@ fun <T> T.gradientPositions(vararg positions: Float): T where T : IUiLayout, T :
 
 @Suppress("UNCHECKED_CAST")
 fun <T> T.strokeGradientPositions(vararg positions: Float): T where T : IUiLayout, T : View = apply {
-    helper.stGradientPositions = if (positions.isNotEmpty()) positions else null
+    helper.strokeGradientPositions = if (positions.isNotEmpty()) positions else null
     invalidateView()
 }
 
@@ -234,23 +225,15 @@ fun <T> T.strokeWidth(width: Float): T where T : IUiLayout, T : View = apply {
 
 @Suppress("UNCHECKED_CAST")
 fun <T> T.strokeLight(color: Int): T where T : IUiLayout, T : View = apply {
-    helper.stColors = null
-    helper.stColorLight = color
-    invalidateView()
-}
-
-@Suppress("UNCHECKED_CAST")
-fun <T> T.strokeDark(color: Int): T where T : IUiLayout, T : View = apply {
-    helper.stColors = null
-    helper.stColorDark = color
+    helper.strokeColors = null
+    helper.strokeColor = color
     invalidateView()
 }
 
 @Suppress("UNCHECKED_CAST")
 fun <T> T.strokeColor(color: Int): T where T : IUiLayout, T : View = apply {
-    helper.stColors = null
-    helper.stColorLight = color
-    helper.stColorDark = color
+    helper.strokeColors = null
+    helper.strokeColor = color
     invalidateView()
 }
 
@@ -258,7 +241,7 @@ fun <T> T.strokeColor(color: Int): T where T : IUiLayout, T : View = apply {
 fun <T> T.strokeDashed(dashed: Boolean, spacing: Float = 10f): T where T : IUiLayout, T : View =
     apply {
         helper.isDashed = dashed
-        helper.dashSpace = spacing
+        helper.dashGap = spacing
         invalidateView()
     }
 
@@ -268,13 +251,13 @@ fun <T> T.dashed(spacing: Float = 10f): T where T : IUiLayout, T : View =
 
 @Suppress("UNCHECKED_CAST")
 fun <T> T.strokeGradientColors(colors: IntArray): T where T : IUiLayout, T : View = apply {
-    helper.stColors = colors
+    helper.strokeColors = colors
     invalidateView()
 }
 
 @Suppress("UNCHECKED_CAST")
 fun <T> T.strokeGradient(vararg colors: Int): T where T : IUiLayout, T : View = apply {
-    helper.stColors = if (colors.isNotEmpty()) colors else null
+    helper.strokeColors = if (colors.isNotEmpty()) colors else null
     invalidateView()
 }
 
@@ -399,7 +382,7 @@ fun <T> T.bgColors(
 /** Set stroke gradient with multiple colors (any number) */
 @Suppress("UNCHECKED_CAST")
 fun <T> T.stColors(vararg colors: Int): T where T : IUiLayout, T : View = apply {
-    helper.stColors = if (colors.isNotEmpty()) colors else null
+    helper.strokeColors = if (colors.isNotEmpty()) colors else null
     invalidateView()
 }
 
@@ -409,7 +392,7 @@ fun <T> T.stColors(
       orientation: UiLayoutHelper.GradientOrientation,
       vararg colors: Int
 ): T where T : IUiLayout, T : View = apply {
-    helper.stColors = if (colors.isNotEmpty()) colors else null
+    helper.strokeColors = if (colors.isNotEmpty()) colors else null
     helper.strokeGradientOrientation = orientation
     invalidateView()
 }
@@ -418,17 +401,15 @@ fun <T> T.stColors(
 @Suppress("UNCHECKED_CAST")
 fun <T> T.bgColor(color: Int): T where T : IUiLayout, T : View = apply {
     helper.bgColors = null
-    helper.bgColorLight = color
-    helper.bgColorDark = color
+    helper.bgColor = color
     invalidateView()
 }
 
 /** Set solid stroke color */
 @Suppress("UNCHECKED_CAST")
 fun <T> T.stColor(color: Int): T where T : IUiLayout, T : View = apply {
-    helper.stColors = null
-    helper.stColorLight = color
-    helper.stColorDark = color
+    helper.strokeColors = null
+    helper.strokeColor = color
     invalidateView()
 }
 
@@ -485,44 +466,86 @@ fun <T> T.clearDimenRatio(): T where T : IUiLayout, T : View = apply {
 
 /** Set width as percentage of parent (0-100) */
 @Suppress("UNCHECKED_CAST")
-fun <T> T.widthPercent(percent: Float): T where T : IUiLayout, T : View = apply {
-    helper.setWidthPercent(percent)
+fun <T> T.widthParentPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setWidthParentPercent(percent)
 }
 
 /** Set height as percentage of parent (0-100) */
 @Suppress("UNCHECKED_CAST")
-fun <T> T.heightPercent(percent: Float): T where T : IUiLayout, T : View = apply {
-    helper.setHeightPercent(percent)
+fun <T> T.heightParentPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setHeightParentPercent(percent)
 }
 
 /** Set both width and height as percentage of parent */
 @Suppress("UNCHECKED_CAST")
-fun <T> T.sizePercent(widthPercent: Float, heightPercent: Float): T where T : IUiLayout, T : View = apply {
-    helper.setSizePercent(widthPercent, heightPercent)
+fun <T> T.sizeParentPercent(widthPercent: Float, heightPercent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setSizeParentPercent(widthPercent, heightPercent)
 }
 
 /** Set max width as percentage of parent (0-100) */
 @Suppress("UNCHECKED_CAST")
-fun <T> T.maxWidthPercent(percent: Float): T where T : IUiLayout, T : View = apply {
-    helper.setMaxWidthPercent(percent)
+fun <T> T.maxWidthParentPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setMaxWidthParentPercent(percent)
 }
 
 /** Set max height as percentage of parent (0-100) */
 @Suppress("UNCHECKED_CAST")
-fun <T> T.maxHeightPercent(percent: Float): T where T : IUiLayout, T : View = apply {
-    helper.setMaxHeightPercent(percent)
+fun <T> T.maxHeightParentPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setMaxHeightParentPercent(percent)
 }
 
 /** Set min width as percentage of parent (0-100) */
 @Suppress("UNCHECKED_CAST")
-fun <T> T.minWidthPercent(percent: Float): T where T : IUiLayout, T : View = apply {
-    helper.setMinWidthPercent(percent)
+fun <T> T.minWidthParentPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setMinWidthParentPercent(percent)
 }
 
 /** Set min height as percentage of parent (0-100) */
 @Suppress("UNCHECKED_CAST")
-fun <T> T.minHeightPercent(percent: Float): T where T : IUiLayout, T : View = apply {
-    helper.setMinHeightPercent(percent)
+fun <T> T.minHeightParentPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setMinHeightParentPercent(percent)
+}
+
+/** Set width as percentage of screen (0-100) */
+@Suppress("UNCHECKED_CAST")
+fun <T> T.widthScreenPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setWidthScreenPercent(percent)
+}
+
+/** Set height as percentage of screen (0-100) */
+@Suppress("UNCHECKED_CAST")
+fun <T> T.heightScreenPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setHeightScreenPercent(percent)
+}
+
+/** Set both width and height as percentage of screen */
+@Suppress("UNCHECKED_CAST")
+fun <T> T.sizeScreenPercent(widthPercent: Float, heightPercent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setSizeScreenPercent(widthPercent, heightPercent)
+}
+
+/** Set max width as percentage of screen (0-100) */
+@Suppress("UNCHECKED_CAST")
+fun <T> T.maxWidthScreenPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setMaxWidthScreenPercent(percent)
+}
+
+/** Set max height as percentage of screen (0-100) */
+@Suppress("UNCHECKED_CAST")
+fun <T> T.maxHeightScreenPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setMaxHeightScreenPercent(percent)
+}
+
+/** Set min width as percentage of screen (0-100) */
+@Suppress("UNCHECKED_CAST")
+fun <T> T.minWidthScreenPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setMinWidthScreenPercent(percent)
+}
+
+/** Set min height as percentage of screen (0-100) */
+@Suppress("UNCHECKED_CAST")
+fun <T> T.minHeightScreenPercent(percent: Float): T where T : IUiLayout, T : View = apply {
+    helper.setMinHeightScreenPercent(percent)
 }
 
 // ==================== Shape ====================
@@ -561,6 +584,7 @@ fun <T> T.shapeType(type: UiLayoutHelper.ShapeType): T where T : IUiLayout, T : 
 fun <T> T.square(): T where T : IUiLayout, T : View = apply {
     helper.dimenRatioValue = 1f
     helper.dimenRatioSide = UiLayoutHelper.DimenRatioSide.HEIGHT
+    requestLayout()
 }
 
 /** Set video aspect ratio (16:9) */
@@ -568,6 +592,7 @@ fun <T> T.square(): T where T : IUiLayout, T : View = apply {
 fun <T> T.video16x9(): T where T : IUiLayout, T : View = apply {
     helper.dimenRatioValue = 16f / 9f
     helper.dimenRatioSide = UiLayoutHelper.DimenRatioSide.HEIGHT
+    requestLayout()
 }
 
 /** Set video aspect ratio (4:3) */
@@ -575,6 +600,7 @@ fun <T> T.video16x9(): T where T : IUiLayout, T : View = apply {
 fun <T> T.video4x3(): T where T : IUiLayout, T : View = apply {
     helper.dimenRatioValue = 4f / 3f
     helper.dimenRatioSide = UiLayoutHelper.DimenRatioSide.HEIGHT
+    requestLayout()
 }
 
 /** Set portrait aspect ratio (9:16) */
@@ -582,6 +608,7 @@ fun <T> T.video4x3(): T where T : IUiLayout, T : View = apply {
 fun <T> T.portrait9x16(): T where T : IUiLayout, T : View = apply {
     helper.dimenRatioValue = 9f / 16f
     helper.dimenRatioSide = UiLayoutHelper.DimenRatioSide.HEIGHT
+    requestLayout()
 }
 
 /** Set golden ratio (1.618:1) */
@@ -589,6 +616,7 @@ fun <T> T.portrait9x16(): T where T : IUiLayout, T : View = apply {
 fun <T> T.goldenRatio(): T where T : IUiLayout, T : View = apply {
     helper.dimenRatioValue = 1.618f
     helper.dimenRatioSide = UiLayoutHelper.DimenRatioSide.HEIGHT
+    requestLayout()
 }
 
 // ==================== Overlay ====================
@@ -662,7 +690,7 @@ fun <T> T.rippleBorderless(color: Int = android.graphics.Color.argb(50, 0, 0, 0)
 fun <T> T.dashedBorder(dashWidth: Float = 10f, dashGap: Float = 10f): T where T : IUiLayout, T : View = apply {
     helper.borderStyle = UiLayoutHelper.BorderStyle.DASHED
     helper.isDashed = true
-    helper.dashSpace = dashGap
+    helper.dashGap = dashGap
     invalidateView()
 }
 
@@ -671,7 +699,7 @@ fun <T> T.dashedBorder(dashWidth: Float = 10f, dashGap: Float = 10f): T where T 
 fun <T> T.dottedBorder(): T where T : IUiLayout, T : View = apply {
     helper.borderStyle = UiLayoutHelper.BorderStyle.DOTTED
     helper.isDashed = true
-    helper.dashSpace = helper.dp(2f)
+    helper.dashGap = helper.dp(2f)
     invalidateView()
 }
 

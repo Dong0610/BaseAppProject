@@ -60,12 +60,12 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="@dimen/_10sdp"
-            app:bgColorAll="#1AFFFFFF"
+            app:bgColor="#1AFFFFFF"
             app:cornerRadius="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:strokeGradient="#0061FF #60EFFF"
+            app:strokeGradientColors="#0061FF #60EFFF"
             app:strokeWidth="1.3dp">
 
             <androidx.appcompat.widget.AppCompatImageView

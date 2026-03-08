@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/img_logo_splash"
-        app:bgColorAll="@color/white"
+        app:bgColor="@color/white"
         app:cornerRadius="@dimen/_16sdp"
         app:layout_constraintBottom_toTopOf="@id/uiConstraintLayout"
         app:layout_constraintDimensionRatio="1:1"

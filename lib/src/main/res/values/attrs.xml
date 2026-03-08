@@ -2,37 +2,40 @@
 <resources>
     <attr name="shadowLayoutStyle" format="reference" />
     <attr name="uiDimenRatio" format="string" />
-    <attr name="uiWidthPercent" format="fraction" />
-    <attr name="uiHeightPercent" format="fraction" />
-    <attr name="uiMaxWidthPercent" format="fraction" />
-    <attr name="uiMaxHeightPercent" format="fraction" />
-    <attr name="uiMinWidthPercent" format="fraction" />
-    <attr name="uiMinHeightPercent" format="fraction" />
+    <attr name="uiWidthParentPercent" format="fraction" />
+    <attr name="uiHeightParentPercent" format="fraction" />
+    <attr name="uiMaxWidthParentPercent" format="fraction" />
+    <attr name="uiMaxHeightParentPercent" format="fraction" />
+    <attr name="uiMinWidthParentPercent" format="fraction" />
+    <attr name="uiMinHeightParentPercent" format="fraction" />
+    <attr name="uiWidthScreenPercent" format="fraction" />
+    <attr name="uiHeightScreenPercent" format="fraction" />
+    <attr name="uiMaxWidthScreenPercent" format="fraction" />
+    <attr name="uiMaxHeightScreenPercent" format="fraction" />
+    <attr name="uiMinWidthScreenPercent" format="fraction" />
+    <attr name="uiMinHeightScreenPercent" format="fraction" />
 
-    <!-- ==================== Common Reusable Attrs ==================== -->
-    <!-- Ripple effect -->
+
     <attr name="rippleEnabled" format="boolean" />
     <attr name="rippleColor" format="color|reference" />
     <attr name="rippleBorderless" format="boolean" />
 
-    <!-- Pressed state -->
+
     <attr name="pressedBgColor" format="color|reference" />
-    <attr name="pressedBgColorLight" format="color|reference" />
-    <attr name="pressedBgColorDark" format="color|reference" />
     <attr name="pressedStColor" format="color|reference" />
     <attr name="pressedAlpha" format="float" />
     <attr name="pressedScale" format="float" />
 
-    <!-- Focused state -->
+
     <attr name="focusedBgColor" format="color|reference" />
     <attr name="focusedStColor" format="color|reference" />
 
-    <!-- Disabled state -->
+
     <attr name="disabledBgColor" format="color|reference" />
     <attr name="disabledStColor" format="color|reference" />
     <attr name="disabledAlpha" format="float" />
 
-    <!-- Shape type -->
+
     <attr name="shapeType" format="enum">
         <enum name="rectangle" value="0" />
         <enum name="oval" value="1" />
@@ -41,41 +44,27 @@
     </attr>
     <attr name="isCircle" format="boolean" />
 
-    <!-- Aspect ratio shortcuts -->
-    <attr name="aspectRatio" format="enum">
-        <enum name="none" value="0" />
-        <enum name="square" value="1" />
-        <enum name="video_16_9" value="2" />
-        <enum name="video_4_3" value="3" />
-        <enum name="photo_3_2" value="4" />
-        <enum name="portrait_9_16" value="5" />
-        <enum name="portrait_3_4" value="6" />
-        <enum name="golden" value="7" />
-        <enum name="wide_21_9" value="8" />
-    </attr>
 
-    <!-- Child spacing/gap for layouts -->
     <attr name="childGap" format="dimension" />
     <attr name="childGapHorizontal" format="dimension" />
     <attr name="childGapVertical" format="dimension" />
 
 
-    <!-- Dash pattern customization -->
     <attr name="dashWidth" format="dimension" />
     <attr name="dashGap" format="dimension" />
 
-    <!-- Inner shadow -->
+
     <attr name="innerShadowEnabled" format="boolean" />
     <attr name="innerShadowColor" format="color|reference" />
     <attr name="innerShadowRadius" format="dimension" />
     <attr name="innerShadowDx" format="dimension" />
     <attr name="innerShadowDy" format="dimension" />
 
-    <!-- Overlay/Foreground -->
+
     <attr name="overlayColor" format="color|reference" />
     <attr name="overlayAlpha" format="float" />
 
-    <!-- Border style -->
+
     <attr name="borderStyle" format="enum">
         <enum name="solid" value="0" />
         <enum name="dashed" value="1" />
@@ -83,27 +72,23 @@
         <enum name="doubles" value="3" />
     </attr>
 
-    <!-- Corner style for individual control -->
+
     <attr name="cornerStyle" format="enum">
         <enum name="round" value="0" />
         <enum name="cut" value="1" />
         <enum name="bevel" value="2" />
     </attr>
 
-    <!-- Padding helpers -->
+
     <attr name="paddingAll" format="dimension" />
     <attr name="paddingHorizontal" format="dimension" />
     <attr name="paddingVertical" format="dimension" />
 
     <attr name="cornerRadius" format="dimension" />
     <attr name="strokeWidth" format="dimension" />
-    <attr name="stColorDark" format="color|reference" />
-    <attr name="stColorLight" format="color|reference" />
-    <attr name="bgColorDark" format="color|reference" />
-    <attr name="bgIsGradient" format="boolean" />
-    <attr name="bgColorAll" format="color|reference" />
-    <attr name="stColorAll" format="color|reference" />
-    <attr name="bgColorLight" format="color|reference" />
+    <attr name="bgGradient" format="boolean" />
+    <attr name="bgColor" format="color|reference" />
+    <attr name="strokeColor" format="color|reference" />
     <attr name="bgGradientStart" format="color|reference" />
     <attr name="bgGradientCenter" format="color|reference" />
     <attr name="bgGradientEnd" format="color|reference" />
@@ -112,15 +97,14 @@
     <attr name="cornerBottomLeft" format="dimension" />
     <attr name="cornerBottomRight" format="dimension" />
     <attr name="clipContent" format="boolean" />
-    <attr name="strokeGradient" format="string" />
+    <attr name="strokeGradientColors" format="string" />
     <attr name="bgGradientColors" format="string" />
     <attr name="bgColors" format="reference" />
-    <attr name="bgGdPositions" format="string" />
-    <attr name="stColors" format="reference" />
-    <attr name="stGdPositions" format="string" />
-    <attr name="textGdPositions" format="string" />
-    <attr name="strokeDistance" format="boolean" />
-    <attr name="distanceSpace" format="dimension" />
+    <attr name="bgGradientPositions" format="string" />
+    <attr name="strokeColors" format="reference" />
+    <attr name="strokeGradientPositions" format="string" />
+    <attr name="textGradientPositions" format="string" />
+    <attr name="strokeDashed" format="boolean" />
     <attr name="shadowColor" format="color|reference" />
     <attr name="shadowRadius" format="dimension" />
     <attr name="shadowElevation" format="dimension" />
@@ -165,33 +149,33 @@
         </attr>
     </declare-styleable>
     <declare-styleable name="CustomSwitch">
-        <!-- Track colors -->
+
         <attr name="trackColorOff" format="color" />
         <attr name="trackColorOn" format="color" />
-        <!-- Thumb colors -->
+
         <attr name="thumbColorOff" format="color" />
         <attr name="thumbColorOn" format="color" />
-        <!-- State -->
+
         <attr name="checked" format="boolean" />
-        <!-- Track border/stroke -->
+
         <attr name="trackStrokeWidth" format="dimension" />
         <attr name="trackStrokeColorOff" format="color" />
         <attr name="trackStrokeColorOn" format="color" />
-        <!-- Thumb border/stroke -->
+
         <attr name="thumbStrokeWidth" format="dimension" />
         <attr name="thumbStrokeColorOff" format="color" />
         <attr name="thumbStrokeColorOn" format="color" />
-        <!-- Sizes -->
+
         <attr name="thumbRadius" format="dimension" />
         <attr name="thumbPadding" format="dimension" />
         <attr name="switchWidth" format="dimension" />
         <attr name="switchHeight" format="dimension" />
-        <!-- Thumb shadow -->
+
         <attr name="thumbElevation" format="dimension" />
         <attr name="thumbShadowColor" format="color" />
-        <!-- Animation -->
+
         <attr name="animationDuration" format="integer" />
-        <!-- Corner radius (for non-rounded tracks) -->
+
         <attr name="trackCornerRadius" format="dimension" />
     </declare-styleable>
     <declare-styleable name="RatingBar">
@@ -224,22 +208,18 @@
     <declare-styleable name="StyleView">
         <attr name="cornerRadius" />
         <attr name="strokeWidth" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="bgColorAll" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorLight" />
-        <attr name="stColorAll" />
+        <attr name="bgColor" />
+        <attr name="strokeColor" />
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
         <attr name="bgGradientEnd" />
         <attr name="clipContent" />
-        <attr name="strokeGradient" />
-        <attr name="textGdOrientation" />
-        <attr name="bgGdOrientation" />
-        <attr name="strokeGdOrientation" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
+        <attr name="strokeGradientColors" />
+        <attr name="textGradientOrientation" />
+        <attr name="bgGradientOrientation" />
+        <attr name="strokeGradientOrientation" />
+        <attr name="strokeDashed" />
+        <attr name="dashGap" />
     </declare-styleable>
     <declare-styleable name="UiImageView">
         <attr name="cornerRadius" />
@@ -248,13 +228,9 @@
         <attr name="cornerBottomLeft" />
         <attr name="cornerBottomRight" />
         <attr name="strokeWidth" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorLight" />
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
-        <attr name="stColorAll" />
+        <attr name="strokeColor" />
         <attr name="bgGradientEnd" />
         <attr name="bgGradientType" />
         <attr name="bgGradientCenterX" />
@@ -262,23 +238,23 @@
         <attr name="bgGradientRadius" />
         <attr name="bgGradientColors" />
         <attr name="bgColors" />
-        <attr name="bgGdPositions" />
-        <attr name="stColors" />
-        <attr name="stGdPositions" />
+        <attr name="bgGradientPositions" />
+        <attr name="strokeColors" />
+        <attr name="strokeGradientPositions" />
         <attr name="clipContent" />
-        <attr name="bgColorAll" />
-        <attr name="bgIsGradient" />
-        <attr name="strokeGradient" />
-        <attr name="textGdOrientation" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
-        <attr name="bgGdOrientation" />
-        <attr name="strokeGdOrientation" />
+        <attr name="bgColor" />
+        <attr name="bgGradient" />
+        <attr name="strokeGradientColors" />
+        <attr name="textGradientOrientation" />
+        <attr name="strokeDashed" />
+        <attr name="dashGap" />
+        <attr name="bgGradientOrientation" />
+        <attr name="strokeGradientOrientation" />
         <attr name="android:src" />
         <attr name="android:padding" />
         <attr name="android:adjustViewBounds" />
         <attr name="gradientIcons" format="string" />
-        <attr name="imageGdOrientation" />
+        <attr name="imageGradientOrientation" />
         <attr name="ri_scaleType">
             <enum name="matrix" value="0" />
             <enum name="fitXY" value="1" />
@@ -296,26 +272,31 @@
         <attr name="shadowDy" />
         <attr name="strokeOption" />
         <attr name="uiDimenRatio" />
-        <attr name="uiWidthPercent" />
-        <attr name="uiHeightPercent" />
-        <attr name="uiMaxWidthPercent" />
-        <attr name="uiMaxHeightPercent" />
-        <attr name="uiMinWidthPercent" />
-        <attr name="uiMinHeightPercent" />
-        <!-- New attrs -->
+        <attr name="uiWidthParentPercent" />
+        <attr name="uiHeightParentPercent" />
+        <attr name="uiMaxWidthParentPercent" />
+        <attr name="uiMaxHeightParentPercent" />
+        <attr name="uiMinWidthParentPercent" />
+        <attr name="uiMinHeightParentPercent" />
+        <attr name="uiWidthScreenPercent" />
+        <attr name="uiHeightScreenPercent" />
+        <attr name="uiMaxWidthScreenPercent" />
+        <attr name="uiMaxHeightScreenPercent" />
+        <attr name="uiMinWidthScreenPercent" />
+        <attr name="uiMinHeightScreenPercent" />
+
         <attr name="rippleEnabled" />
         <attr name="rippleColor" />
         <attr name="pressedBgColor" />
         <attr name="pressedScale" />
         <attr name="shapeType" />
         <attr name="isCircle" />
-        <attr name="aspectRatio" />
         <attr name="overlayColor" />
         <attr name="borderStyle" />
         <attr name="paddingAll" />
         <attr name="paddingHorizontal" />
         <attr name="paddingVertical" />
-        <!-- Image specific -->
+
         <attr name="imageTint" format="color|reference" />
         <attr name="imageTintMode" format="enum">
             <enum name="src_over" value="0" />
@@ -339,7 +320,7 @@
     <attr name="bgGradientCenterY" format="float" />
     <attr name="bgGradientRadius" format="dimension" />
     <declare-styleable name="Orientation">
-        <attr name="textGdOrientation" format="enum">
+        <attr name="textGradientOrientation" format="enum">
             <enum name="top_bottom" value="0" />
             <enum name="tr_bl" value="1" />
             <enum name="right_left" value="2" />
@@ -349,7 +330,7 @@
             <enum name="left_right" value="6" />
             <enum name="tl_br" value="7" />
         </attr>
-        <attr name="bgGdOrientation" format="enum">
+        <attr name="bgGradientOrientation" format="enum">
             <enum name="top_bottom" value="0" />
             <enum name="tr_bl" value="1" />
             <enum name="right_left" value="2" />
@@ -359,7 +340,7 @@
             <enum name="left_right" value="6" />
             <enum name="tl_br" value="7" />
         </attr>
-        <attr name="strokeGdOrientation" format="enum">
+        <attr name="strokeGradientOrientation" format="enum">
             <enum name="top_bottom" value="0" />
             <enum name="tr_bl" value="1" />
             <enum name="right_left" value="2" />
@@ -369,7 +350,7 @@
             <enum name="left_right" value="6" />
             <enum name="tl_br" value="7" />
         </attr>
-        <attr name="imageGdOrientation" format="enum">
+        <attr name="imageGradientOrientation" format="enum">
             <enum name="top_bottom" value="0" />
             <enum name="tr_bl" value="1" />
             <enum name="right_left" value="2" />
@@ -383,13 +364,11 @@
     <declare-styleable name="UiTextView">
         <attr name="cornerRadius" />
         <attr name="strokeWidth" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorLight" />
-        <attr name="bgIsGradient" />
-        <attr name="bgColorAll" />
-        <attr name="stColorAll" />
+
+
+        <attr name="bgGradient" />
+        <attr name="bgColor" />
+        <attr name="strokeColor" />
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
         <attr name="bgGradientEnd" />
@@ -399,27 +378,25 @@
         <attr name="bgGradientRadius" />
         <attr name="bgGradientColors" />
         <attr name="bgColors" />
-        <attr name="bgGdPositions" />
-        <attr name="stColors" />
-        <attr name="stGdPositions" />
+        <attr name="bgGradientPositions" />
+        <attr name="strokeColors" />
+        <attr name="strokeGradientPositions" />
         <attr name="clipContent" />
-        <attr name="strokeGradient" />
-        <attr name="textGdOrientation" />
-        <attr name="bgGdOrientation" />
-        <attr name="strokeGdOrientation" />
-        <attr name="tvColor" format="color|reference" />
-        <attr name="tvColorDark" format="color|reference" />
-        <attr name="tvColorLight" format="color|reference" />
-        <attr name="tvColorHint" format="color|reference" />
+        <attr name="strokeGradientColors" />
+        <attr name="textGradientOrientation" />
+        <attr name="bgGradientOrientation" />
+        <attr name="strokeGradientOrientation" />
+        <attr name="tvTextColor" format="color|reference" />
+        <attr name="tvHintColor" format="color|reference" />
         <attr name="lineOption" />
         <attr name="textGradientStart" format="color|reference" />
         <attr name="textGradientCenter" format="color|reference" />
         <attr name="textGradientEnd" format="color|reference" />
         <attr name="textGradient" format="boolean" />
-        <attr name="textGdPositions" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
-        <attr name="strokeDashed" format="boolean" />
+        <attr name="textGradientPositions" />
+        <attr name="strokeDashed" />
+        <attr name="dashGap" />
+        <attr name="strokeDashed" />
         <attr name="tvSingleLine" format="boolean" />
         <attr name="shadowColor" />
         <attr name="shadowRadius" />
@@ -432,26 +409,31 @@
         <attr name="cornerBottomRight" />
         <attr name="strokeOption" />
         <attr name="uiDimenRatio" />
-        <attr name="uiWidthPercent" />
-        <attr name="uiHeightPercent" />
-        <attr name="uiMaxWidthPercent" />
-        <attr name="uiMaxHeightPercent" />
-        <attr name="uiMinWidthPercent" />
-        <attr name="uiMinHeightPercent" />
-        <!-- New attrs -->
+        <attr name="uiWidthParentPercent" />
+        <attr name="uiHeightParentPercent" />
+        <attr name="uiMaxWidthParentPercent" />
+        <attr name="uiMaxHeightParentPercent" />
+        <attr name="uiMinWidthParentPercent" />
+        <attr name="uiMinHeightParentPercent" />
+        <attr name="uiWidthScreenPercent" />
+        <attr name="uiHeightScreenPercent" />
+        <attr name="uiMaxWidthScreenPercent" />
+        <attr name="uiMaxHeightScreenPercent" />
+        <attr name="uiMinWidthScreenPercent" />
+        <attr name="uiMinHeightScreenPercent" />
+
         <attr name="rippleEnabled" />
         <attr name="rippleColor" />
         <attr name="pressedBgColor" />
         <attr name="pressedScale" />
         <attr name="shapeType" />
         <attr name="isCircle" />
-        <attr name="aspectRatio" />
         <attr name="overlayColor" />
         <attr name="borderStyle" />
         <attr name="paddingAll" />
         <attr name="paddingHorizontal" />
         <attr name="paddingVertical" />
-        <!-- Text specific -->
+
         <attr name="textGradientColors" format="string" />
         <attr name="autoSizeText" format="boolean" />
         <attr name="autoSizeMinTextSize" format="dimension" />
@@ -459,14 +441,16 @@
     </declare-styleable>
     <declare-styleable name="UiEditText">
         <attr name="cornerRadius" />
+        <attr name="cornerTopLeft" />
+        <attr name="cornerTopRight" />
+        <attr name="cornerBottomLeft" />
+        <attr name="cornerBottomRight" />
         <attr name="strokeWidth" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorLight" />
-        <attr name="bgIsGradient" />
-        <attr name="bgColorAll" />
-        <attr name="stColorAll" />
+
+
+        <attr name="bgGradient" />
+        <attr name="bgColor" />
+        <attr name="strokeColor" />
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
         <attr name="bgGradientEnd" />
@@ -476,29 +460,24 @@
         <attr name="bgGradientRadius" />
         <attr name="bgGradientColors" />
         <attr name="bgColors" />
-        <attr name="bgGdPositions" />
-        <attr name="stColors" />
-        <attr name="stGdPositions" />
+        <attr name="bgGradientPositions" />
+        <attr name="strokeColors" />
+        <attr name="strokeGradientPositions" />
         <attr name="clipContent" />
-        <attr name="strokeGradient" />
-        <attr name="textGdOrientation" />
-        <attr name="bgGdOrientation" />
-        <attr name="strokeGdOrientation" />
-        <attr name="edtColor" format="color|reference" />
-        <attr name="edtColorDark" format="color|reference" />
-        <attr name="edtColorLight" format="color|reference" />
-        <attr name="edtColorHint" format="color|reference" />
+        <attr name="strokeGradientColors" />
+        <attr name="textGradientOrientation" />
+        <attr name="bgGradientOrientation" />
+        <attr name="strokeGradientOrientation" />
+        <attr name="edtTextColor" format="color|reference" />
+        <attr name="edtHintColor" format="color|reference" />
         <attr name="lineOption" />
         <attr name="textGradientStart" />
         <attr name="textGradientEnd" />
         <attr name="textGradient" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
-        <!-- Focus Background Attributes -->
-        <attr name="focusBgColorLight" format="color|reference" />
-        <attr name="focusBgColorDark" format="color|reference" />
-        <attr name="focusBgColorAll" format="color|reference" />
-        <attr name="focusBgIsGradient" format="boolean" />
+        <attr name="strokeDashed" />
+        <attr name="dashGap" />
+        <attr name="focusBgColor" format="color|reference" />
+        <attr name="focusBgGradient" format="boolean" />
         <attr name="focusBgGradientStart" format="color|reference" />
         <attr name="focusBgGradientCenter" format="color|reference" />
         <attr name="focusBgGradientEnd" format="color|reference" />
@@ -511,18 +490,16 @@
         <attr name="focusBgGradientCenterY" format="float" />
         <attr name="focusBgGradientRadius" format="dimension" />
         <attr name="focusStrokeWidth" format="dimension" />
-        <attr name="focusStColorLight" format="color|reference" />
-        <attr name="focusStColorDark" format="color|reference" />
-        <attr name="focusStColorAll" format="color|reference" />
-        <attr name="focusStrokeGradient" format="string" />
-        <attr name="focusStrokeDistance" format="boolean" />
-        <attr name="focusDistanceSpace" format="dimension" />
+        <attr name="focusStrokeColor" format="color|reference" />
+        <attr name="focusStrokeGradientColors" format="string" />
+        <attr name="focusStrokeDashed" format="boolean" />
+        <attr name="focusDashGap" format="dimension" />
         <attr name="shadowColor" />
         <attr name="shadowRadius" />
         <attr name="shadowElevation" />
         <attr name="shadowDx" />
         <attr name="shadowDy" />
-        <!-- Drawable attributes -->
+
         <attr name="drawableEmpty" format="reference" />
         <attr name="drawableNotEmpty" format="reference" />
         <attr name="drawableAlign" format="enum">
@@ -539,12 +516,18 @@
         <attr name="drawableEmptyVisible" format="boolean" />
         <attr name="drawableNotEmptyVisible" format="boolean" />
         <attr name="uiDimenRatio" />
-        <attr name="uiWidthPercent" />
-        <attr name="uiHeightPercent" />
-        <attr name="uiMaxWidthPercent" />
-        <attr name="uiMaxHeightPercent" />
-        <attr name="uiMinWidthPercent" />
-        <attr name="uiMinHeightPercent" />
+        <attr name="uiWidthParentPercent" />
+        <attr name="uiHeightParentPercent" />
+        <attr name="uiMaxWidthParentPercent" />
+        <attr name="uiMaxHeightParentPercent" />
+        <attr name="uiMinWidthParentPercent" />
+        <attr name="uiMinHeightParentPercent" />
+        <attr name="uiWidthScreenPercent" />
+        <attr name="uiHeightScreenPercent" />
+        <attr name="uiMaxWidthScreenPercent" />
+        <attr name="uiMaxHeightScreenPercent" />
+        <attr name="uiMinWidthScreenPercent" />
+        <attr name="uiMinHeightScreenPercent" />
     </declare-styleable>
     <attr name="radiusView" format="float" />
     <declare-styleable name="DotsIndicator">
@@ -565,13 +548,11 @@
         <attr name="cornerBottomLeft" />
         <attr name="cornerBottomRight" />
         <attr name="strokeWidth" />
-        <attr name="bgIsGradient" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorLight" />
-        <attr name="bgColorAll" />
-        <attr name="stColorAll" />
+        <attr name="bgGradient" />
+
+
+        <attr name="bgColor" />
+        <attr name="strokeColor" />
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
         <attr name="bgGradientEnd" />
@@ -581,14 +562,13 @@
         <attr name="bgGradientRadius" />
         <attr name="bgGradientColors" />
         <attr name="bgColors" />
-        <attr name="bgGdPositions" />
-        <attr name="stColors" />
-        <attr name="stGdPositions" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
-        <attr name="strokeGradient" />
-        <attr name="bgGdOrientation" />
-        <attr name="strokeGdOrientation" />
+        <attr name="bgGradientPositions" />
+        <attr name="strokeColors" />
+        <attr name="strokeGradientPositions" />
+        <attr name="strokeDashed" />
+        <attr name="strokeGradientColors" />
+        <attr name="bgGradientOrientation" />
+        <attr name="strokeGradientOrientation" />
         <attr name="shadowColor" />
         <attr name="shadowRadius" />
         <attr name="shadowElevation" />
@@ -597,13 +577,19 @@
         <attr name="strokeOption" />
         <attr name="strokeCap" />
         <attr name="uiDimenRatio" />
-        <attr name="uiWidthPercent" />
-        <attr name="uiHeightPercent" />
-        <attr name="uiMaxWidthPercent" />
-        <attr name="uiMaxHeightPercent" />
-        <attr name="uiMinWidthPercent" />
-        <attr name="uiMinHeightPercent" />
-        <!-- New attrs -->
+        <attr name="uiWidthParentPercent" />
+        <attr name="uiHeightParentPercent" />
+        <attr name="uiMaxWidthParentPercent" />
+        <attr name="uiMaxHeightParentPercent" />
+        <attr name="uiMinWidthParentPercent" />
+        <attr name="uiMinHeightParentPercent" />
+        <attr name="uiWidthScreenPercent" />
+        <attr name="uiHeightScreenPercent" />
+        <attr name="uiMaxWidthScreenPercent" />
+        <attr name="uiMaxHeightScreenPercent" />
+        <attr name="uiMinWidthScreenPercent" />
+        <attr name="uiMinHeightScreenPercent" />
+
         <attr name="rippleEnabled" />
         <attr name="rippleColor" />
         <attr name="rippleBorderless" />
@@ -611,7 +597,6 @@
         <attr name="pressedScale" />
         <attr name="shapeType" />
         <attr name="isCircle" />
-        <attr name="aspectRatio" />
         <attr name="childGap" />
         <attr name="dashWidth" />
         <attr name="dashGap" />
@@ -656,14 +641,12 @@
         <attr name="cornerTopRight" />
         <attr name="cornerBottomLeft" />
         <attr name="cornerBottomRight" />
-        <attr name="bgIsGradient" />
+        <attr name="bgGradient" />
         <attr name="strokeWidth" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="stColorAll" />
-        <attr name="bgColorAll" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorLight" />
+
+        <attr name="strokeColor" />
+        <attr name="bgColor" />
+
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
         <attr name="bgGradientEnd" />
@@ -673,29 +656,35 @@
         <attr name="bgGradientRadius" />
         <attr name="bgGradientColors" />
         <attr name="bgColors" />
-        <attr name="bgGdPositions" />
-        <attr name="stColors" />
-        <attr name="stGdPositions" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
-        <attr name="strokeGradient" />
-        <attr name="bgGdOrientation" />
+        <attr name="bgGradientPositions" />
+        <attr name="strokeColors" />
+        <attr name="strokeGradientPositions" />
+        <attr name="strokeDashed" />
+        <attr name="dashGap" />
+        <attr name="strokeGradientColors" />
+        <attr name="bgGradientOrientation" />
         <attr name="shadowColor" />
         <attr name="shadowRadius" />
         <attr name="shadowElevation" />
         <attr name="shadowDx" />
         <attr name="shadowDy" />
-        <attr name="strokeGdOrientation" />
+        <attr name="strokeGradientOrientation" />
         <attr name="strokeOption" />
         <attr name="strokeCap" />
         <attr name="uiDimenRatio" />
-        <attr name="uiWidthPercent" />
-        <attr name="uiHeightPercent" />
-        <attr name="uiMaxWidthPercent" />
-        <attr name="uiMaxHeightPercent" />
-        <attr name="uiMinWidthPercent" />
-        <attr name="uiMinHeightPercent" />
-        <!-- New attrs -->
+        <attr name="uiWidthParentPercent" />
+        <attr name="uiHeightParentPercent" />
+        <attr name="uiMaxWidthParentPercent" />
+        <attr name="uiMaxHeightParentPercent" />
+        <attr name="uiMinWidthParentPercent" />
+        <attr name="uiMinHeightParentPercent" />
+        <attr name="uiWidthScreenPercent" />
+        <attr name="uiHeightScreenPercent" />
+        <attr name="uiMaxWidthScreenPercent" />
+        <attr name="uiMaxHeightScreenPercent" />
+        <attr name="uiMinWidthScreenPercent" />
+        <attr name="uiMinHeightScreenPercent" />
+
         <attr name="rippleEnabled" />
         <attr name="rippleColor" />
         <attr name="rippleBorderless" />
@@ -703,7 +692,6 @@
         <attr name="pressedScale" />
         <attr name="shapeType" />
         <attr name="isCircle" />
-        <attr name="aspectRatio" />
         <attr name="innerShadowEnabled" />
         <attr name="innerShadowColor" />
         <attr name="innerShadowRadius" />
@@ -719,14 +707,12 @@
         <attr name="cornerTopRight" />
         <attr name="cornerBottomLeft" />
         <attr name="cornerBottomRight" />
-        <attr name="bgIsGradient" />
+        <attr name="bgGradient" />
         <attr name="strokeWidth" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="stColorAll" />
-        <attr name="bgColorAll" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorLight" />
+
+        <attr name="strokeColor" />
+        <attr name="bgColor" />
+
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
         <attr name="bgGradientEnd" />
@@ -736,29 +722,35 @@
         <attr name="bgGradientRadius" />
         <attr name="bgGradientColors" />
         <attr name="bgColors" />
-        <attr name="bgGdPositions" />
-        <attr name="stColors" />
-        <attr name="stGdPositions" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
-        <attr name="strokeGradient" />
+        <attr name="bgGradientPositions" />
+        <attr name="strokeColors" />
+        <attr name="strokeGradientPositions" />
+        <attr name="strokeDashed" />
+        <attr name="dashGap" />
+        <attr name="strokeGradientColors" />
         <attr name="shadowColor" />
         <attr name="shadowElevation" />
         <attr name="shadowRadius" />
         <attr name="shadowDx" />
         <attr name="shadowDy" />
-        <attr name="bgGdOrientation" />
-        <attr name="strokeGdOrientation" />
+        <attr name="bgGradientOrientation" />
+        <attr name="strokeGradientOrientation" />
         <attr name="strokeOption" />
         <attr name="strokeCap" />
         <attr name="uiDimenRatio" />
-        <attr name="uiWidthPercent" />
-        <attr name="uiHeightPercent" />
-        <attr name="uiMaxWidthPercent" />
-        <attr name="uiMaxHeightPercent" />
-        <attr name="uiMinWidthPercent" />
-        <attr name="uiMinHeightPercent" />
-        <!-- New attrs -->
+        <attr name="uiWidthParentPercent" />
+        <attr name="uiHeightParentPercent" />
+        <attr name="uiMaxWidthParentPercent" />
+        <attr name="uiMaxHeightParentPercent" />
+        <attr name="uiMinWidthParentPercent" />
+        <attr name="uiMinHeightParentPercent" />
+        <attr name="uiWidthScreenPercent" />
+        <attr name="uiHeightScreenPercent" />
+        <attr name="uiMaxWidthScreenPercent" />
+        <attr name="uiMaxHeightScreenPercent" />
+        <attr name="uiMinWidthScreenPercent" />
+        <attr name="uiMinHeightScreenPercent" />
+
         <attr name="rippleEnabled" />
         <attr name="rippleColor" />
         <attr name="rippleBorderless" />
@@ -766,7 +758,6 @@
         <attr name="pressedScale" />
         <attr name="shapeType" />
         <attr name="isCircle" />
-        <attr name="aspectRatio" />
         <attr name="innerShadowEnabled" />
         <attr name="innerShadowColor" />
         <attr name="innerShadowRadius" />
@@ -783,13 +774,11 @@
         <attr name="cornerBottomLeft" />
         <attr name="cornerBottomRight" />
         <attr name="strokeWidth" />
-        <attr name="bgIsGradient" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="bgColorAll" />
-        <attr name="stColorAll" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorLight" />
+        <attr name="bgGradient" />
+
+        <attr name="bgColor" />
+        <attr name="strokeColor" />
+
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
         <attr name="bgGradientEnd" />
@@ -799,29 +788,35 @@
         <attr name="bgGradientRadius" />
         <attr name="bgGradientColors" />
         <attr name="bgColors" />
-        <attr name="bgGdPositions" />
-        <attr name="stColors" />
-        <attr name="stGdPositions" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
+        <attr name="bgGradientPositions" />
+        <attr name="strokeColors" />
+        <attr name="strokeGradientPositions" />
+        <attr name="strokeDashed" />
+        <attr name="dashGap" />
         <attr name="shadowColor" />
         <attr name="shadowRadius" />
         <attr name="shadowElevation" />
         <attr name="shadowDx" />
         <attr name="shadowDy" />
-        <attr name="strokeGradient" />
-        <attr name="bgGdOrientation" />
-        <attr name="strokeGdOrientation" />
+        <attr name="strokeGradientColors" />
+        <attr name="bgGradientOrientation" />
+        <attr name="strokeGradientOrientation" />
         <attr name="strokeOption" />
         <attr name="strokeCap" />
         <attr name="uiDimenRatio" />
-        <attr name="uiWidthPercent" />
-        <attr name="uiHeightPercent" />
-        <attr name="uiMaxWidthPercent" />
-        <attr name="uiMaxHeightPercent" />
-        <attr name="uiMinWidthPercent" />
-        <attr name="uiMinHeightPercent" />
-        <!-- New attrs -->
+        <attr name="uiWidthParentPercent" />
+        <attr name="uiHeightParentPercent" />
+        <attr name="uiMaxWidthParentPercent" />
+        <attr name="uiMaxHeightParentPercent" />
+        <attr name="uiMinWidthParentPercent" />
+        <attr name="uiMinHeightParentPercent" />
+        <attr name="uiWidthScreenPercent" />
+        <attr name="uiHeightScreenPercent" />
+        <attr name="uiMaxWidthScreenPercent" />
+        <attr name="uiMaxHeightScreenPercent" />
+        <attr name="uiMinWidthScreenPercent" />
+        <attr name="uiMinHeightScreenPercent" />
+
         <attr name="rippleEnabled" />
         <attr name="rippleColor" />
         <attr name="rippleBorderless" />
@@ -829,7 +824,6 @@
         <attr name="pressedScale" />
         <attr name="shapeType" />
         <attr name="isCircle" />
-        <attr name="aspectRatio" />
         <attr name="innerShadowEnabled" />
         <attr name="innerShadowColor" />
         <attr name="innerShadowRadius" />
@@ -846,13 +840,11 @@
         <attr name="cornerBottomLeft" />
         <attr name="cornerBottomRight" />
         <attr name="strokeWidth" />
-        <attr name="stColorAll" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="bgColorAll" />
-        <attr name="bgIsGradient" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorLight" />
+        <attr name="strokeColor" />
+
+        <attr name="bgColor" />
+        <attr name="bgGradient" />
+
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
         <attr name="bgGradientEnd" />
@@ -862,29 +854,35 @@
         <attr name="bgGradientRadius" />
         <attr name="bgGradientColors" />
         <attr name="bgColors" />
-        <attr name="bgGdPositions" />
-        <attr name="stColors" />
-        <attr name="stGdPositions" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
-        <attr name="strokeGradient" />
+        <attr name="bgGradientPositions" />
+        <attr name="strokeColors" />
+        <attr name="strokeGradientPositions" />
+        <attr name="strokeDashed" />
+        <attr name="dashGap" />
+        <attr name="strokeGradientColors" />
         <attr name="shadowColor" />
         <attr name="shadowRadius" />
         <attr name="shadowDx" />
         <attr name="shadowElevation" />
         <attr name="shadowDy" />
-        <attr name="bgGdOrientation" />
-        <attr name="strokeGdOrientation" />
+        <attr name="bgGradientOrientation" />
+        <attr name="strokeGradientOrientation" />
         <attr name="strokeOption" />
         <attr name="strokeCap" />
         <attr name="uiDimenRatio" />
-        <attr name="uiWidthPercent" />
-        <attr name="uiHeightPercent" />
-        <attr name="uiMaxWidthPercent" />
-        <attr name="uiMaxHeightPercent" />
-        <attr name="uiMinWidthPercent" />
-        <attr name="uiMinHeightPercent" />
-        <!-- New attrs -->
+        <attr name="uiWidthParentPercent" />
+        <attr name="uiHeightParentPercent" />
+        <attr name="uiMaxWidthParentPercent" />
+        <attr name="uiMaxHeightParentPercent" />
+        <attr name="uiMinWidthParentPercent" />
+        <attr name="uiMinHeightParentPercent" />
+        <attr name="uiWidthScreenPercent" />
+        <attr name="uiHeightScreenPercent" />
+        <attr name="uiMaxWidthScreenPercent" />
+        <attr name="uiMaxHeightScreenPercent" />
+        <attr name="uiMinWidthScreenPercent" />
+        <attr name="uiMinHeightScreenPercent" />
+
         <attr name="rippleEnabled" />
         <attr name="rippleColor" />
         <attr name="rippleBorderless" />
@@ -892,7 +890,6 @@
         <attr name="pressedScale" />
         <attr name="shapeType" />
         <attr name="isCircle" />
-        <attr name="aspectRatio" />
         <attr name="innerShadowEnabled" />
         <attr name="innerShadowColor" />
         <attr name="innerShadowRadius" />
@@ -908,14 +905,10 @@
         <attr name="cornerTopRight" />
         <attr name="cornerBottomLeft" />
         <attr name="cornerBottomRight" />
-        <attr name="bgIsGradient" />
+        <attr name="bgGradient" />
         <attr name="strokeWidth" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="stColorAll" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorAll" />
-        <attr name="bgColorLight" />
+        <attr name="strokeColor" />
+        <attr name="bgColor" />
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
         <attr name="bgGradientEnd" />
@@ -925,19 +918,19 @@
         <attr name="bgGradientRadius" />
         <attr name="bgGradientColors" />
         <attr name="bgColors" />
-        <attr name="bgGdPositions" />
-        <attr name="stColors" />
-        <attr name="stGdPositions" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
+        <attr name="bgGradientPositions" />
+        <attr name="strokeColors" />
+        <attr name="strokeGradientPositions" />
+        <attr name="strokeDashed" />
+        <attr name="dashGap" />
         <attr name="shadowColor" />
         <attr name="shadowRadius" />
         <attr name="shadowDx" />
         <attr name="shadowElevation" />
         <attr name="shadowDy" />
-        <attr name="strokeGradient" />
-        <attr name="bgGdOrientation" />
-        <attr name="strokeGdOrientation" />
+        <attr name="strokeGradientColors" />
+        <attr name="bgGradientOrientation" />
+        <attr name="strokeGradientOrientation" />
         <attr name="strokeOption" />
         <attr name="strokeCap" />
         <attr name="rowJustifyContent" format="integer">
@@ -949,13 +942,19 @@
             <enum name="space_evenly" value="5" />
         </attr>
         <attr name="uiDimenRatio" />
-        <attr name="uiWidthPercent" />
-        <attr name="uiHeightPercent" />
-        <attr name="uiMaxWidthPercent" />
-        <attr name="uiMaxHeightPercent" />
-        <attr name="uiMinWidthPercent" />
-        <attr name="uiMinHeightPercent" />
-        <!-- New attrs -->
+        <attr name="uiWidthParentPercent" />
+        <attr name="uiHeightParentPercent" />
+        <attr name="uiMaxWidthParentPercent" />
+        <attr name="uiMaxHeightParentPercent" />
+        <attr name="uiMinWidthParentPercent" />
+        <attr name="uiMinHeightParentPercent" />
+        <attr name="uiWidthScreenPercent" />
+        <attr name="uiHeightScreenPercent" />
+        <attr name="uiMaxWidthScreenPercent" />
+        <attr name="uiMaxHeightScreenPercent" />
+        <attr name="uiMinWidthScreenPercent" />
+        <attr name="uiMinHeightScreenPercent" />
+
         <attr name="rippleEnabled" />
         <attr name="rippleColor" />
         <attr name="rippleBorderless" />
@@ -963,7 +962,6 @@
         <attr name="pressedScale" />
         <attr name="shapeType" />
         <attr name="isCircle" />
-        <attr name="aspectRatio" />
         <attr name="childGap" />
         <attr name="innerShadowEnabled" />
         <attr name="innerShadowColor" />
@@ -1086,7 +1084,8 @@
             <enum name="selected" value="1" />
             <enum name="never" value="2" />
         </attr>
-        <!-- Text gradient -->
+        <attr name="nav_textSingleLine" format="boolean" />
+
         <attr name="nav_textGradient" format="boolean" />
         <attr name="nav_textGradientStart" format="color|reference" />
         <attr name="nav_textGradientCenter" format="color|reference" />
@@ -1095,13 +1094,13 @@
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />
         </attr>
-        <!-- Layout mode -->
+
         <attr name="nav_itemLayout" format="enum">
             <enum name="vertical" value="0" />
             <enum name="horizontal" value="1" />
         </attr>
         <attr name="nav_iconTextSpacing" format="dimension" />
-        <!-- Animation -->
+
         <attr name="nav_animationType" format="enum">
             <enum name="none" value="0" />
             <enum name="scale" value="1" />
@@ -1110,10 +1109,10 @@
             <enum name="bounce" value="4" />
         </attr>
         <attr name="nav_animationDuration" format="integer" />
-        <!-- Indicator animation -->
+
         <attr name="nav_indicatorAnimated" format="boolean" />
         <attr name="nav_indicatorAnimationDuration" format="integer" />
-        <!-- Indicator gradient -->
+
         <attr name="nav_indicatorGradient" format="boolean" />
         <attr name="nav_indicatorGradientStart" format="color|reference" />
         <attr name="nav_indicatorGradientCenter" format="color|reference" />
@@ -1122,32 +1121,28 @@
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />
         </attr>
-        <!-- Badge -->
+
         <attr name="nav_badgeColor" format="color|reference" />
         <attr name="nav_badgeTextColor" format="color|reference" />
-        <!-- Ripple -->
+
         <attr name="nav_rippleEnabled" format="boolean" />
         <attr name="nav_rippleColor" format="color|reference" />
-        <!-- Navigation Animation -->
+
         <attr name="nav_animateEnabled" format="boolean" />
         <attr name="nav_enterAnim" format="reference" />
         <attr name="nav_exitAnim" format="reference" />
         <attr name="nav_popEnterAnim" format="reference" />
         <attr name="nav_popExitAnim" format="reference" />
-        <!-- UiLinearLayout attrs (inherited) -->
+
         <attr name="cornerRadius" />
         <attr name="cornerTopLeft" />
         <attr name="cornerTopRight" />
         <attr name="cornerBottomLeft" />
         <attr name="cornerBottomRight" />
         <attr name="strokeWidth" />
-        <attr name="bgIsGradient" />
-        <attr name="stColorDark" />
-        <attr name="stColorLight" />
-        <attr name="bgColorDark" />
-        <attr name="bgColorLight" />
-        <attr name="bgColorAll" />
-        <attr name="stColorAll" />
+        <attr name="bgGradient" />
+        <attr name="bgColor" />
+        <attr name="strokeColor" />
         <attr name="bgGradientStart" />
         <attr name="bgGradientCenter" />
         <attr name="bgGradientEnd" />
@@ -1155,11 +1150,11 @@
         <attr name="bgGradientCenterX" />
         <attr name="bgGradientCenterY" />
         <attr name="bgGradientRadius" />
-        <attr name="strokeDistance" />
-        <attr name="distanceSpace" />
-        <attr name="strokeGradient" />
-        <attr name="bgGdOrientation" />
-        <attr name="strokeGdOrientation" />
+        <attr name="strokeDashed" />
+        <attr name="dashGap" />
+        <attr name="strokeGradientColors" />
+        <attr name="bgGradientOrientation" />
+        <attr name="strokeGradientOrientation" />
         <attr name="shadowColor" />
         <attr name="shadowRadius" />
         <attr name="shadowElevation" />
@@ -1174,11 +1169,9 @@
         <attr name="nav_title" format="string|reference" />
     </declare-styleable>
     <declare-styleable name="StrokeTextView">
-        <!-- Text stroke (outline) -->
+
         <attr name="textStrokeWidth" format="dimension" />
         <attr name="textStrokeColor" format="color|reference" />
-        <attr name="textStrokeColorDark" format="color|reference" />
-        <attr name="textStrokeColorAll" format="color|reference" />
         <attr name="textStrokeGradient" format="string" />
         <attr name="textStrokeGdOrientation">
             <enum name="top_bottom" value="0" />
@@ -1190,10 +1183,8 @@
             <enum name="left_right" value="6" />
             <enum name="tl_br" value="7" />
         </attr>
-        <!-- Text fill -->
+
         <attr name="textFillColor" format="color|reference" />
-        <attr name="textFillColorDark" format="color|reference" />
-        <attr name="textFillColorAll" format="color|reference" />
         <attr name="textFillGradient" format="string" />
         <attr name="textFillGdOrientation">
             <enum name="top_bottom" value="0" />
@@ -1205,14 +1196,14 @@
             <enum name="left_right" value="6" />
             <enum name="tl_br" value="7" />
         </attr>
-        <!-- Text shadow -->
+
         <attr name="textShadowRadius" format="dimension" />
         <attr name="textShadowDx" format="dimension" />
         <attr name="textShadowDy" format="dimension" />
         <attr name="textShadowColor" format="color|reference" />
     </declare-styleable>
 
-    <!-- SlipRatingBar -->
+
     <declare-styleable name="SlipRatingBar">
         <attr name="srb_maxStars" format="integer" />
         <attr name="srb_rating" format="float" />
@@ -1230,13 +1221,19 @@
         <attr name="srb_gradientEndColor" format="color|reference" />
         <attr name="srb_animateChange" format="boolean" />
         <attr name="srb_touchScaleEffect" format="boolean" />
-        <!-- Custom drawable support -->
+
         <attr name="srb_filledDrawable" format="reference" />
         <attr name="srb_emptyDrawable" format="reference" />
         <attr name="srb_halfFilledDrawable" format="reference" />
         <attr name="srb_drawableTintFilled" format="color|reference" />
         <attr name="srb_drawableTintEmpty" format="color|reference" />
         <attr name="srb_useDrawable" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="BlurOverlayImageView">
+        <attr name="blurEnabled" format="boolean" />
+        <attr name="blurAlpha" format="integer" />
+        <attr name="blurRadius" format="float" />
     </declare-styleable>
 </resources>
 

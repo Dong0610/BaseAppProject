@@ -28,35 +28,31 @@ open class UiConstraintLayout @JvmOverloads constructor(
                     R.styleable.UiConstraintLayout_cornerBottomRight
                 )
                 helper.readBackgroundAttrs(this,
-                    R.styleable.UiConstraintLayout_bgIsGradient,
+                    R.styleable.UiConstraintLayout_bgGradient,
                     R.styleable.UiConstraintLayout_bgGradientStart,
                     R.styleable.UiConstraintLayout_bgGradientCenter,
                     R.styleable.UiConstraintLayout_bgGradientEnd,
-                    R.styleable.UiConstraintLayout_bgColorLight,
-                    R.styleable.UiConstraintLayout_bgColorDark,
-                    R.styleable.UiConstraintLayout_bgColorAll,
-                    R.styleable.UiConstraintLayout_bgGdOrientation,
+                    R.styleable.UiConstraintLayout_bgColor,
+                    R.styleable.UiConstraintLayout_bgGradientOrientation,
                     R.styleable.UiConstraintLayout_bgGradientType,
                     R.styleable.UiConstraintLayout_bgGradientCenterX,
                     R.styleable.UiConstraintLayout_bgGradientCenterY,
                     R.styleable.UiConstraintLayout_bgGradientRadius,
                     R.styleable.UiConstraintLayout_bgGradientColors,
                     R.styleable.UiConstraintLayout_bgColors,
-                    R.styleable.UiConstraintLayout_bgGdPositions
+                    R.styleable.UiConstraintLayout_bgGradientPositions
                 )
                 helper.readStrokeAttrs(this,
                     R.styleable.UiConstraintLayout_strokeWidth,
-                    R.styleable.UiConstraintLayout_stColorLight,
-                    R.styleable.UiConstraintLayout_stColorDark,
-                    R.styleable.UiConstraintLayout_stColorAll,
-                    R.styleable.UiConstraintLayout_strokeDistance,
-                    R.styleable.UiConstraintLayout_distanceSpace,
-                    R.styleable.UiConstraintLayout_strokeGradient,
-                    R.styleable.UiConstraintLayout_strokeGdOrientation,
+                    R.styleable.UiConstraintLayout_strokeColor,
+                    R.styleable.UiConstraintLayout_strokeDashed,
+                    R.styleable.UiConstraintLayout_dashGap,
+                    R.styleable.UiConstraintLayout_strokeGradientColors,
+                    R.styleable.UiConstraintLayout_strokeGradientOrientation,
                     R.styleable.UiConstraintLayout_strokeOption,
                     R.styleable.UiConstraintLayout_strokeCap,
-                    R.styleable.UiConstraintLayout_stColors,
-                    R.styleable.UiConstraintLayout_stGdPositions
+                    R.styleable.UiConstraintLayout_strokeColors,
+                    R.styleable.UiConstraintLayout_strokeGradientPositions
                 )
                 helper.readShadowAttrs(this,
                     R.styleable.UiConstraintLayout_shadowColor,
@@ -67,17 +63,27 @@ open class UiConstraintLayout @JvmOverloads constructor(
                 )
                 helper.readDimensionAttrs(this,
                     R.styleable.UiConstraintLayout_uiDimenRatio,
-                    R.styleable.UiConstraintLayout_uiWidthPercent,
-                    R.styleable.UiConstraintLayout_uiHeightPercent,
-                    R.styleable.UiConstraintLayout_uiMaxWidthPercent,
-                    R.styleable.UiConstraintLayout_uiMaxHeightPercent,
-                    R.styleable.UiConstraintLayout_uiMinWidthPercent,
-                    R.styleable.UiConstraintLayout_uiMinHeightPercent
+                    R.styleable.UiConstraintLayout_uiWidthParentPercent,
+                    R.styleable.UiConstraintLayout_uiHeightParentPercent,
+                    R.styleable.UiConstraintLayout_uiMaxWidthParentPercent,
+                    R.styleable.UiConstraintLayout_uiMaxHeightParentPercent,
+                    R.styleable.UiConstraintLayout_uiMinWidthParentPercent,
+                    R.styleable.UiConstraintLayout_uiMinHeightParentPercent,
+                    R.styleable.UiConstraintLayout_uiWidthScreenPercent,
+                    R.styleable.UiConstraintLayout_uiHeightScreenPercent,
+                    R.styleable.UiConstraintLayout_uiMaxWidthScreenPercent,
+                    R.styleable.UiConstraintLayout_uiMaxHeightScreenPercent,
+                    R.styleable.UiConstraintLayout_uiMinWidthScreenPercent,
+                    R.styleable.UiConstraintLayout_uiMinHeightScreenPercent
                 )
                 helper.readRippleAttrs(this,
                     R.styleable.UiConstraintLayout_rippleEnabled,
                     R.styleable.UiConstraintLayout_rippleColor,
                     R.styleable.UiConstraintLayout_rippleBorderless
+                )
+                helper.readShapeAttrs(this,
+                    R.styleable.UiConstraintLayout_shapeType,
+                    R.styleable.UiConstraintLayout_isCircle
                 )
             } finally {
                 recycle()
@@ -89,15 +95,23 @@ open class UiConstraintLayout @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         if (helper.shouldApplyCustomMeasure()) {
-            val parentWidth = MeasureSpec.getSize(widthMeasureSpec)
-            val parentHeight = MeasureSpec.getSize(heightMeasureSpec)
-            val (newWidth, newHeight) = helper.measureWithConstraints(
+            val dm = context.resources.displayMetrics
+            val specW = MeasureSpec.getSize(widthMeasureSpec)
+            val specH = MeasureSpec.getSize(heightMeasureSpec)
+            val parentWidth = if (specW > 0) specW else
+                (parent as? android.view.View)?.width?.takeIf { it > 0 } ?: dm.widthPixels
+            val parentHeight = if (specH > 0) specH else
+                (parent as? android.view.View)?.height?.takeIf { it > 0 } ?: dm.heightPixels
+            val result = helper.measureWithConstraints(
                 widthMeasureSpec, heightMeasureSpec, parentWidth, parentHeight
             )
-            super.onMeasure(
-                MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY)
-            )
+            val wSpec = if (result.widthCustomized)
+                MeasureSpec.makeMeasureSpec(result.width, MeasureSpec.EXACTLY)
+                else widthMeasureSpec
+            val hSpec = if (result.heightCustomized)
+                MeasureSpec.makeMeasureSpec(result.height, MeasureSpec.EXACTLY)
+                else heightMeasureSpec
+            super.onMeasure(wSpec, hSpec)
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         }

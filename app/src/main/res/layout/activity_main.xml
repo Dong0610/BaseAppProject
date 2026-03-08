@@ -29,7 +29,7 @@
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_56sdp"
-            app:bgColorAll="@color/color_303136"
+            app:bgColor="@color/color_303136"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -13,13 +13,17 @@ inline fun <reified T : Fragment> newInstanceWithArgs(vararg params: Pair<String
     val fragment = try {
         T::class.java.getDeclaredConstructor().newInstance()
     } catch (e: NoSuchMethodException) {
-        throw IllegalArgumentException("Fragment ${T::class.java.simpleName} must have a public no-arg constructor.", e)
+        throw IllegalArgumentException(
+            "Fragment ${T::class.java.simpleName} must have a public no-arg constructor.",
+            e
+        )
     }
     fragment.arguments = Bundle().apply {
         for ((key, value) in params) {
             try {
                 putAnySafe(key, value)
-            } catch (_: Throwable) { }
+            } catch (_: Throwable) {
+            }
         }
     }
     return fragment
@@ -37,14 +41,15 @@ private fun ensureCanUse(fragment: Fragment, fm: FragmentManager) {
 }
 
 fun AppCompatActivity.changeFragment(
-      fragment: Fragment,
-      containerId: Int = R.id.content,
-      addToBackStack: Boolean = false,
-      tagExtra: String? = null
+    fragment: Fragment,
+    isShowAnimation: Boolean = true,
+    containerId: Int = R.id.content,
+    addToBackStack: Boolean = false,
+    tagExtra: String? = null
 ) {
     if (isFinishing || isDestroyed) return
     if (Looper.myLooper() != Looper.getMainLooper()) {
-        runOnUiThread { changeFragment(fragment, containerId, addToBackStack, tagExtra) }
+        runOnUiThread { changeFragment(fragment, isShowAnimation, containerId, addToBackStack, tagExtra) }
         return
     }
     val fm = supportFragmentManager
@@ -53,17 +58,20 @@ fun AppCompatActivity.changeFragment(
     val existing = fm.findFragmentByTag(tag)
     val target = existing ?: fragment
     ensureCanUse(target, fm)
-    val current = fm.fragments.firstOrNull { it.isAdded && it.isVisible && it.view?.id == containerId }
+    val current =
+        fm.fragments.firstOrNull { it.isAdded && it.isVisible && it.view?.id == containerId }
     if (current === target) return
     runCatching { fm.executePendingTransactions() }
     val tx = fm.beginTransaction().apply {
         setReorderingAllowed(true)
-        setCustomAnimations(
-            com.dong.baselib.R.anim.enter_from_right,
-            com.dong.baselib.R.anim.exit_to_left,
-            com.dong.baselib.R.anim.enter_from_left,
-            com.dong.baselib.R.anim.exit_to_right
-        )
+        if (isShowAnimation) {
+            setCustomAnimations(
+                com.dong.baselib.R.anim.enter_from_right,
+                com.dong.baselib.R.anim.exit_to_left,
+                com.dong.baselib.R.anim.enter_from_left,
+                com.dong.baselib.R.anim.exit_to_right
+            )
+        }
         current?.let { if (it.isAdded) hide(it) }
         if (target.isAdded) {
             val targetViewId = target.view?.id
@@ -82,14 +90,15 @@ fun AppCompatActivity.changeFragment(
 }
 
 fun AppCompatActivity.addFragment(
-      fragment: Fragment,
-      containerId: Int = R.id.content,
-      addToBackStack: Boolean = false,
-      tagExtra: String? = null
+    fragment: Fragment,
+    isShowAnimation: Boolean = true,
+    containerId: Int = R.id.content,
+    addToBackStack: Boolean = false,
+    tagExtra: String? = null
 ) {
     if (isFinishing || isDestroyed) return
     if (Looper.myLooper() != Looper.getMainLooper()) {
-        runOnUiThread { addFragment(fragment, containerId, addToBackStack, tagExtra) }
+        runOnUiThread { addFragment(fragment, isShowAnimation, containerId, addToBackStack, tagExtra) }
         return
     }
     val fm = supportFragmentManager
@@ -101,13 +110,16 @@ fun AppCompatActivity.addFragment(
     runCatching { fm.executePendingTransactions() }
     val tx = fm.beginTransaction().apply {
         setReorderingAllowed(true)
-        setCustomAnimations(
-            com.dong.baselib.R.anim.enter_from_right,
-            com.dong.baselib.R.anim.exit_to_left,
-            com.dong.baselib.R.anim.enter_from_left,
-            com.dong.baselib.R.anim.exit_to_right
-        )
-        fm.fragments.lastOrNull { it != target && it.isAdded && it.isVisible && it.view?.id == container.id }?.let { hide(it) }
+        if (isShowAnimation) {
+            setCustomAnimations(
+                com.dong.baselib.R.anim.enter_from_right,
+                com.dong.baselib.R.anim.exit_to_left,
+                com.dong.baselib.R.anim.enter_from_left,
+                com.dong.baselib.R.anim.exit_to_right
+            )
+        }
+        fm.fragments.lastOrNull { it != target && it.isAdded && it.isVisible && it.view?.id == container.id }
+            ?.let { hide(it) }
         if (target.isAdded) {
             val targetViewId = target.view?.id
             if (targetViewId != container.id) {
@@ -125,14 +137,15 @@ fun AppCompatActivity.addFragment(
 }
 
 fun AppCompatActivity.replaceFragment(
-      fragment: Fragment,
-      containerId: Int = R.id.content,
-      addToBackStack: Boolean = false,
-      tagExtra: String? = null
+    fragment: Fragment,
+    isShowAnimation: Boolean = true,
+    containerId: Int = R.id.content,
+    addToBackStack: Boolean = false,
+    tagExtra: String? = null
 ) {
     if (isFinishing || isDestroyed) return
     if (Looper.myLooper() != Looper.getMainLooper()) {
-        runOnUiThread { replaceFragment(fragment, containerId, addToBackStack, tagExtra) }
+        runOnUiThread { replaceFragment(fragment, isShowAnimation, containerId, addToBackStack, tagExtra) }
         return
     }
     val fm = supportFragmentManager
@@ -146,12 +159,14 @@ fun AppCompatActivity.replaceFragment(
     runCatching { fm.executePendingTransactions() }
     val tx = fm.beginTransaction().apply {
         setReorderingAllowed(true)
-        setCustomAnimations(
-            com.dong.baselib.R.anim.enter_from_right,
-            com.dong.baselib.R.anim.exit_to_left,
-            com.dong.baselib.R.anim.enter_from_left,
-            com.dong.baselib.R.anim.exit_to_right
-        )
+        if (isShowAnimation) {
+            setCustomAnimations(
+                com.dong.baselib.R.anim.enter_from_right,
+                com.dong.baselib.R.anim.exit_to_left,
+                com.dong.baselib.R.anim.enter_from_left,
+                com.dong.baselib.R.anim.exit_to_right
+            )
+        }
         if (target.isAdded) {
             val targetViewId = target.view?.id
             if (targetViewId != container.id) {
@@ -171,21 +186,24 @@ fun AppCompatActivity.replaceFragment(
     if (fm.isStateSaved) tx.commitAllowingStateLoss() else runCatching { tx.commit() }.onFailure { tx.commitAllowingStateLoss() }
 }
 
-fun AppCompatActivity.closeFragment(fragment: Fragment) {
+fun AppCompatActivity.closeFragment(fragment: Fragment, isShowAnimation: Boolean = true) {
     if (isFinishing || isDestroyed) return
     if (Looper.myLooper() != Looper.getMainLooper()) {
-        runOnUiThread { closeFragment(fragment) }
+        runOnUiThread { closeFragment(fragment, isShowAnimation) }
         return
     }
     if (fragment.isAdded && fragment.isVisible) {
-        supportFragmentManager.beginTransaction()
-            .setReorderingAllowed(true)
-            .setCustomAnimations(
-                com.dong.baselib.R.anim.enter_from_right,
-                com.dong.baselib.R.anim.exit_to_left
-            )
-            .remove(fragment)
-            .commitNowAllowingStateLoss()
+        val tx = supportFragmentManager.beginTransaction().apply {
+            setReorderingAllowed(true)
+            if (isShowAnimation) {
+                setCustomAnimations(
+                    com.dong.baselib.R.anim.enter_from_right,
+                    com.dong.baselib.R.anim.exit_to_left
+                )
+            }
+            remove(fragment)
+        }
+        tx.commitNowAllowingStateLoss()
     }
 }
 
@@ -194,13 +212,22 @@ private fun Fragment.onMainThread(): Boolean = Looper.myLooper() == Looper.getMa
 private fun Fragment.containerOrNull(containerId: Int): View? = view?.findViewById(containerId)
 
 fun Fragment.addFragment(
-      fragment: Fragment,
-      containerId: Int = R.id.content,
-      addToBackStack: Boolean = false,
-      tagExtra: String? = null
+    fragment: Fragment,
+    isShowAnimation: Boolean = true,
+    containerId: Int = R.id.content,
+    addToBackStack: Boolean = false,
+    tagExtra: String? = null
 ) {
     if (!onMainThread()) {
-        requireActivity().runOnUiThread { addFragment(fragment, containerId, addToBackStack, tagExtra) }
+        requireActivity().runOnUiThread {
+            addFragment(
+                fragment,
+                isShowAnimation,
+                containerId,
+                addToBackStack,
+                tagExtra
+            )
+        }
         return
     }
     val manager = fm()
@@ -212,12 +239,14 @@ fun Fragment.addFragment(
     runCatching { manager.executePendingTransactions() }
     val tx = manager.beginTransaction().apply {
         setReorderingAllowed(true)
-        setCustomAnimations(
-            com.dong.baselib.R.anim.enter_from_right,
-            com.dong.baselib.R.anim.exit_to_left,
-            com.dong.baselib.R.anim.enter_from_left,
-            com.dong.baselib.R.anim.exit_to_right
-        )
+        if (isShowAnimation) {
+            setCustomAnimations(
+                com.dong.baselib.R.anim.enter_from_right,
+                com.dong.baselib.R.anim.exit_to_left,
+                com.dong.baselib.R.anim.enter_from_left,
+                com.dong.baselib.R.anim.exit_to_right
+            )
+        }
         if (target.isAdded) {
             val targetViewId = target.view?.id
             if (targetViewId != container.id) {
@@ -236,12 +265,21 @@ fun Fragment.addFragment(
 
 fun Fragment.replaceFullViewFragment(
     fragment: Fragment,
+    isShowAnimation: Boolean = true,
     containerId: Int,
     addToBackStack: Boolean = false,
     tagExtra: String? = null
 ) {
     if (!onMainThread()) {
-        requireActivity().runOnUiThread { replaceFullViewFragment(fragment, containerId, addToBackStack, tagExtra) }
+        requireActivity().runOnUiThread {
+            replaceFullViewFragment(
+                fragment,
+                isShowAnimation,
+                containerId,
+                addToBackStack,
+                tagExtra
+            )
+        }
         return
     }
     val manager = fm()
@@ -255,12 +293,14 @@ fun Fragment.replaceFullViewFragment(
     runCatching { manager.executePendingTransactions() }
     val tx = manager.beginTransaction().apply {
         setReorderingAllowed(true)
-        setCustomAnimations(
-            com.dong.baselib.R.anim.enter_from_right,
-            com.dong.baselib.R.anim.exit_to_left,
-            com.dong.baselib.R.anim.enter_from_left,
-            com.dong.baselib.R.anim.exit_to_right
-        )
+        if (isShowAnimation) {
+            setCustomAnimations(
+                com.dong.baselib.R.anim.enter_from_right,
+                com.dong.baselib.R.anim.exit_to_left,
+                com.dong.baselib.R.anim.enter_from_left,
+                com.dong.baselib.R.anim.exit_to_right
+            )
+        }
         if (target.isAdded) {
             val targetViewId = target.view?.id
             if (targetViewId != container.id) {
@@ -272,20 +312,30 @@ fun Fragment.replaceFullViewFragment(
         } else {
             add(container.id, target, tag)
         }
-        manager.fragments.filter { it !== target && it.view?.id == container.id && it.isAdded }.forEach { remove(it) }
+        manager.fragments.filter { it !== target && it.view?.id == container.id && it.isAdded }
+            .forEach { remove(it) }
         if (addToBackStack) addToBackStack(tag)
     }
     if (manager.isStateSaved) tx.commitAllowingStateLoss() else runCatching { tx.commit() }.onFailure { tx.commitAllowingStateLoss() }
 }
 
 fun Fragment.replaceFragment(
-      fragment: Fragment,
-      containerId: Int = R.id.content,
-      addToBackStack: Boolean = true,
-      tagExtra: String? = null
+    fragment: Fragment,
+    isShowAnimation: Boolean = true,
+    containerId: Int = R.id.content,
+    addToBackStack: Boolean = true,
+    tagExtra: String? = null
 ) {
     if (!onMainThread()) {
-        requireActivity().runOnUiThread { replaceFragment(fragment, containerId, addToBackStack, tagExtra) }
+        requireActivity().runOnUiThread {
+            replaceFragment(
+                fragment,
+                isShowAnimation,
+                containerId,
+                addToBackStack,
+                tagExtra
+            )
+        }
         return
     }
     val manager = fm()
@@ -299,12 +349,14 @@ fun Fragment.replaceFragment(
     runCatching { manager.executePendingTransactions() }
     val tx = manager.beginTransaction().apply {
         setReorderingAllowed(true)
-        setCustomAnimations(
-            com.dong.baselib.R.anim.enter_from_right,
-            com.dong.baselib.R.anim.exit_to_left,
-            com.dong.baselib.R.anim.enter_from_left,
-            com.dong.baselib.R.anim.exit_to_right
-        )
+        if (isShowAnimation) {
+            setCustomAnimations(
+                com.dong.baselib.R.anim.enter_from_right,
+                com.dong.baselib.R.anim.exit_to_left,
+                com.dong.baselib.R.anim.enter_from_left,
+                com.dong.baselib.R.anim.exit_to_right
+            )
+        }
         if (target.isAdded) {
             val targetViewId = target.view?.id
             if (targetViewId != container.id) {
@@ -316,47 +368,67 @@ fun Fragment.replaceFragment(
         } else {
             add(container.id, target, tag)
         }
-        manager.fragments.filter { it !== target && it.view?.id == container.id && it.isAdded }.forEach { remove(it) }
+        manager.fragments.filter { it !== target && it.view?.id == container.id && it.isAdded }
+            .forEach { remove(it) }
         if (addToBackStack) addToBackStack(tag)
     }
     if (manager.isStateSaved) tx.commitAllowingStateLoss() else runCatching { tx.commit() }.onFailure { tx.commitAllowingStateLoss() }
 }
 
-fun closeFragment(fragment: Fragment) {
+fun closeFragment(fragment: Fragment, isShowAnimation: Boolean = true) {
     val act = fragment.activity as? AppCompatActivity ?: return
     if (act.isFinishing || act.isDestroyed) return
     if (Looper.myLooper() != Looper.getMainLooper()) {
-        act.runOnUiThread { closeFragment(fragment) }
+        act.runOnUiThread { closeFragment(fragment, isShowAnimation) }
         return
     }
     val fm = act.supportFragmentManager
     runCatching { fm.executePendingTransactions() }
     val tx = fm.beginTransaction().apply {
         setReorderingAllowed(true)
-        setCustomAnimations(
-            com.dong.baselib.R.anim.enter_from_right,
-            com.dong.baselib.R.anim.exit_to_left
-        )
+        if (isShowAnimation) {
+            setCustomAnimations(
+                com.dong.baselib.R.anim.enter_from_right,
+                com.dong.baselib.R.anim.exit_to_left
+            )
+        }
         if (fragment.isAdded) remove(fragment)
     }
     if (fm.isStateSaved) tx.commitAllowingStateLoss() else runCatching { tx.commitNow() }.onFailure { tx.commitNowAllowingStateLoss() }
 }
 
-fun Fragment.closeSelf() {
+fun Fragment.closeSelf(isRemoveBackStack: Boolean = true, isShowAnimation: Boolean = true) {
     val act = activity as? AppCompatActivity ?: return
     if (act.isFinishing || act.isDestroyed) return
     if (Looper.myLooper() != Looper.getMainLooper()) {
-        act.runOnUiThread { closeSelf() }
+        act.runOnUiThread { closeSelf(isRemoveBackStack, isShowAnimation) }
         return
     }
     val fm = parentFragmentManager
     runCatching { fm.executePendingTransactions() }
+    if (isRemoveBackStack) {
+        val tag = this.tag
+        if (tag != null) {
+            for (i in 0 until fm.backStackEntryCount) {
+                if (fm.getBackStackEntryAt(i).name == tag) {
+                    if (fm.isStateSaved) {
+                        fm.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    } else {
+                        fm.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    }
+                    return
+                }
+            }
+        }
+    }
     val tx = fm.beginTransaction().apply {
         setReorderingAllowed(true)
-        setCustomAnimations(
-            com.dong.baselib.R.anim.enter_from_right,
-            com.dong.baselib.R.anim.exit_to_left
-        )
+        if (isShowAnimation) {
+            setCustomAnimations(
+                com.dong.baselib.R.anim.enter_from_right,
+                com.dong.baselib.R.anim.exit_to_left
+            )
+        }
         if (isAdded) remove(this@closeSelf)
     }
     if (fm.isStateSaved) tx.commitAllowingStateLoss() else runCatching { tx.commitNow() }.onFailure { tx.commitNowAllowingStateLoss() }

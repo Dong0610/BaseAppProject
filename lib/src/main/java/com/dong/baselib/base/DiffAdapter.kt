@@ -7,15 +7,16 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
 class ModelDiffCallback<T : Any>(
-      private val areItemsTheSameCallback: (oldItem: T, newItem: T) -> Boolean,
-      private val areContentsTheSameCallback: (oldItem: T, newItem: T) -> Boolean = { o, n -> o == n },
-      private val payloadProvider: ((oldItem: T, newItem: T) -> Any?)? = null
+    private val areItemsTheSameCallback: (oldItem: T, newItem: T) -> Boolean,
+    private val areContentsTheSameCallback: (oldItem: T, newItem: T) -> Boolean = { o, n -> o == n },
+    private val payloadProvider: ((oldItem: T, newItem: T) -> Any?)? = null
 ) : DiffUtil.ItemCallback<T>() {
 
     override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
@@ -29,13 +30,13 @@ class ModelDiffCallback<T : Any>(
 }
 
 abstract class DiffAdapter<T : Any, VB : ViewBinding>(
-      diffCallback: DiffUtil.ItemCallback<T>
+    diffCallback: DiffUtil.ItemCallback<T>
 ) : ListAdapter<T, DiffAdapter<T, VB>.ViewHolder>(diffCallback), LifecycleOwner {
 
     constructor(
-          areItemsTheSame: (old: T, new: T) -> Boolean,
-          areContentsTheSame: (old: T, new: T) -> Boolean = { o, n -> o == n },
-          payloadProvider: ((old: T, new: T) -> Any?)? = null
+        areItemsTheSame: (old: T, new: T) -> Boolean,
+        areContentsTheSame: (old: T, new: T) -> Boolean = { o, n -> o == n },
+        payloadProvider: ((old: T, new: T) -> Any?)? = null
     ) : this(
         ModelDiffCallback(
             areItemsTheSameCallback = areItemsTheSame,
@@ -44,8 +45,26 @@ abstract class DiffAdapter<T : Any, VB : ViewBinding>(
         )
     )
 
-    var currentPosition: Int = RecyclerView.NO_POSITION
+    var currentPosition = MutableLiveData(RecyclerView.NO_POSITION)
         private set
+
+    // Backing list — kept in sync with every submitList so getItem() always returns fresh data.
+    // changeItemWithPos reads/writes this directly and calls notifyItemChanged → O(1), no DiffUtil.
+    private val mutableItems = mutableListOf<T>()
+
+    override fun submitList(list: List<T>?) {
+        mutableItems.clear()
+        list?.let { mutableItems.addAll(it) }
+        super.submitList(list)
+    }
+
+    override fun submitList(list: List<T>?, commitCallback: Runnable?) {
+        mutableItems.clear()
+        list?.let { mutableItems.addAll(it) }
+        super.submitList(list, commitCallback)
+    }
+
+    override fun getItem(position: Int): T = mutableItems[position]
 
     // Lifecycle support
     private val lifecycleRegistry = LifecycleRegistry(this)
@@ -129,18 +148,25 @@ abstract class DiffAdapter<T : Any, VB : ViewBinding>(
         submitListCustom(current)
     }
 
+    // O(1) — updates one item without running DiffUtil over the whole list.
     fun changeItemWithPos(index: Int, newItem: T) {
-        val current = currentList.toMutableList()
-        if (index in current.indices) {
-            current[index] = newItem
-            submitListCustom(current)
+        if (index in mutableItems.indices) {
+            mutableItems[index] = newItem
+            notifyItemChanged(index)
         }
     }
 
     fun setCurrentPos(position: Int) {
-        val prev = currentPosition
-        if (prev in 0 until itemCount) notifyItemChanged(prev)
-        currentPosition = position
-        if (position in 0 until itemCount) notifyItemChanged(position)
+        val prev = currentPosition.value ?: RecyclerView.NO_POSITION
+        if (prev == position) return
+        
+        currentPosition.value = position
+        
+        if (prev != RecyclerView.NO_POSITION && prev < itemCount) {
+            notifyItemChanged(prev)
+        }
+        if (position != RecyclerView.NO_POSITION && position < itemCount) {
+            notifyItemChanged(position)
+        }
     }
 }

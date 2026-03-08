@@ -28,35 +28,31 @@ open class UiFrameLayout @JvmOverloads constructor(
                     R.styleable.UiFrameLayout_cornerBottomRight
                 )
                 helper.readBackgroundAttrs(this,
-                    R.styleable.UiFrameLayout_bgIsGradient,
+                    R.styleable.UiFrameLayout_bgGradient,
                     R.styleable.UiFrameLayout_bgGradientStart,
                     R.styleable.UiFrameLayout_bgGradientCenter,
                     R.styleable.UiFrameLayout_bgGradientEnd,
-                    R.styleable.UiFrameLayout_bgColorLight,
-                    R.styleable.UiFrameLayout_bgColorDark,
-                    R.styleable.UiFrameLayout_bgColorAll,
-                    R.styleable.UiFrameLayout_bgGdOrientation,
+                    R.styleable.UiFrameLayout_bgColor,
+                    R.styleable.UiFrameLayout_bgGradientOrientation,
                     R.styleable.UiFrameLayout_bgGradientType,
                     R.styleable.UiFrameLayout_bgGradientCenterX,
                     R.styleable.UiFrameLayout_bgGradientCenterY,
                     R.styleable.UiFrameLayout_bgGradientRadius,
                     R.styleable.UiFrameLayout_bgGradientColors,
                     R.styleable.UiFrameLayout_bgColors,
-                    R.styleable.UiFrameLayout_bgGdPositions
+                    R.styleable.UiFrameLayout_bgGradientPositions
                 )
                 helper.readStrokeAttrs(this,
                     R.styleable.UiFrameLayout_strokeWidth,
-                    R.styleable.UiFrameLayout_stColorLight,
-                    R.styleable.UiFrameLayout_stColorDark,
-                    R.styleable.UiFrameLayout_stColorAll,
-                    R.styleable.UiFrameLayout_strokeDistance,
-                    R.styleable.UiFrameLayout_distanceSpace,
-                    R.styleable.UiFrameLayout_strokeGradient,
-                    R.styleable.UiFrameLayout_strokeGdOrientation,
+                    R.styleable.UiFrameLayout_strokeColor,
+                    R.styleable.UiFrameLayout_strokeDashed,
+                    R.styleable.UiFrameLayout_dashGap,
+                    R.styleable.UiFrameLayout_strokeGradientColors,
+                    R.styleable.UiFrameLayout_strokeGradientOrientation,
                     R.styleable.UiFrameLayout_strokeOption,
                     R.styleable.UiFrameLayout_strokeCap,
-                    R.styleable.UiFrameLayout_stColors,
-                    R.styleable.UiFrameLayout_stGdPositions
+                    R.styleable.UiFrameLayout_strokeColors,
+                    R.styleable.UiFrameLayout_strokeGradientPositions
                 )
                 helper.readShadowAttrs(this,
                     R.styleable.UiFrameLayout_shadowColor,
@@ -67,17 +63,27 @@ open class UiFrameLayout @JvmOverloads constructor(
                 )
                 helper.readDimensionAttrs(this,
                     R.styleable.UiFrameLayout_uiDimenRatio,
-                    R.styleable.UiFrameLayout_uiWidthPercent,
-                    R.styleable.UiFrameLayout_uiHeightPercent,
-                    R.styleable.UiFrameLayout_uiMaxWidthPercent,
-                    R.styleable.UiFrameLayout_uiMaxHeightPercent,
-                    R.styleable.UiFrameLayout_uiMinWidthPercent,
-                    R.styleable.UiFrameLayout_uiMinHeightPercent
+                    R.styleable.UiFrameLayout_uiWidthParentPercent,
+                    R.styleable.UiFrameLayout_uiHeightParentPercent,
+                    R.styleable.UiFrameLayout_uiMaxWidthParentPercent,
+                    R.styleable.UiFrameLayout_uiMaxHeightParentPercent,
+                    R.styleable.UiFrameLayout_uiMinWidthParentPercent,
+                    R.styleable.UiFrameLayout_uiMinHeightParentPercent,
+                    R.styleable.UiFrameLayout_uiWidthScreenPercent,
+                    R.styleable.UiFrameLayout_uiHeightScreenPercent,
+                    R.styleable.UiFrameLayout_uiMaxWidthScreenPercent,
+                    R.styleable.UiFrameLayout_uiMaxHeightScreenPercent,
+                    R.styleable.UiFrameLayout_uiMinWidthScreenPercent,
+                    R.styleable.UiFrameLayout_uiMinHeightScreenPercent
                 )
                 helper.readRippleAttrs(this,
                     R.styleable.UiFrameLayout_rippleEnabled,
                     R.styleable.UiFrameLayout_rippleColor,
                     R.styleable.UiFrameLayout_rippleBorderless
+                )
+                helper.readShapeAttrs(this,
+                    R.styleable.UiFrameLayout_shapeType,
+                    R.styleable.UiFrameLayout_isCircle
                 )
             } finally {
                 recycle()
@@ -89,15 +95,23 @@ open class UiFrameLayout @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         if (helper.shouldApplyCustomMeasure()) {
-            val parentWidth = MeasureSpec.getSize(widthMeasureSpec)
-            val parentHeight = MeasureSpec.getSize(heightMeasureSpec)
-            val (newWidth, newHeight) = helper.measureWithConstraints(
+            val dm = context.resources.displayMetrics
+            val specW = MeasureSpec.getSize(widthMeasureSpec)
+            val specH = MeasureSpec.getSize(heightMeasureSpec)
+            val parentWidth = if (specW > 0) specW else
+                (parent as? android.view.View)?.width?.takeIf { it > 0 } ?: dm.widthPixels
+            val parentHeight = if (specH > 0) specH else
+                (parent as? android.view.View)?.height?.takeIf { it > 0 } ?: dm.heightPixels
+            val result = helper.measureWithConstraints(
                 widthMeasureSpec, heightMeasureSpec, parentWidth, parentHeight
             )
-            super.onMeasure(
-                MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY)
-            )
+            val wSpec = if (result.widthCustomized)
+                MeasureSpec.makeMeasureSpec(result.width, MeasureSpec.EXACTLY)
+                else widthMeasureSpec
+            val hSpec = if (result.heightCustomized)
+                MeasureSpec.makeMeasureSpec(result.height, MeasureSpec.EXACTLY)
+                else heightMeasureSpec
+            super.onMeasure(wSpec, hSpec)
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         }

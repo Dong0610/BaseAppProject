@@ -14,7 +14,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/_16sdp"
-        app:bgColorAll="@color/color_303136"
+        app:bgColor="@color/color_303136"
         app:cornerRadius="@dimen/_18sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,10 +62,10 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
-                    app:bgGdOrientation="left_right"
-                    app:bgIsGradient="true"
+                    app:bgGradientOrientation="left_right"
+                    app:bgGradient="true"
                     app:cornerRadius="@dimen/_20sdp"
-                    app:tvColor="@color/white" />
+                    app:tvTextColor="@color/white" />
 
                 <com.dong.baselib.widget.view.UiTextView
                     android:id="@+id/btnCancel"
@@ -81,7 +81,7 @@
                     android:textSize="@dimen/_12sdp"
                     app:cornerRadius="@dimen/_10sdp"
                     app:strokeWidth="@dimen/_1sdp"
-                    app:tvColor="@color/color_cccccc" />
+                    app:tvTextColor="@color/color_cccccc" />
             </LinearLayout>
         </LinearLayout>
     </com.dong.baselib.widget.layout.UiConstraintLayout>

@@ -43,10 +43,6 @@ class LanguageSettingActivity :
 
     override fun ActivitySettingLanguageBinding.onClick() {
         icSaveLang.click {
-            LocateManager.setLocale(
-                this@LanguageSettingActivity,
-                currentLang.code,
-            )
             restartApp()
         }
         icBack.click {

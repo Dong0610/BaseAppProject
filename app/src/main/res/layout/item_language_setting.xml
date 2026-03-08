@@ -12,9 +12,9 @@
         android:layout_margin="@dimen/_3sdp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:bgColorAll="#1AFFFFFF"
+        app:bgColor="#1AFFFFFF"
         app:cornerRadius="@dimen/_10sdp"
-        app:stColorAll="@color/transparent"
+        app:strokeColor="@color/transparent"
         app:strokeWidth="1.6dp">
 
         <androidx.appcompat.widget.AppCompatImageView

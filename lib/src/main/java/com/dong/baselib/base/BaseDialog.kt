@@ -64,7 +64,6 @@ abstract class BaseDialog<V : ViewBinding>(
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         registry.currentState = Lifecycle.State.CREATED
-        LocateManager.setLocale(context, LocateManager.getPreLanguage(context) ?: "en")
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.initView()
